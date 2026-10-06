@@ -1,0 +1,55 @@
+country,region,kind,lat,lon,admin1,source,note
+Guatemala,Guatemala City,town,14.64072,-90.51327,Guatemala,geonames:3598132,"GeoNames name match (PPLC, pop 994,938)"
+Guatemala,National Average,aggregate,15.69086,-90.36579,,geojson,national average
+Kenya,Eldoret,town,0.52036,35.26993,Uasin Gishu,geonames:198629,"GeoNames name match (PPLA, pop 475,716)"
+Kenya,Embu-Mbeere,admin1,-0.60132,37.62515,Embu,geojson,"county/district name, not a town; centroid of admin1 polygon"
+Kenya,Garissa,town,-0.45275,39.64601,Garissa,geonames:197745,"GeoNames name match (PPLA, pop 163,399)"
+Kenya,Isiolo,town,0.35462,37.58218,Isiolo,geonames:196231,"GeoNames name match (PPLA, pop 78,650)"
+Kenya,Kilifi,town,-3.63045,39.84992,Kilifi,geonames:192067,"GeoNames name match (PPLA, pop 74,270); 2 candidates, took most populous"
+Kenya,Kisumu,town,-0.10221,34.76171,Kisumu,geonames:191245,"GeoNames name match (PPLA, pop 397,957)"
+Kenya,Kitui,town,-1.36696,38.01055,Kitui,geonames:191038,"GeoNames name match (PPLA, pop 29,062)"
+Kenya,Kwale,town,-4.17375,39.45206,Kwale,geonames:190108,"GeoNames name match (PPLA, pop 10,063)"
+Kenya,Lamu,town,-2.27169,40.90201,Lamu,geonames:189741,"GeoNames name match (PPLA, pop 25,385)"
+Kenya,Makueni,admin1,-2.16609,37.79966,Makueni,geojson,"county/district name, not a town; centroid of admin1 polygon"
+Kenya,Mandera,town,3.93726,41.85688,Mandera,geonames:187896,"GeoNames name match (PPLA, pop 114,718)"
+Kenya,Marsabit,town,2.33468,37.99086,Marsabit,geonames:187585,"GeoNames name match (PPLA, pop 36,289)"
+Kenya,Meru,town,0.04626,37.65587,Meru,geonames:186827,"GeoNames name match (PPLA, pop 80,191)"
+Kenya,Mombasa,town,-4.05466,39.66359,Mombasa,geonames:186301,"GeoNames name match (PPLA, pop 1,208,333); 2 candidates, took most populous"
+Kenya,Nairobi,town,-1.28333,36.81667,Nairobi,geonames:184745,"GeoNames name match (PPLC, pop 4,397,073)"
+Kenya,Nakuru,town,-0.30719,36.07225,Nakuru,geonames:184622,"GeoNames name match (PPLA, pop 570,674)"
+Kenya,National Average,aggregate,0.60477,37.81742,,geojson,national average
+Kenya,Taita Taveta,admin1,-3.43229,38.41806,Taita Taveta,geojson,"county/district name, not a town; centroid of admin1 polygon"
+Kenya,Tana River,admin1,-1.55674,39.41215,Tana River,geojson,"county/district name, not a town; centroid of admin1 polygon"
+Kenya,Tharaka Nithi,admin1,-0.19902,37.8717,Tharaka,geojson,"county/district name, not a town; centroid of admin1 polygon"
+Kenya,Turkana,admin1,3.41137,35.43522,Turkana,geojson,"county/district name, not a town; centroid of admin1 polygon"
+Kenya,Wajir,town,1.7471,40.05732,Wajir,geonames:178443,"GeoNames name match (PPLA, pop 90,116)"
+Malawi,Karonga,town,-9.93333,33.93333,Northern Region,geonames:235715,"GeoNames name match (PPLA2, pop 69,486); 7 candidates, took most populous"
+Malawi,Lilongwe,town,-13.96692,33.78725,Central Region,geonames:927967,"GeoNames name match (PPLC, pop 1,115,815)"
+Malawi,Liwonde,town,-15.06665,35.22543,Southern Region,geonames:927834,"GeoNames name match (PPL, pop 41,077); 2 candidates, took most populous"
+Malawi,Lunzu,town,-15.65271,35.01954,Southern Region,geonames:7840049,"GeoNames name match (PPL, pop 0)"
+Malawi,Mitundu,town,-14.24695,33.77885,Central Region,geonames:926547,"GeoNames name match (PPL, pop 0)"
+Malawi,Mzimba,town,-11.9,33.6,Northern Region,geonames:925498,"GeoNames name match (PPLA2, pop 29,432)"
+Malawi,Mzuzu,town,-11.46556,34.02071,Northern Region,geonames:925475,"GeoNames name match (PPLA, pop 249,564)"
+Malawi,National Average,aggregate,-13.51878,34.26183,,geojson,national average
+Malawi,Nsanje,town,-16.91995,35.26199,Southern Region,geonames:924572,"GeoNames name match (PPLA2, pop 30,276)"
+Malawi,Salima,town,-13.7804,34.4587,Central Region,geonames:924055,"GeoNames name match (PPLA2, pop 41,492); 3 candidates, took most populous"
+Nigeria,Giwa,town,11.31568,7.44957,Kaduna,geonames:2340576,"GeoNames name match (PPLA2, pop 0); 5 candidates, took most populous"
+Nigeria,Ibadan,town,7.37756,3.90591,Oyo,geonames:2339354,"GeoNames name match (PPLA, pop 3,649,000); 8 candidates, took most populous"
+Nigeria,Kano,town,12.00012,8.51672,Kano,geonames:2335204,"GeoNames name match (PPLA, pop 4,910,000); 6 candidates, took most populous"
+Nigeria,Kaura Namoda,town,12.59371,6.58648,Zamfara,geonames:2334756,"GeoNames name match (PPLA2, pop 69,725)"
+Nigeria,Lagos,town,6.45407,3.39467,Lagos,geonames:2332459,"GeoNames name match (PPLA2, pop 15,388,000)"
+Nigeria,Maiduguri,town,11.84692,13.15712,Borno,geonames:2331447,"GeoNames name match (PPLA, pop 1,110,000); 2 candidates, took most populous"
+Nigeria,National Average,aggregate,9.5637,8.10193,,geojson,national average
+Nigeria,North Central,aggregate,8.8576,6.80659,Benue;Kogi;Kwara;Nasarawa;Niger;Plateau;Abuja Federal Capital Territory,manual,Nigerian geopolitical zone (group of states)
+Nigeria,North East,aggregate,10.49166,11.60808,Adamawa;Bauchi;Borno;Gombe;Taraba;Yobe,manual,Nigerian geopolitical zone (group of states)
+Nigeria,North West,aggregate,11.82534,6.84607,Jigawa;Kaduna;Kano;Katsina;Kebbi;Sokoto;Zamfara,manual,Nigerian geopolitical zone (group of states)
+Nigeria,South East,aggregate,6.07023,7.43014,Abia;Anambra;Ebonyi;Enugu;Imo,manual,Nigerian geopolitical zone (group of states)
+Nigeria,South South,aggregate,5.68871,6.89176,Akwa Ibom;Bayelsa;Cross River;Delta;Edo;Rivers,manual,Nigerian geopolitical zone (group of states)
+Nigeria,South West,aggregate,7.48776,4.10561,Ekiti;Lagos;Ogun;Ondo;Osun;Oyo,manual,Nigerian geopolitical zone (group of states)
+Somalia,Baidoa,town,3.11383,43.6498,Bay,geonames:64536,"GeoNames name match (PPLA, pop 129,839)"
+Uganda,Busia,town,0.46588,34.09221,Eastern Region,geonames:234077,"GeoNames name match (PPLA2, pop 64,900)"
+Uganda,Kabale,town,-1.24857,29.98993,Western Region,geonames:233070,"GeoNames name match (PPLA2, pop 53,200); 12 candidates, took most populous"
+Uganda,Kampala,town,0.31628,32.58219,Central Region,geonames:232422,"GeoNames name match (PPLC, pop 1,680,600)"
+Uganda,Lira,town,2.2499,32.89985,Northern Region,geonames:230166,"GeoNames name match (PPLA2, pop 119,323)"
+Uganda,Masindi,town,1.67444,31.715,Western Region,geonames:229362,"GeoNames name match (PPLA2, pop 110,500)"
+Uganda,National Average,aggregate,1.51237,32.34332,,geojson,national average
