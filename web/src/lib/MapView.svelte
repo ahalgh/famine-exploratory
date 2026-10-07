@@ -5,7 +5,8 @@
   /** @type {{ layers: Record<string, boolean>, ipcSource: string, basemap: boolean, selectedCountry: string | null, onselect: (sel: any) => void }} */
   let { layers, ipcSource, basemap, selectedCountry, onselect } = $props();
 
-  const BASEMAP_URL = 'https://tiles.openfreemap.org/styles/positron';
+  // OpenFreeMap styles (no API key); pick the one matching the colour scheme
+  const basemapUrl = () => `https://tiles.openfreemap.org/styles/${isDark() ? 'dark' : 'positron'}`;
   let container;
   let map = $state(null);
   let ready = $state(false);
@@ -70,14 +71,14 @@
   }
 
   function loadStyle(useBasemap) {
-    const style = useBasemap && !isDark() && !basemapFailed ? BASEMAP_URL : blankStyle();
+    const style = useBasemap && !basemapFailed ? basemapUrl() : blankStyle();
     map.setStyle(style);
   }
 
   onMount(() => {
     map = new maplibregl.Map({
       container,
-      style: basemap && !isDark() ? BASEMAP_URL : blankStyle(),
+      style: basemap ? basemapUrl() : blankStyle(),
       center: [22, 6],
       zoom: 2.4,
       attributionControl: { compact: true },

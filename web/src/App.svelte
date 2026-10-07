@@ -51,7 +51,7 @@
           <option value="ipc_ml1_2018_12">Projected, ML1 Dec 2018</option>
         </select>
       {/if}
-      <label class="check"><input type="checkbox" bind:checked={basemap} /> Base map (OpenFreeMap, light mode)</label>
+      <label class="check"><input type="checkbox" bind:checked={basemap} /> Base map (OpenFreeMap)</label>
     </section>
 
     <section>
