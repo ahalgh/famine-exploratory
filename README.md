@@ -31,6 +31,6 @@ pip install -r requirements.txt
    cd web && npm install && npm run dev
    ```
 
-The light-mode base map is OpenFreeMap (no API key). Without network access, or in dark mode, the map shows only the boundaries.
+The base map is OpenFreeMap (positron in light mode, dark in dark mode; no API key). Without network access the map shows only the boundaries.
 
 Not yet mapped: FEWS livelihood zones (needs the FEWS NET zone shapefiles) and soil-moisture regions (no boundaries in the data).
