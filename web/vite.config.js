@@ -4,6 +4,6 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 export default defineConfig({
   plugins: [svelte()],
   server: { port: 5173 },
-  // maplibre-gl loads its worker by relative URL; pre-bundling breaks that path
+  // the worker is served from public/vendor (see MapView.svelte); keep maplibre-gl out of pre-bundling
   optimizeDeps: { exclude: ['maplibre-gl'] },
 });

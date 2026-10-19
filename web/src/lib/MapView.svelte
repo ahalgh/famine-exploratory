@@ -1,9 +1,15 @@
 <script>
   import * as maplibregl from 'maplibre-gl';
   import { onMount } from 'svelte';
+  import { ZONE_METRICS, zoneColor } from './metrics.js';
 
-  /** @type {{ layers: Record<string, boolean>, ipcSource: string, basemap: boolean, selectedCountry: string | null, onselect: (sel: any) => void }} */
-  let { layers, ipcSource, basemap, selectedCountry, onselect } = $props();
+  // Serve MapLibre's worker as a static file (copied to public/vendor by `npm run copy-worker`):
+  // Vite's dev server injects its client into module scripts it serves from node_modules, which
+  // breaks the worker, and pre-bundling breaks MapLibre's relative worker URL.
+  maplibregl.setWorkerUrl('/vendor/maplibre-gl-worker.mjs');
+
+  /** @type {{ layers: Record<string, boolean>, ipcSource: string, zoneMetric: string, basemap: boolean, selectedCountry: string | null, onselect: (sel: any) => void }} */
+  let { layers, ipcSource, zoneMetric, basemap, selectedCountry, onselect } = $props();
 
   // OpenFreeMap styles (no API key); pick the one matching the colour scheme
   const basemapUrl = () => `https://tiles.openfreemap.org/styles/${isDark() ? 'dark' : 'positron'}`;
@@ -33,10 +39,16 @@
     src('countries', '/data/countries.geojson');
     src('admin1', '/data/admin1.geojson');
     src('districts', '/data/districts.geojson');
+    src('zones', '/data/zones.geojson');
     if (!map.getSource('markets')) map.addSource('markets', { type: 'geojson', data: '/data/markets.geojson' });
+    if (!map.getSource('wfp-markets')) map.addSource('wfp-markets', { type: 'geojson', data: '/data/wfp_markets.geojson' });
 
     map.addLayer({ id: 'countries-fill', type: 'fill', source: 'countries',
       paint: { 'fill-color': seqStep('n_datasets'), 'fill-opacity': 0.55 } });
+    map.addLayer({ id: 'zones-fill', type: 'fill', source: 'zones',
+      paint: { 'fill-color': zoneColor(zoneMetric, css), 'fill-opacity': 0.85 } });
+    map.addLayer({ id: 'zones-line', type: 'line', source: 'zones',
+      paint: { 'line-color': css('--surface-1'), 'line-width': 0.6 } });
     map.addLayer({ id: 'gt-ipc', type: 'fill', source: 'districts',
       filter: ['all', ['==', ['get', 'country'], 'Guatemala'], ['has', ipcSource]],
       paint: { 'fill-color': ipcColor(ipcSource), 'fill-opacity': 0.9, 'fill-outline-color': css('--surface-1') } });
@@ -46,6 +58,13 @@
       paint: { 'line-color': css('--text-secondary'), 'line-width': 0.8, 'line-opacity': 0.8 } });
     map.addLayer({ id: 'countries-line', type: 'line', source: 'countries',
       paint: { 'line-color': css('--text-primary'), 'line-width': ['case', ['==', ['get', 'country'], selectedCountry ?? ''], 2.5, 1.2] } });
+    map.addLayer({ id: 'wfp-markets', type: 'circle', source: 'wfp-markets',
+      paint: {
+        'circle-color': css('--text-primary'),
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 1.6, 7, 3.5],
+        'circle-stroke-color': css('--surface-1'),
+        'circle-stroke-width': 1,
+      } });
     map.addLayer({ id: 'markets', type: 'circle', source: 'markets',
       paint: {
         'circle-color': ['match', ['get', 'kind'], 'town', css('--series-1'), 'admin1', css('--series-2'), 'aggregate', css('--series-3'), css('--text-muted')],
@@ -68,6 +87,9 @@
     vis('districts-line', layers.districts);
     vis('gt-ipc', layers.ipc);
     vis('markets', layers.markets);
+    vis('zones-fill', layers.zones);
+    vis('zones-line', layers.zones);
+    vis('wfp-markets', layers.wfp);
   }
 
   function loadStyle(useBasemap) {
@@ -83,6 +105,7 @@
       zoom: 2.4,
       attributionControl: { compact: true },
     });
+    if (import.meta.env.DEV) window.__map = map; // for debugging in the browser console
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
     map.addControl(new maplibregl.ScaleControl(), 'bottom-right');
 
@@ -96,7 +119,8 @@
     });
 
     const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 10, className: 'hover-popup' });
-    const hoverable = ['markets', 'gt-ipc', 'countries-fill'];
+    const hoverable = ['markets', 'wfp-markets', 'gt-ipc', 'zones-fill', 'countries-fill'];
+    const fmt = (v, unit) => (v === null || v === undefined || v === 'null' ? '—' : `${Number(v).toFixed(1)}${unit ? ' ' + unit : ''}`);
     map.on('mousemove', (e) => {
       const f = map.queryRenderedFeatures(e.point, { layers: hoverable.filter((l) => map.getLayer(l)) })[0];
       map.getCanvas().style.cursor = f ? 'pointer' : '';
@@ -104,7 +128,12 @@
       const p = f.properties;
       let html;
       if (f.layer.id === 'markets') html = `<b>${p.region}</b>, ${p.country}<br>${p.kind} · ${p.n_series} series · ${p.first}–${p.last}`;
+      else if (f.layer.id === 'wfp-markets') html = `<b>${p.market}</b>, ${p.country}<br>WFP · ${p.n_commodities} commodities · ${p.first}–${p.last}`;
       else if (f.layer.id === 'gt-ipc') html = `<b>${p.region}</b><br>IPC phase ${p[ipcSource]}`;
+      else if (f.layer.id === 'zones-fill') {
+        const m = ZONE_METRICS[zoneMetric];
+        html = `<b>${p.zone}</b><br>${m.label}: ${fmt(p[zoneMetric], m.unit)}`;
+      }
       else html = `<b>${p.country}</b><br>${p.n_datasets} of 8 datasets`;
       popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
     });
@@ -114,6 +143,8 @@
       const f = map.queryRenderedFeatures(e.point, { layers: hoverable.filter((l) => map.getLayer(l)) })[0];
       if (!f) return;
       if (f.layer.id === 'markets') onselect({ type: 'market', ...f.properties });
+      else if (f.layer.id === 'zones-fill') onselect({ type: 'zone', ...f.properties });
+      else if (f.layer.id === 'wfp-markets') onselect({ type: 'wfp', ...f.properties });
       else onselect({ type: 'country', country: f.properties.country });
     });
 
@@ -123,7 +154,11 @@
     return () => { mq.removeEventListener('change', onScheme); map.remove(); };
   });
 
-  $effect(() => { layers.coverage; layers.admin1; layers.districts; layers.ipc; layers.markets; if (ready) applyVisibility(); });
+  $effect(() => { layers.coverage; layers.admin1; layers.districts; layers.ipc; layers.markets; layers.zones; layers.wfp; if (ready) applyVisibility(); });
+  $effect(() => {
+    const key = zoneMetric;
+    if (ready && map.getLayer('zones-fill')) map.setPaintProperty('zones-fill', 'fill-color', zoneColor(key, css));
+  });
   $effect(() => {
     if (!ready || !map.getLayer('gt-ipc')) return;
     map.setFilter('gt-ipc', ['all', ['==', ['get', 'country'], 'Guatemala'], ['has', ipcSource]]);

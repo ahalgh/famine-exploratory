@@ -4,7 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "copy-worker": "mkdir -p public/vendor && cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs public/vendor/",
+    "predev": "npm run copy-worker",
     "dev": "vite",
+    "prebuild": "npm run copy-worker",
     "build": "vite build",
     "preview": "vite preview"
   },

@@ -17,12 +17,17 @@ pip install -r requirements.txt
 
 ## Coverage map (Svelte + MapLibre)
 
-1. Download GeoNames gazetteers for GT, KE, MW, NG, SO, UG from https://download.geonames.org/export/dump/ into `data/external/geonames/` (unzip to `<CC>.txt`).
+1. Put the external data in `data/` (all git-ignored; sources and licences in [FEATURES.md](FEATURES.md)):
+   - `data/external/geonames/<CC>.txt`: GeoNames gazetteers for GT, KE, MW, NG, SO, UG from https://download.geonames.org/export/dump/
+   - `data/external/wfp/`: the HDX "WFP food prices for <country>" CSVs (prices and markets)
+   - `data/external/map_accessibility/`: MAP 2019 friction surfaces (see `famine/access.py`)
+   - `data/regions/livelihood_zones/`: the FEWS NET current livelihood-zone shapefile
 2. Build the map data:
 
    ```bash
-   python scripts/geocode_markets.py   # -> reports/market_locations.csv
-   python scripts/export_map_data.py   # -> web/public/data/ (git-ignored)
+   python scripts/geocode_markets.py        # -> reports/market_locations.csv
+   python scripts/compute_accessibility.py  # -> reports/zone_access_2019.csv
+   python scripts/export_map_data.py        # -> web/public/data/ (git-ignored)
    ```
 
 3. Run the app:
@@ -31,6 +36,8 @@ pip install -r requirements.txt
    cd web && npm install && npm run dev
    ```
 
+   `npm run dev` and `npm run build` first copy MapLibre's worker into `web/public/vendor/` (git-ignored). Vite would otherwise transform the worker script and break it.
+
 The base map is OpenFreeMap (positron in light mode, dark in dark mode; no API key). Without network access the map shows only the boundaries.
 
-Not yet mapped: FEWS livelihood zones (needs the FEWS NET zone shapefiles) and soil-moisture regions (no boundaries in the data).
+Layers: livelihood zones shaded by travel time to a city or WFP market (by vehicle or on foot) or by mean observed IPC since 2020; WFP and FAO markets; Guatemala district IPC; country coverage. Not mapped: soil-moisture regions (no boundaries in the data).

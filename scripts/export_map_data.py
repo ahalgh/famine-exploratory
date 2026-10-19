@@ -5,9 +5,12 @@ Outputs
     admin1.geojson      ADM1 polygons (simplified)
     districts.geojson   ADM2 polygons (simplified); Guatemala districts carry FEWS/ML1 IPC
     markets.geojson     FAO price markets (from reports/market_locations.csv) + series stats
+    wfp_markets.geojson WFP markets with prices since 2019 + series stats
+    zones.geojson       FEWS NET livelihood zones (simplified) + travel-time access
+                        (reports/zone_access_2019.csv) + observed IPC summary since 2020
     coverage.json       monthly row counts per country x dataset, plus dataset metadata
 
-Run: python scripts/geocode_markets.py && python scripts/export_map_data.py
+Run: python scripts/geocode_markets.py && python scripts/compute_accessibility.py && python scripts/export_map_data.py
 """
 
 import json
@@ -23,7 +26,7 @@ import pandas as pd
 import famine as fm
 
 OUT = ROOT / "web" / "public" / "data"
-SIMPLIFY = {"country": 0.01, "admin1": 0.005, "districts": 0.003}  # degrees
+SIMPLIFY = {"country": 0.01, "admin1": 0.005, "districts": 0.003, "zones": 0.005}  # degrees
 
 DATASETS = [
     # key, label, group, date column, loader
@@ -33,6 +36,7 @@ DATASETS = [
     ("smart", "SMART trigger (120)", "outputs", "date", lambda: fm.load_smart(120)),
     ("soil", "Soil moisture (SMAP)", "inputs", "date", fm.load_soil_moisture),
     ("prices", "FAO food prices", "inputs", "date", fm.load_prices),
+    ("wfp", "WFP market prices", "inputs", "date", fm.load_wfp_prices),
     ("conflict", "ACLED conflict (monthly)", "inputs", "date", lambda: fm.load_conflict("monthly")),
     ("cpi", "World Bank CPI (annual)", "inputs", "year", fm.load_cpi),
 ]
@@ -109,6 +113,37 @@ def main():
     markets = gpd.GeoDataFrame(markets, geometry=gpd.points_from_xy(markets["lon"], markets["lat"]), crs=4326)
     markets["admin1"] = markets["admin1"].fillna("")
     write_geojson(markets.drop(columns=["lat", "lon"]), "markets", 0)
+
+    # WFP markets active since 2019
+    wfp = fm.load_wfp_prices()
+    wfp = wfp[wfp["date"] >= "2019-01-01"]
+    wstats = wfp.groupby("market_id").agg(
+        n_rows=("price", "size"),
+        n_commodities=("commodity", lambda s: s.astype(str).nunique()),
+        first=("date", lambda d: d.min().strftime("%Y-%m")),
+        last=("date", lambda d: d.max().strftime("%Y-%m")),
+        n_months=("date", lambda d: d.dt.to_period("M").nunique()),
+    ).reset_index()
+    wm = fm.load_wfp_markets().merge(wstats, on="market_id", how="left")
+    wm = gpd.GeoDataFrame(wm, geometry=gpd.points_from_xy(wm["longitude"], wm["latitude"]), crs=4326)
+    write_geojson(wm[["market_id", "market", "country", "admin1", "admin2", "n_rows", "n_commodities",
+                      "first", "last", "n_months", "geometry"]], "wfp_markets", 0)
+
+    # livelihood zones with access and observed IPC (2020+, when every zone joins)
+    zones = fm.load_livelihood_zones()
+    access = pd.read_csv(ROOT / "reports" / "zone_access_2019.csv").drop(columns=["zone", "fnid", "lzcode", "map_version", "eff_year"])
+    zones = zones.merge(access, on=["country", "zone_key"], how="left")
+    obs = fews[(fews["area_type"] == "livelihood zone") & (fews["date"] >= "2020-01-01")].copy()
+    obs["country"] = obs["country"].astype(str)
+    obs["zone_key"] = [fm.zone_key(c, r) for c, r in zip(obs["country"], obs["region"])]
+    obs["ipc_i"] = obs["ipc"].astype(int)
+    latest = obs.sort_values("date").groupby(["country", "zone_key"]).tail(1).set_index(["country", "zone_key"])
+    ipc = obs.groupby(["country", "zone_key"]).agg(
+        ipc_mean=("ipc_i", "mean"), ipc3_share=("ipc_i", lambda s: (s >= 3).mean()), ipc_reports=("ipc_i", "size"))
+    ipc["ipc_latest"] = latest["ipc_i"]
+    ipc["ipc_latest_date"] = latest["date"].dt.strftime("%Y-%m")
+    zones = zones.merge(ipc.round(2).reset_index(), on=["country", "zone_key"], how="left")
+    write_geojson(zones.drop(columns=["zone_key"]), "zones", SIMPLIFY["zones"])
 
     (OUT / "coverage.json").write_text(json.dumps(cov))
     print(f"  coverage.json  {len(cov['datasets'])} datasets x {len(cov['months'])} months")
