@@ -1,0 +1,154 @@
+country,zone,zone_key,fnid,lzcode,map_version,eff_year,area_km2,pixels,wfp_markets_in_zone,market_motorized_median_h,market_motorized_p90_h,city_motorized_median_h,city_motorized_p90_h,market_walking_median_h,market_walking_p90_h,city_walking_median_h,city_walking_p90_h
+Guatemala,North Petén Forestry and Eco-tourism,north peten forestry and eco tourism,GT2016L101,GT01,GT_LHZ_2016,2016.0,16038,19615,0,9.9,15.91,7.36,13.36,78.1,88.45,56.26,66.74
+Guatemala,Coffee Production,coffee production,GT2016L111,GT11,GT_LHZ_2016,2016.0,6783,8202,0,1.76,3.97,0.68,1.67,14.27,37.11,4.92,10.95
+Guatemala,"Eastern Subsistence Food Crops and Agricultural Labor (Coffee, Fruit and Vegetables)",eastern subsistence food crops and agricultural labor coffee fruit and vegetables,GT2016L110,GT10,GT_LHZ_2016,2016.0,8106,9790,0,2.2,3.19,0.68,1.34,20.93,29.99,4.93,8.36
+Guatemala,"Pacific Ocean Artisanal Fishing, Trade and Services",pacific ocean artisanal fishing trade and services,GT2016L113,GT13,GT_LHZ_2016,2016.0,1266,1526,0,2.21,3.63,1.25,1.77,21.65,36.8,9.89,14.35
+Guatemala,Caribbean Artisanal Fishing and Tourism,caribbean artisanal fishing and tourism,GT2016L104,GT04,GT_LHZ_2016,2016.0,1837,2244,0,4.87,7.09,1.85,3.72,51.27,59.43,11.72,16.53
+Guatemala,"Coffee, Cardamom, Forestry and Vegetable Production",coffee cardamom forestry and vegetable production,GT2016L105,GT05,GT_LHZ_2016,2016.0,10537,12782,0,3.67,6.57,1.19,4.18,29.4,42.15,8.29,18.79
+Guatemala,Southern Agricultural Industry Labor and Food Crops,southern agricultural industry labor and food crops,GT2016L112,GT12,GT_LHZ_2016,2016.0,9572,11538,0,1.9,3.23,0.65,1.28,19.1,35.49,5.25,9.87
+Guatemala,"Motagua Valley, Fruit Agri-business Labor and Mining Labor",motagua valley fruit agri business labor and mining labor,GT2016L108,GT08,GT_LHZ_2016,2016.0,3308,3996,0,2.28,8.1,1.11,6.85,21.98,34.18,7.43,13.8
+Guatemala,Central Petén Staple Foods and Cattle Farming Labor,central peten staple foods and cattle farming labor,GT2016L102,GT02,GT_LHZ_2016,2016.0,11245,13729,0,6.88,8.89,4.3,6.35,60.8,71.1,39.04,49.2
+Guatemala,Baja Verapaz and Quiché Staple Food and Agricultural Labor,baja verapaz and quiche staple food and agricultural labor,GT2016L107,GT07,GT_LHZ_2016,2016.0,4301,5210,0,1.79,2.88,0.8,1.68,14.41,21.21,5.65,8.86
+Guatemala,"South Petén, Northern Transversal Strip (FTN) and Izabal Agro-industry and Food Crops",south peten northern transversal strip ftn and izabal agro industry and food crops,GT2016L103,GT03,GT_LHZ_2016,2016.0,18736,22764,0,5.16,7.24,2.62,4.68,44.78,54.45,18.89,30.6
+Guatemala,"Western Highlands Labor, Staple Crops, Vegetables, Trade and Remittances",western highlands labor staple crops vegetables trade and remittances,GT2016L106,GT06,GT_LHZ_2016,2016.0,13832,16762,0,3.31,5.64,0.84,3.15,30.73,42.3,5.42,16.9
+Guatemala,"Industrial, Agri-business Labor, Commerce and Services of Central Area",industrial agri business labor commerce and services of central area,GT2016L109,GT09,GT_LHZ_2016,2016.0,2658,3217,3,0.41,0.74,0.18,0.51,4.39,7.08,1.87,3.92
+Kenya,"Southeastern Medium Potential, Mixed Farming Zone",southeastern medium potential mixed farming zone,KE2011L117,KE17,KE_LHZ_2011,2011.0,4210,4920,1,0.5,0.76,0.41,0.94,4.68,7.57,3.8,8.95
+Kenya,Northern Pastoral Zone,northern pastoral zone,KE2011L105,KE05,KE_LHZ_2011,2011.0,86746,101584,27,2.37,5.39,6.5,9.6,8.57,19.24,47.04,63.98
+Kenya,Mandera Riverine Zone,mandera riverine zone,KE2011L108,KE08,KE_LHZ_2011,2011.0,703,834,3,0.48,0.87,0.82,1.37,3.76,6.9,8.43,15.29
+Kenya,Coastal Marginal Agricultural Mixed Farming Zone,coastal marginal agricultural mixed farming zone,KE2011L113,KE13,KE_LHZ_2011,2011.0,47459,55598,4,1.98,4.23,1.74,4.93,14.23,22.56,13.81,24.09
+Kenya,Coastal Medium Potential Farming Zone,coastal medium potential farming zone,KE2011L112,KE12,KE_LHZ_2011,2011.0,6126,7180,10,0.84,4.49,0.99,6.76,6.34,26.12,10.98,49.0
+Kenya,Northwestern Agropastoral Zone,northwestern agropastoral zone,KE2011L103,KE03,KE_LHZ_2011,2011.0,2957,3463,6,4.5,7.2,7.45,10.95,5.0,9.21,35.43,41.0
+Kenya,Lake Turkana Fishing,lake turkana fishing,KE2011L104,KE04,KE_LHZ_2011,2011.0,11103,13035,6,1.94,3.92,4.57,7.32,12.89,28.11,33.75,49.23
+Kenya,Marsabit Marginal Mixed Farming Zone,marsabit marginal mixed farming zone,KE2011L106,KE06,KE_LHZ_2011,2011.0,375,438,4,0.27,1.34,3.58,4.58,1.5,3.19,50.31,51.95
+Kenya,Northeastern Agropastoral Zone,northeastern agropastoral zone,KE2011L107,KE07,KE_LHZ_2011,2011.0,11119,13031,5,1.17,2.52,4.22,5.5,6.27,10.01,33.01,42.0
+Kenya,Northeastern Pastoral Zone,northeastern pastoral zone,KE2011L109,KE09,KE_LHZ_2011,2011.0,67052,78500,22,1.42,3.32,2.54,4.94,6.2,12.81,19.15,32.06
+Kenya,Southeastern Pastoral  Zone,southeastern pastoral zone,KE2011L111,KE11,KE_LHZ_2011,2011.0,50138,58697,16,2.5,4.87,4.02,6.99,7.38,21.05,27.53,39.45
+Kenya,Southern Pastoral Zone,southern pastoral zone,KE2011L115,KE15,KE_LHZ_2011,2011.0,30817,36065,2,2.28,3.86,2.02,3.43,13.22,31.08,16.9,26.02
+Kenya,Southeastern Marginal Mixed Farming Zone,southeastern marginal mixed farming zone,KE2011L116,KE16,KE_LHZ_2011,2011.0,45849,53635,11,1.1,2.76,1.97,4.15,8.13,13.47,18.87,29.39
+Kenya,Southern Agropastoral Zone,southern agropastoral zone,KE2011L118,KE18,KE_LHZ_2011,2011.0,8474,9920,0,1.87,2.57,0.72,1.39,15.76,25.92,6.26,10.27
+Kenya,Western High Potential Zone,western high potential zone,KE2011L121,KE21,KE_LHZ_2011,2011.0,25748,30120,1,1.05,1.96,0.55,1.09,11.72,19.9,5.5,10.32
+Kenya,Western Lakeshore Marginal Mixed Farming Zone,western lakeshore marginal mixed farming zone,KE2011L122,KE22,KE_LHZ_2011,2011.0,8131,9507,0,1.32,2.48,0.66,1.23,14.99,25.89,6.2,10.86
+Kenya,Western Agropastoral Zone,western agropastoral zone,KE2011L124,KE24,KE_LHZ_2011,2011.0,30280,35424,21,1.12,3.01,2.19,5.07,6.11,11.64,17.83,31.77
+Kenya,Western Medium Potential Zone,western medium potential zone,KE2011L120,KE20,KE_LHZ_2011,2011.0,13683,16003,3,0.82,1.86,0.76,1.81,7.16,12.6,6.27,11.93
+Kenya,Turkwell Riverine Zone,turkwell riverine zone,KE2011L102,KE02,KE_LHZ_2011,2011.0,638,752,3,0.49,0.9,0.77,1.42,2.85,4.93,4.93,9.95
+Kenya,Tana Riverine Zone,tana riverine zone,KE2011L114,KE14,KE_LHZ_2011,2011.0,1831,2148,5,0.47,1.22,1.89,2.93,2.54,5.54,19.01,29.96
+Kenya,Northwestern Pastoral Zone,northwestern pastoral zone,KE2011L101,KE01,KE_LHZ_2011,2011.0,65338,76587,43,2.16,6.43,4.12,9.42,5.62,12.7,26.52,48.08
+Kenya,Lake Victoria Fishing Zone,lake victoria fishing zone,KE2011L123,KE23,KE_LHZ_2011,2011.0,5403,6325,2,2.04,3.63,1.54,2.64,19.84,35.06,13.88,24.57
+Kenya,Eastern Pastoral Zone,eastern pastoral zone,KE2011L110,KE10,KE_LHZ_2011,2011.0,47309,55389,17,1.39,3.0,2.77,4.19,6.26,15.89,22.66,30.77
+Kenya,"Central Highlands, High Potential Zone",central highlands high potential zone,KE2011L119,KE19,KE_LHZ_2011,2011.0,19689,23035,11,0.73,1.57,0.43,1.31,7.52,12.1,4.29,8.13
+Malawi,Border Productive Horticulture,border productive horticulture,MW2016L118,MW18,MW_LHZ_2015,2016.0,2726,3291,6,0.42,0.86,1.45,1.94,2.5,4.26,15.41,18.27
+Malawi,Kasungu Lilongwe Plain,kasungu lilongwe plain,MW2016L103,MW03,MW_LHZ_2015,2016.0,21546,25919,25,0.32,0.66,0.85,1.49,2.8,5.33,9.48,15.54
+Malawi,Lake Chilwa - Phalombe Plain,lake chilwa phalombe plain,MW2016L104,MW04,MW_LHZ_2015,2016.0,5764,6992,12,0.31,1.45,1.31,2.55,2.15,4.09,10.44,15.0
+Malawi,Lower Shire,lower shire,MW2016L105,MW05,MW_LHZ_2015,2016.0,4847,5904,11,0.3,0.94,1.28,2.24,2.15,5.81,15.27,26.96
+Malawi,Middle Shire Valley,middle shire valley,MW2016L106,MW06,MW_LHZ_2015,2016.0,4540,5494,6,0.25,0.52,0.76,1.06,2.31,4.11,8.74,11.4
+Malawi,Misuku Hills,misuku hills,MW2016L107,MW07,MW_LHZ_2015,2016.0,531,631,1,0.32,0.58,1.12,1.5,2.18,3.55,10.54,13.32
+Malawi,Mzimba Self Sufficient,mzimba self sufficient,MW2016L108,MW08,MW_LHZ_2015,2016.0,6465,7721,5,0.37,0.68,1.1,1.58,3.38,5.46,14.39,19.61
+Malawi,Nkhata Bay Cassava,nkhata bay cassava,MW2016L109,MW09,MW_LHZ_2015,2016.0,5265,6282,2,0.63,2.02,1.12,2.6,5.36,8.23,11.95,19.21
+Malawi,Northern Karonga,northern karonga,MW2016L110,MW10,MW_LHZ_2015,2016.0,708,843,0,0.41,0.61,0.41,0.74,4.75,6.2,5.6,8.34
+Malawi,Northern Lakeshore,northern lakeshore,MW2016L111,MW11,MW_LHZ_2015,2016.0,2589,3101,3,0.43,1.69,1.55,2.25,4.2,9.09,18.0,20.6
+Malawi,Phirilongwe Hills,phirilongwe hills,MW2016L112,MW12,MW_LHZ_2015,2016.0,2153,2599,0,0.53,0.8,0.78,1.18,4.76,6.39,7.65,10.66
+Malawi,Rift Valley Escarpment,rift valley escarpment,MW2016L113,MW13,MW_LHZ_2015,2016.0,5559,6713,9,0.26,0.5,1.26,1.66,2.42,3.86,14.48,17.47
+Malawi,Shire Highlands,shire highlands,MW2016L114,MW14,MW_LHZ_2015,2016.0,6431,7769,11,0.29,1.01,0.61,1.37,2.35,4.78,5.78,10.73
+Malawi,Southern Lakeshore,southern lakeshore,MW2016L115,MW15,MW_LHZ_2015,2016.0,2656,3207,2,0.42,1.22,1.38,2.99,3.55,6.25,16.11,21.83
+Malawi,Thyolo Mulunje Tea Estates,thyolo mulunje tea estates,MW2016L116,MW16,MW_LHZ_2015,2016.0,1727,2104,3,0.22,0.4,0.98,1.36,1.91,2.88,10.31,16.17
+Malawi,Western Rumphi & Mzimba,western rumphi mzimba,MW2016L117,MW17,MW_LHZ_2015,2016.0,2857,3414,3,0.32,0.59,1.23,1.67,2.59,4.62,12.99,16.53
+Malawi,Chitipa Millet & Maize,chitipa millet maize,MW2016L102,MW02,MW_LHZ_2015,2016.0,2890,3425,3,0.5,0.88,1.42,2.38,3.6,7.61,12.78,22.23
+Malawi,Central Karonga,central karonga,MW2016L101,MW01,MW_LHZ_2015,2016.0,1559,1856,0,0.59,1.08,0.65,1.18,5.2,7.05,5.87,9.82
+Malawi,Urban,urban,MW2016L119,MW19,MW_LHZ_2015,2016.0,1188,1418,25,0.1,0.25,0.15,0.88,1.0,2.79,1.71,12.34
+Nigeria,"South-east cassava, cereals, and oil palm with extensive off-farm work and trade",south east cassava cereals and oil palm with extensive off farm work and trade,NG2018L133,NG33,NG_LHZ_2023,2018.0,21574,25359,1,0.97,1.68,0.35,0.88,13.38,22.55,4.04,8.21
+Nigeria,"Lagos Peri-urban: fishing, poultry, piggeries, market gardening, and coconuts",lagos peri urban fishing poultry piggeries market gardening and coconuts,NG2018L131,NG31,NG_LHZ_2023,2018.0,4602,5412,1,0.73,1.76,0.36,1.06,10.78,17.54,3.76,9.27
+Nigeria,"Cashews with oil palm, tubers, and maize",cashews with oil palm tubers and maize,NG2018L130,NG30,NG_LHZ_2023,2018.0,10379,12231,0,3.06,3.99,0.74,1.31,49.45,57.4,8.0,15.58
+Nigeria,"South-west rice, cassava, and cattle with cross-border trade",south west rice cassava and cattle with cross border trade,NG2018L129,NG29,NG_LHZ_2023,2018.0,3856,4548,0,1.15,1.65,0.64,1.09,16.36,21.37,6.62,11.44
+Nigeria,"South-west cocoa with oil palm, tubers, and cereals",south west cocoa with oil palm tubers and cereals,NG2018L128,NG28,NG_LHZ_2023,2018.0,10104,11914,0,1.57,2.61,0.33,0.85,26.18,43.85,3.19,6.82
+Nigeria,"South-east rice dominant with cassava, yams, and oil palm",south east rice dominant with cassava yams and oil palm,NG2018L127,NG27,NG_LHZ_2023,2018.0,24661,29023,0,2.53,5.51,0.58,3.95,33.87,48.56,6.55,17.99
+Nigeria,"Cross river cocoa with oil palm, tubers, rice, and plantain",cross river cocoa with oil palm tubers rice and plantain,NG2018L126,NG26,NG_LHZ_2023,2018.0,5812,6838,0,3.9,8.38,1.33,5.87,45.05,56.68,9.34,18.4
+Nigeria,"Mambila highland: cattle, maize, Irish potatoes, tea, coffee, and kola nut",mambila highland cattle maize irish potatoes tea coffee and kola nut,NG2018L125,NG25,NG_LHZ_2023,2018.0,4912,5785,0,5.72,6.9,4.4,5.62,69.88,76.56,46.36,51.8
+Nigeria,"Cocoa dominant with oil palms, cereals, and tubers",cocoa dominant with oil palms cereals and tubers,NG2023L124,NG24,NG_LHZ_2023,2023.0,17724,20930,0,4.88,8.58,3.93,7.56,52.63,70.41,30.59,41.81
+Nigeria,"Citrus fruits with tubers, cereals, soybeans, and groundnuts",citrus fruits with tubers cereals soybeans and groundnuts,NG2018L123,NG23,NG_LHZ_2023,2018.0,14307,16849,0,4.12,5.08,1.08,2.07,65.76,74.49,12.68,21.82
+Nigeria,"Cassava dominant with maize, yams, and tree-crops",cassava dominant with maize yams and tree crops,NG2018L122,NG22,NG_LHZ_2023,2018.0,103165,121662,1,2.84,4.2,0.66,1.7,41.47,59.73,6.29,13.67
+Nigeria,"Ginger and turmeric with maize, sorghum, yams, and acha (Digitaria)",ginger and turmeric with maize sorghum yams and acha digitaria,NG2018L118,NG18,NG_LHZ_2023,2018.0,8964,10644,0,2.37,2.94,0.97,1.61,31.06,38.24,11.03,15.87
+Nigeria,"Lower plateau rice, sorghum, and cattle",lower plateau rice sorghum and cattle,NG2018L117,NG17,NG_LHZ_2023,2018.0,16037,18992,0,3.71,4.95,2.36,3.95,42.45,51.23,22.74,29.21
+Nigeria,"High plateau Irish potatoes, maize, acha (Digitaria), and livestock",high plateau irish potatoes maize acha digitaria and livestock,NG2018L116,NG16,NG_LHZ_2023,2018.0,12419,14744,0,1.75,2.68,1.09,1.88,21.59,31.7,11.47,17.69
+Nigeria,"North-east maize dominant with rice, cowpeas, soybeans, and groundnuts",north east maize dominant with rice cowpeas soybeans and groundnuts,NG2023L115,NG15,NG_LHZ_2023,2023.0,27173,32339,5,0.74,1.41,1.16,1.94,6.71,10.3,12.5,18.21
+Nigeria,"Central sorghum, maize, groundnut, cowpeas, sesame and rice",central sorghum maize groundnut cowpeas sesame and rice,NG2023L114,NG14,NG_LHZ_2023,2023.0,74803,88921,5,1.52,2.92,1.19,2.3,16.29,31.28,12.51,19.16
+Nigeria,"North-west sorghum, maize and cotton with cross-border trade",north west sorghum maize and cotton with cross border trade,NG2018L112,NG12,NG_LHZ_2023,2018.0,30900,36799,0,3.28,4.51,2.02,3.19,43.81,59.09,25.36,32.35
+Nigeria,"North-west sorghum, maize, soybeans, and rice",north west sorghum maize soybeans and rice,NG2018L111,NG11,NG_LHZ_2023,2018.0,33409,39891,0,2.42,3.59,1.78,2.89,22.47,33.43,18.36,26.25
+Nigeria,"Kano-Katsina sudanian: sorghum, maize, rice, and groundnuts",kano katsina sudanian sorghum maize rice and groundnuts,NG2018L103,NG03,NG_LHZ_2023,2018.0,24860,29661,2,0.96,1.57,0.73,1.35,12.15,19.65,8.42,15.3
+Nigeria,"Kano-Katsina sahelian: millet, sorghum, sesame, and livestock",kano katsina sahelian millet sorghum sesame and livestock,NG2018L102,NG02,NG_LHZ_2023,2018.0,17392,20842,1,1.1,1.84,0.99,1.58,12.77,20.51,12.55,18.32
+Nigeria,"Sokoto millet, cowpeas, groundnuts, and livestock",sokoto millet cowpeas groundnuts and livestock,NG2018L101,NG01,NG_LHZ_2023,2018.0,48448,58118,2,1.6,2.78,1.3,2.56,14.73,21.82,13.02,20.06
+Nigeria,"Hadeija-Nguru wetlands: mixed cereals, vegetables, and fishing",hadeija nguru wetlands mixed cereals vegetables and fishing,NG2023L110,NG10,NG_LHZ_2023,2023.0,3195,3824,1,1.18,1.93,1.11,1.91,9.43,13.71,8.34,14.11
+Nigeria,"Central yams and maize belt, with cassava, rice, and soybeans",central yams and maize belt with cassava rice and soybeans,NG2023L120,NG20,NG_LHZ_2023,2023.0,137248,162360,1,3.11,4.37,1.03,2.23,43.64,62.7,9.87,18.15
+Nigeria,Niger-Benue rivers fishing and food crops,niger benue rivers fishing and food crops,NG2018L135,NG35,NG_LHZ_2023,2018.0,277,335,0,3.42,4.5,1.0,1.99,50.19,67.15,9.46,22.69
+Nigeria,"Borno-Yobe-Bauchi millet, cowpeas, groundnuts, and sesame",borno yobe bauchi millet cowpeas groundnuts and sesame,NG2023L105,NG05,NG_LHZ_2023,2023.0,75980,90733,27,0.95,1.79,1.11,2.07,8.49,20.26,11.38,20.22
+Nigeria,"Lake Chad fishing, maize, wheat, cowpeas, and vegetables",lake chad fishing maize wheat cowpeas and vegetables,NG2023L108,NG08,NG_LHZ_2023,2023.0,6490,7787,0,1.49,3.5,2.69,4.42,12.49,20.57,20.17,32.13
+Nigeria,Commercial sugarcane estates within NG19,commercial sugarcane estates within ng19,NG2023L11901,NG19,NG_LHZ_2023,2023.0,272,323,0,0.75,1.29,0.74,1.27,5.49,14.82,5.49,12.0
+Nigeria,"Komadugu-Yobe irrigated peppers with rice, millet, and vegetables",komadugu yobe irrigated peppers with rice millet and vegetables,NG2023L107,NG07,NG_LHZ_2023,2023.0,1078,1299,1,0.78,1.57,2.66,3.6,6.98,16.93,32.79,37.16
+Nigeria,"Benue river sugar cane, rice, and sugar estate labor",benue river sugar cane rice and sugar estate labor,NG2023L119,NG19,NG_LHZ_2023,2023.0,4100,4860,0,1.98,4.71,1.38,3.42,28.68,45.84,12.1,23.63
+Nigeria,"Masakwa flood-recession sorghum, cowpea, groundnut, and onion",masakwa flood recession sorghum cowpea groundnut and onion,NG2023L109,NG09,NG_LHZ_2023,2023.0,12814,15309,4,0.61,1.13,0.91,1.51,5.11,9.71,9.55,14.72
+Nigeria,"Coastal strip and Niger Delta: fishing, cassava, plantain, oil palm, and rubber",coastal strip and niger delta fishing cassava plantain oil palm and rubber,NG2018L132,NG32,NG_LHZ_2023,2018.0,26034,30602,0,4.28,11.81,2.68,9.6,34.03,58.53,12.63,27.1
+Nigeria,"Niger and Benue rivers flood plain rice with maize, vegetables, and livestock",niger and benue rivers flood plain rice with maize vegetables and livestock,NG2023L121,NG21,NG_LHZ_2023,2023.0,25167,29711,1,3.74,4.41,0.87,1.78,59.84,67.71,8.88,18.75
+Nigeria,Sokoto-Rima-Kano riverine flood plain rice and fishing,sokoto rima kano riverine flood plain rice and fishing,NG2018L106,NG06,NG_LHZ_2023,2018.0,12058,14414,1,1.31,2.43,0.98,1.97,14.37,25.33,11.15,22.34
+Nigeria,"North-east sahelian: millet, sesame, cowpeas, and livestock",north east sahelian millet sesame cowpeas and livestock,NG2023L104,NG04,NG_LHZ_2023,2023.0,37381,44836,7,1.07,2.34,1.79,3.31,6.84,13.18,13.97,29.51
+Nigeria,"North-west and central maize dominant, with sorghum, sweet potatoes, and cowpeas",north west and central maize dominant with sorghum sweet potatoes and cowpeas,NG2018L113,NG13,NG_LHZ_2023,2018.0,47489,56412,1,3.13,3.86,1.04,1.85,42.4,60.25,11.41,17.87
+Nigeria,"North-east cattle, small ruminants, and food crops with cross-border livestock trade",north east cattle small ruminants and food crops with cross border livestock trade,NG2023L134,NG34,NG_LHZ_2023,2023.0,2902,3461,2,1.13,2.59,1.29,2.75,9.19,18.19,13.07,19.3
+Somalia,Guban Pastoral,guban pastoral,SO2015L101,SO01,SO_LHZ_2015,2015.0,13920,16569,1,3.07,4.76,3.0,4.96,22.97,32.43,21.57,33.18
+Somalia,West Golis Pastoral,west golis pastoral,SO2015L102,SO02,SO_LHZ_2015,2015.0,28652,34032,0,1.97,4.98,1.9,5.25,14.41,25.01,13.9,25.03
+Somalia,Togdheer Agropastoral,togdheer agropastoral,SO2015L104,SO04,SO_LHZ_2015,2015.0,4038,4788,1,0.91,1.63,0.92,1.63,7.12,12.33,7.22,12.32
+Somalia,Northern Inland Pastoral – Goats and Sheep,northern inland pastoral goats and sheep,SO2015L106,SO06,SO_LHZ_2015,2015.0,113655,134745,5,2.56,5.16,4.19,6.78,17.13,31.38,31.24,47.44
+Somalia,"East Golis – Frankincense, Goats, and Fishing",east golis frankincense goats and fishing,SO2015L107,SO07,SO_LHZ_2015,2015.0,44794,53359,2,4.07,6.79,4.01,6.54,22.06,47.82,26.82,47.29
+Somalia,Coastal Deeh Pastoral and Fishing,coastal deeh pastoral and fishing,SO2015L108,SO08,SO_LHZ_2015,2015.0,21245,25004,3,3.41,5.67,5.6,7.5,21.92,41.38,45.3,58.1
+Somalia,Addun Pastoral,addun pastoral,SO2015L109,SO09,SO_LHZ_2015,2015.0,51768,60901,1,2.71,4.27,4.15,5.62,19.48,27.58,30.14,39.05
+Somalia,Cowpea Belt Agropastoral,cowpea belt agropastoral,SO2015L110,SO10,SO_LHZ_2015,2015.0,25511,29930,0,2.79,4.17,4.71,6.37,22.3,32.59,39.1,48.04
+Somalia,"Southern Inland Pastoral – Camels, Goats, Sheep, and Cattle",southern inland pastoral camels goats sheep and cattle,SO2015L111,SO11,SO_LHZ_2015,2015.0,92932,108844,3,2.13,3.46,3.63,6.02,15.04,24.85,27.34,47.56
+Somalia,"Southern Agropastoral – Goats, Camels, and Sorghum",southern agropastoral goats camels and sorghum,SO2015L112,SO12,SO_LHZ_2015,2015.0,31740,37197,3,1.08,2.25,2.9,4.54,7.33,18.12,24.91,36.45
+Somalia,Riverine Pump Irrigation,riverine pump irrigation,SO2015L113,SO13,SO_LHZ_2015,2015.0,7822,9162,5,0.98,2.47,3.03,4.61,8.23,19.01,27.84,42.37
+Somalia,Riverine Gravity Irrigation,riverine gravity irrigation,SO2015L114,SO14,SO_LHZ_2015,2015.0,10189,11928,5,0.92,2.6,1.53,3.21,8.58,19.29,13.53,29.59
+Somalia,Sorghum High Potential Agropastoral,sorghum high potential agropastoral,SO2015L115,SO15,SO_LHZ_2015,2015.0,35055,41070,3,0.94,2.04,1.81,4.41,7.7,14.64,17.65,37.93
+Somalia,Bay Bakool Low Potential Agropastoral,bay bakool low potential agropastoral,SO2015L116,SO16,SO_LHZ_2015,2015.0,26639,31196,1,1.59,2.74,2.42,3.9,10.83,18.81,18.11,26.99
+Somalia,"Southern Rainfed Agropastoral – Maize, Cattle, and Goats",southern rainfed agropastoral maize cattle and goats,SO2015L117,SO17,SO_LHZ_2015,2015.0,11093,12985,2,2.39,3.72,1.89,3.73,19.13,27.83,15.52,30.14
+Somalia,Juba Pastoral –  Cattle and Goats,juba pastoral cattle and goats,SO2015L118,SO18,SO_LHZ_2015,2015.0,26703,31237,1,1.79,3.57,2.84,4.14,13.25,31.89,24.66,35.2
+Somalia,Urban,urban,SO2015L119,SO19,SO_LHZ_2015,2015.0,460,535,2,0.16,0.42,0.2,0.52,1.64,3.28,2.21,4.51
+Somalia,Hawd Pastoral,hawd pastoral,SO2015L105,SO05,SO_LHZ_2015,2015.0,78003,92059,4,1.83,3.07,2.43,3.82,12.67,22.04,18.26,28.54
+Somalia,Northwestern Agropastoral,northwestern agropastoral,SO2015L103,SO03,SO_LHZ_2015,2015.0,9007,10689,2,0.72,1.24,0.52,1.2,7.28,11.63,5.24,10.52
+Uganda,Urban,urban,UG2014L141,UG41,UG_LHZ_2013,2014.0,2185,2562,20,0.51,1.07,0.49,1.29,5.5,11.59,5.42,13.9
+Uganda,Southwestern Midland Banana Robusta Coffee Cattle Zone,southwestern midland banana robusta coffee cattle zone,UG2014L139,UG39,UG_LHZ_2013,2014.0,11241,13153,0,0.87,1.56,0.62,1.29,9.23,14.02,6.32,11.09
+Uganda,SW Rift Valley Tobacco Bean Millet Zone,sw rift valley tobacco bean millet zone,UG2014L140,UG40,UG_LHZ_2013,2014.0,514,599,0,1.53,2.56,1.4,2.36,15.86,18.65,14.48,16.07
+Uganda,Kazinga Channel Cassava Maize Fruit Vegetable Cotton Zone,kazinga channel cassava maize fruit vegetable cotton zone,UG2014L128,UG28,UG_LHZ_2013,2014.0,604,705,0,0.65,0.91,0.59,0.83,6.09,8.64,2.92,4.4
+Uganda,Rwenzori Midland Banana Fruit Vegetable Dairy Zone,rwenzori midland banana fruit vegetable dairy zone,UG2014L127,UG27,UG_LHZ_2013,2014.0,1243,1454,0,0.33,0.69,0.33,0.69,3.28,5.67,3.28,5.62
+Uganda,Western Rift Valley Cocoa Coffee Cassava Zone,western rift valley cocoa coffee cassava zone,UG2014L137,UG37,UG_LHZ_2013,2014.0,348,409,0,0.9,2.82,0.89,2.81,7.6,8.94,7.43,8.83
+Uganda,Rwenzori Lowland Maize Vegetable Banana Zone,rwenzori lowland maize vegetable banana zone,UG2014L129,UG29,UG_LHZ_2013,2014.0,840,982,0,0.59,1.99,0.58,1.97,5.3,7.7,5.21,7.74
+Uganda,Albertine Escarpment Cotton Cassava Zone,albertine escarpment cotton cassava zone,UG2014L112,UG12,UG_LHZ_2013,2014.0,617,726,0,0.68,3.54,0.68,3.55,6.91,9.83,6.91,10.02
+Uganda,Bwijanga Pakanyi SugarcaNE Maize Cassava Zone,bwijanga pakanyi sugarcane maize cassava zone,UG2014L113,UG13,UG_LHZ_2013,2014.0,3799,4443,0,0.51,1.5,0.52,1.52,5.06,7.55,5.05,7.88
+Uganda,Karuma Masindi Oyam Tobacco Maize Cassava Zone,karuma masindi oyam tobacco maize cassava zone,UG2014L114,UG14,UG_LHZ_2013,2014.0,2359,2767,1,0.57,0.92,0.85,1.05,5.79,9.74,8.78,10.25
+Uganda,Eastern Lowland Maize Beans Rice Zone,eastern lowland maize beans rice zone,UG2014L120,UG20,UG_LHZ_2013,2014.0,1936,2268,1,0.6,1.99,0.69,1.98,4.65,7.25,4.73,8.37
+Uganda,Eastern Central Lowland Cassava Sorghum and Groundnut Zone,eastern central lowland cassava sorghum and groundnut zone,UG2014L121,UG21,UG_LHZ_2013,2014.0,13930,16325,0,0.85,1.27,0.89,1.47,8.35,11.4,8.87,13.32
+Uganda,Mt Elgon Highland Irish Potato Cereal Zone,mt elgon highland irish potato cereal zone,UG2014L122,UG22,UG_LHZ_2013,2014.0,236,278,0,0.49,0.67,0.46,0.67,5.32,6.19,5.0,6.01
+Uganda,Southeastern Lowland Cassava Cereal Zone,southeastern lowland cassava cereal zone,UG2014L130,UG30,UG_LHZ_2013,2014.0,2220,2602,0,0.36,0.63,0.52,0.76,3.66,6.13,5.44,7.64
+Uganda,Eastern Lowland Rice Root Crop Zone,eastern lowland rice root crop zone,UG2014L131,UG31,UG_LHZ_2013,2014.0,505,594,0,0.63,0.87,0.63,0.87,6.93,8.57,6.93,8.68
+Uganda,Southeastern Lowland Cassava Maize Sweet Potato Zone,southeastern lowland cassava maize sweet potato zone,UG2014L132,UG32,UG_LHZ_2013,2014.0,1407,1648,0,0.57,0.78,0.57,0.78,6.42,7.94,6.49,8.0
+Uganda,Southeastern Maize Beans Robusta Coffee Zone,southeastern maize beans robusta coffee zone,UG2014L125,UG25,UG_LHZ_2013,2014.0,5787,6774,1,0.8,1.57,0.47,0.99,9.51,15.89,5.37,10.16
+Uganda,East Central Plantation Outgrower Zone,east central plantation outgrower zone,UG2014L133,UG33,UG_LHZ_2013,2014.0,1226,1434,0,0.33,0.5,0.23,0.43,3.86,5.68,2.66,4.45
+Uganda,Kayunga Masaka Pineapple Banana Robusta Coffee and Cassava Zone,kayunga masaka pineapple banana robusta coffee and cassava zone,UG2014L134,UG34,UG_LHZ_2013,2014.0,1626,1910,0,0.73,1.11,0.55,0.87,8.11,12.59,6.02,8.13
+Uganda,Midwest Central and Lake Victoria Crescent Robusta Coffee Banana Maize and Cattle Zone,midwest central and lake victoria crescent robusta coffee banana maize and cattle zone,UG2014L126,UG26,UG_LHZ_2013,2014.0,25173,29446,1,0.8,1.43,0.67,1.18,8.5,14.07,7.17,11.7
+Uganda,Kalangala Fishing Oil Palm Cassava Zone,kalangala fishing oil palm cassava zone,UG2014L136,UG36,UG_LHZ_2013,2014.0,991,1170,0,1.14,1.41,1.14,1.39,11.22,12.62,11.16,12.5
+Uganda,Lakeshore and Riverbank Fishing Zone,lakeshore and riverbank fishing zone,UG2014L124,UG24,UG_LHZ_2013,2014.0,6093,7094,0,1.0,2.18,0.96,2.03,9.29,18.08,9.15,16.05
+Uganda,Central and Southern Cattle Cassava Maize Zone,central and southern cattle cassava maize zone,UG2014L123,UG23,UG_LHZ_2013,2014.0,21628,25283,3,1.1,1.75,1.07,1.66,11.23,17.76,10.84,15.91
+Uganda,Kafu Muzizi Maize Upland Rice Cassava Zone,kafu muzizi maize upland rice cassava zone,UG2014L111,UG11,UG_LHZ_2013,2014.0,5088,5951,0,0.67,1.06,0.89,1.44,6.43,9.46,8.79,13.74
+Uganda,Albertine West Nile Lowland Cattle Zone,albertine west nile lowland cattle zone,UG2014L110,UG10,UG_LHZ_2013,2014.0,4180,4902,2,0.79,1.7,1.44,1.93,6.94,12.16,12.83,19.02
+Uganda,Rwenzori Midland Tea and Dairy Zone,rwenzori midland tea and dairy zone,UG2014L138,UG38,UG_LHZ_2013,2014.0,434,505,0,0.71,0.91,0.72,0.98,6.92,8.4,7.1,8.83
+Uganda,SW Highland Irish Potato Sorghum Vegetable Zone,sw highland irish potato sorghum vegetable zone,UG2014L135,UG35,UG_LHZ_2013,2014.0,2462,2888,0,0.52,1.29,0.51,1.28,4.63,9.04,4.63,8.95
+Uganda,Central Karamoja Sorghum and Livestock Zone,central karamoja sorghum and livestock zone,UG2014L105,UG05,UG_LHZ_2013,2014.0,14024,16425,1,1.0,2.88,1.82,3.81,5.68,10.02,14.32,21.2
+Uganda,North Eastern Karamoja Highland Apiculture and Potato Zone,north eastern karamoja highland apiculture and potato zone,UG2014L101,UG01,UG_LHZ_2013,2014.0,225,267,0,1.57,6.24,2.63,7.3,6.7,11.21,19.9,24.6
+Uganda,South Eastern Karamoja Cattle Maize Zone,south eastern karamoja cattle maize zone,UG2014L103,UG03,UG_LHZ_2013,2014.0,1663,1950,1,1.01,1.89,1.98,3.06,6.99,10.4,16.48,22.68
+Uganda,Karamoja Mountain and Foot Hills Maize and Cattle Zone,karamoja mountain and foot hills maize and cattle zone,UG2014L104,UG04,UG_LHZ_2013,2014.0,1814,2122,0,1.36,3.25,2.57,4.44,5.99,8.62,19.72,26.15
+Uganda,Western Karamoja Mixed Crop Farming Zone,western karamoja mixed crop farming zone,UG2014L102,UG02,UG_LHZ_2013,2014.0,7293,8518,4,0.97,2.34,1.7,2.93,5.8,9.63,12.74,18.6
+Uganda,National Park,national park,UG2014L142,UG42,UG_LHZ_2013,2014.0,10196,11927,0,1.78,3.75,2.03,4.39,9.57,16.71,12.07,22.9
+Uganda,NE Sorghum Simsim Maize Livestock Zone,ne sorghum simsim maize livestock zone,UG2014L106,UG06,UG_LHZ_2013,2014.0,694,818,0,0.96,2.28,1.87,3.13,5.77,8.4,16.36,19.04
+Uganda,North Kitgum Gulu Amuru West Nile Simsim Sorghum Livestock Zone,north kitgum gulu amuru west nile simsim sorghum livestock zone,UG2014L107,UG07,UG_LHZ_2013,2014.0,15295,17930,4,0.8,1.88,1.26,2.11,7.53,15.5,12.97,17.94
+Uganda,Palabek Tobacco Simsim Sorghum and Cattle Zone,palabek tobacco simsim sorghum and cattle zone,UG2014L108,UG08,UG_LHZ_2013,2014.0,1420,1657,1,0.56,0.86,0.77,1.16,4.72,6.8,8.11,11.09
+Uganda,South Kitgum Pader Abim Simsim Groundnuts Sorghum Cattle Zone,south kitgum pader abim simsim groundnuts sorghum cattle zone,UG2014L109,UG09,UG_LHZ_2013,2014.0,9140,10705,0,1.13,1.53,1.07,1.5,11.28,14.94,9.89,15.29
+Uganda,West Nile Tobacco Cassava Sorghum Zone,west nile tobacco cassava sorghum zone,UG2014L115,UG15,UG_LHZ_2013,2014.0,4158,4861,1,0.39,0.87,0.43,0.86,4.02,8.26,4.58,8.8
+Uganda,Rwenzori Mt.Elgon West Nile Arabica Coffee Banana Zone,rwenzori mt elgon west nile arabica coffee banana zone,UG2014L116,UG16,UG_LHZ_2013,2014.0,3301,3873,0,0.55,1.43,0.59,1.43,5.35,13.2,5.85,13.16
+Uganda,Amuru Gulu Rice Groundnut Sorghum Livestock Zone,amuru gulu rice groundnut sorghum livestock zone,UG2014L117,UG17,UG_LHZ_2013,2014.0,5988,7020,0,0.87,1.75,0.92,1.96,8.42,13.22,9.19,16.21
+Uganda,Southwest Gulu Beans Groundnuts Shoat Cassava,southwest gulu beans groundnuts shoat cassava,UG2014L118,UG18,UG_LHZ_2013,2014.0,2921,3422,0,0.66,1.14,0.65,1.23,7.07,10.22,7.09,10.74
+Uganda,Mid North Simsim Maize Cassava Zone,mid north simsim maize cassava zone,UG2014L119,UG19,UG_LHZ_2013,2014.0,9846,11529,0,0.81,1.27,0.73,1.42,7.78,11.83,6.81,14.54
