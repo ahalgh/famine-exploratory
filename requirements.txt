@@ -4,3 +4,5 @@ matplotlib
 geopandas
 nbformat
 nbconvert
+rasterio
+scikit-image

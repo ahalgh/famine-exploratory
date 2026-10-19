@@ -170,6 +170,79 @@ def load_regions(country: str | None = None, layer: str | None = None):
     return gdf
 
 
+LZ_SHAPEFILE = "regions/livelihood_zones/feature_livelihood_zone_current_Livelihood Zone.shp"
+
+# FEWS/ML zone name (2018 Nigeria map) -> name in the current (2023-revised) shapefile.
+# These three zones were renamed and may have been redrawn in 2023; 2019 Nigeria reports use the
+# 2014 map, whose zones are not in the current shapefile at all.
+NIGERIA_ZONE_RENAMES = {
+    "Central sorghum, maize, groundnuts, cowpeas, and sesame": "Central sorghum, maize, groundnut, cowpeas, sesame and rice",
+    "Cocoa dominant with oil palm, cereals, and tubers": "Cocoa dominant with oil palms, cereals, and tubers",
+    "Chad Basin: masakwa flood-recession sorghum and wheat": "Masakwa flood-recession sorghum, cowpea, groundnut, and onion",
+}
+
+
+def zone_key(country: str, region: str) -> str:
+    """Join key from a FEWS/ML (country, region) to the livelihood-zone shapefile."""
+    if country == "Nigeria":
+        region = NIGERIA_ZONE_RENAMES.get(region, region)
+    return norm_region(region)
+
+
+def load_livelihood_zones(country: str | None = None):
+    """Current FEWS NET livelihood zones (one shapefile, all countries) for COUNTRIES, EPSG:4326.
+
+    The shapefile ships without a .prj; coordinates are geographic degrees. Adds `zone_key`, which
+    matches `zone_key(country, region)` for FEWS/ML rows (Kenya, Malawi, Uganda: 100%; Nigeria
+    2020+: 100% via NIGERIA_ZONE_RENAMES; Nigeria 2019: no match, older map).
+    """
+    import geopandas as gpd
+
+    gdf = gpd.read_file(DATA_DIR / LZ_SHAPEFILE).set_crs(4326, allow_override=True)
+    gdf = gdf[gdf["country"].isin([country] if country else COUNTRIES)]
+    gdf = gdf[["country", "FNID", "LZCODE", "LZNAMEEN", "EFF_YEAR", "layer_name", "geometry"]].rename(
+        columns={"FNID": "fnid", "LZCODE": "lzcode", "LZNAMEEN": "zone", "EFF_YEAR": "eff_year", "layer_name": "map_version"})
+    gdf["zone_key"] = gdf["zone"].map(norm_region)
+    return gdf.reset_index(drop=True)
+
+
+# --------------------------------------------------------------------------- WFP (HDX)
+
+WFP_ISO3 = {"Guatemala": "gtm", "Kenya": "ken", "Malawi": "mwi", "Nigeria": "nga", "Somalia": "som", "Uganda": "uga"}
+
+
+@lru_cache
+def load_wfp_prices() -> pd.DataFrame:
+    """WFP VAM market prices from HDX (external/wfp/wfp_food_prices_<iso3>.csv), all COUNTRIES.
+
+    `priceflag`: 'actual' = a single observed price; 'aggregate' = WFP's monthly average of that
+    market's own observations (most data since 2019 carries this flag). Both are market-level.
+    """
+    frames = []
+    for country, iso in WFP_ISO3.items():
+        df = pd.read_csv(DATA_DIR / "external/wfp" / f"wfp_food_prices_{iso}.csv", parse_dates=["date"], low_memory=False)
+        frames.append(df.assign(country=country))
+    df = pd.concat(frames, ignore_index=True)
+    df = df[df["market_id"].notna()].astype({"market_id": int})
+    for c in ["country", "admin1", "admin2", "category", "commodity", "unit", "priceflag", "pricetype", "currency"]:
+        df[c] = df[c].astype("category")
+    return df
+
+
+@lru_cache
+def load_wfp_markets(active_since: str | None = "2019-01-01") -> pd.DataFrame:
+    """WFP markets with coordinates; optionally only those with at least one price since `active_since`."""
+    frames = [pd.read_csv(DATA_DIR / "external/wfp" / f"wfp_markets_{iso}.csv").assign(country=c)
+              for c, iso in WFP_ISO3.items()]
+    m = pd.concat(frames, ignore_index=True).dropna(subset=["latitude", "longitude"])
+    m = m[~((m["latitude"] == 0) & (m["longitude"] == 0))].astype({"market_id": int})
+    if active_since:
+        p = load_wfp_prices()
+        active = set(p.loc[p["date"] >= active_since, "market_id"])
+        m = m[m["market_id"].isin(active)]
+    return m.reset_index(drop=True)
+
+
 # --------------------------------------------------------------------------- joins
 
 def ml_vs_observed(horizon: str = "ml1") -> pd.DataFrame:

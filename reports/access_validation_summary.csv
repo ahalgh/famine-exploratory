@@ -1,0 +1,16 @@
+country,staple,markets,pairs,test,mantel_r,p
+Kenya,Beans (dry) | KG | Retail,15,69,co-movement vs log travel time,-0.471,0.001
+Kenya,Beans (dry) | KG | Retail,15,69,co-movement vs log distance,-0.443,0.001
+Kenya,Beans (dry) | KG | Retail,15,69,co-movement vs travel time beyond distance,-0.222,0.065
+Malawi,Beans | KG | Retail,96,4055,co-movement vs log travel time,-0.159,0.001
+Malawi,Beans | KG | Retail,96,4055,co-movement vs log distance,-0.157,0.001
+Malawi,Beans | KG | Retail,96,4055,co-movement vs travel time beyond distance,-0.031,0.064
+Nigeria,Millet | 2.6 KG | Retail,44,584,co-movement vs log travel time,-0.233,0.001
+Nigeria,Millet | 2.6 KG | Retail,44,584,co-movement vs log distance,-0.231,0.001
+Nigeria,Millet | 2.6 KG | Retail,44,584,co-movement vs travel time beyond distance,-0.049,0.29
+Somalia,Maize (white) | KG | Retail,38,635,co-movement vs log travel time,-0.145,0.009
+Somalia,Maize (white) | KG | Retail,38,635,co-movement vs log distance,-0.178,0.003
+Somalia,Maize (white) | KG | Retail,38,635,co-movement vs travel time beyond distance,0.112,0.007
+Uganda,Beans | KG | Retail,41,809,co-movement vs log travel time,-0.219,0.001
+Uganda,Beans | KG | Retail,41,809,co-movement vs log distance,-0.225,0.001
+Uganda,Beans | KG | Retail,41,809,co-movement vs travel time beyond distance,0.003,0.931

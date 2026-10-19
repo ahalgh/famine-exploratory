@@ -165,6 +165,65 @@ EPSG:4326 polygons and multipolygons. Three layers per country.
 (316/323 via `region_key`). SMART/soil-moisture region ids (`kenya_mandera2`, `somalia_05`, …) are custom
 areas and are not the same as geojson `region_id`.
 
+### `regions/livelihood_zones/…current_Livelihood Zone.shp` — FEWS NET livelihood zones · `load_livelihood_zones(country)`
+
+The current zone map for every FEWS NET country (926 zones, 41 countries), downloaded from fews.net. It ships without a `.prj` file; the coordinates are in degrees (read as EPSG:4326). Columns kept by the loader: `country`, `fnid`, `lzcode`, `zone` (English name), `eff_year`, `map_version` (e.g. `KE_LHZ_2011`), plus a derived `zone_key`.
+
+| country | map version | zones | FEWS/ML rows that join |
+|---|---|---|---|
+| Kenya | KE_LHZ_2011 | 24 | 100% |
+| Malawi | MW_LHZ_2015 | 19 | 100% |
+| Uganda | UG_LHZ_2013 | 42 (incl. "National Park") | 100% |
+| Nigeria | NG_LHZ_2023 (22 zones from 2018, 14 revised in 2023) | 36 | 100% from 2020 on via `NIGERIA_ZONE_RENAMES`; **0% for 2019** (2014 map) |
+| Guatemala | GT_LHZ_2016 | 13 | n/a (our Guatemala IPC data is by district) |
+| Somalia | SO_LHZ_2015 | 19 | n/a (no IPC data) |
+
+Join FEWS/ML rows with `zone_key(country, region)`. The three renamed Nigeria zones may also have been redrawn in 2023, so their current shapes may not exactly match the areas assessed in 2020–2023.
+
+---
+
+## External sources (`data/external/`, git-ignored)
+
+### `external/wfp/` — WFP market prices (HDX, CC BY-IGO) · `load_wfp_prices()`, `load_wfp_markets()`
+
+Per-country `wfp_food_prices_<iso3>.csv` and `wfp_markets_<iso3>.csv` from the HDX datasets "WFP food prices for <country>".
+
+| column | meaning |
+|---|---|
+| `date`, `market_id`, `market`, `admin1`, `admin2`, `latitude`, `longitude` | monthly observation at a geolocated market |
+| `category`, `commodity`, `commodity_id`, `unit`, `pricetype` (Retail/Wholesale), `currency`, `price`, `usdprice` | price |
+| `priceflag` | `actual` = a single observation; `aggregate` = WFP's monthly average of that market's own observations. Most data since 2019 is `aggregate`; both are market-level |
+
+972 markets have coordinates. Markets with at least one price since 2019: Kenya 225, Malawi 128, Nigeria 65, Somalia 44, Uganda 42, Guatemala 3. **Market placement follows WFP operations**: zones with more WFP markets have *higher* observed IPC (Kenya ρ = +0.47, Nigeria +0.43), so market density and travel time to a WFP market partly measure humanitarian presence, not access.
+
+### `external/map_accessibility/` — MAP 2019 friction surfaces · `famine.access.CostGrid`
+
+`friction_2019_{motorized,walking}_{africa,guatemala}.tif`: minutes per metre, 30 arc-seconds, EPSG:4326. Downloaded from MAP's GeoServer (layers `Accessibility__202001_Global_{Motorized,Walking_Only}_Friction_Surface`) for two boxes: Africa (2–52°E, 18°S–15°N) and Guatemala (93–88°W, 13–18.5°N). **Oceans are given a speed (~19 km/h)**, so travel is masked to the country's land; inland lakes are kept.
+
+### `external/geonames/<CC>.txt` — GeoNames gazetteer (CC-BY)
+
+Used for cities with population ≥ 50,000 (accessibility targets) and for geocoding the FAO markets.
+
+---
+
+## Derived
+
+### `reports/zone_access_2019.csv` — travel time per livelihood zone · `famine.access.load_zone_access()`, `attach_zone_access(df)`
+
+One row per livelihood zone (153). Built by `scripts/compute_accessibility.py`. Travel is within the country only.
+
+| column | meaning |
+|---|---|
+| `country`, `zone`, `zone_key`, `fnid`, `lzcode`, `map_version`, `eff_year`, `area_km2`, `pixels` | zone identity |
+| `wfp_markets_in_zone` | WFP markets active since 2019 that fall inside the zone |
+| `{market,city}_{motorized,walking}_{median,p90}_h` | travel time in hours from the zone's pixels to the nearest WFP market or the nearest city of 50k+ (median and 90th percentile, weighted by area) |
+
+Use the times to rank zones, not as literal hours: nominal road speeds make absolute times optimistic. Prefer the `city_*` columns; the `market_*` columns inherit WFP's market-placement bias.
+
+### `reports/access_validation_{pairs,summary}.csv` — friction surface vs price co-movement
+
+Built by `scripts/validate_access_prices.py`. Market pairs in each country, with motorized travel time, straight-line distance and the correlation of local monthly staple-price changes; Mantel tests. Result: travel time predicts co-movement (r ≈ −0.15 to −0.47, p < 0.01 in all five countries) but **no better than straight-line distance**, and adds little or nothing beyond it.
+
 ---
 
 ## Join keys at a glance
@@ -177,3 +236,5 @@ areas and are not the same as geojson `region_id`.
 | smart ↔ prices | `country` + the staple series listed above, by month |
 | anything ↔ conflict / cpi | `country` + month / year |
 | fews/ml (Guatemala) ↔ regions | (`country`, `region_key`) on `layer == "districts"` |
+| fews/ml ↔ livelihood zones, zone access | (`country`, `zone_key(country, region)`) |
+| WFP prices ↔ WFP markets | `market_id` |
