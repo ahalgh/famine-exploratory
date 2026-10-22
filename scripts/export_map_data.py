@@ -11,6 +11,8 @@ Outputs
     access/*.png        1 km travel-time surfaces per country, reprojected to Web Mercator, with
                         minutes packed into R (high byte) and G (low byte), A=0 where no data;
     access/index.json   the corner coordinates of each image
+    history.json        per zone: every observed IPC report and every ML1/ML2 projection; per
+                        WFP market: a real staple-price index; per country: monthly conflict
     zones.geojson       FEWS NET livelihood zones (simplified) + travel-time access
                         (reports/zone_access_2019.csv) + observed IPC summary since 2020
     coverage.json       monthly row counts per country x dataset, plus dataset metadata
@@ -128,6 +130,90 @@ def export_fao_areas(regions):
     write_geojson(areas, "fao_areas", SIMPLIFY["admin1"])
 
 
+STAPLES = r"maize|sorghum|millet|rice|beans|cassava|wheat"
+
+
+def export_history():
+    """Time series for the zone view: IPC reports and projections, market prices, conflict."""
+    import numpy as np
+
+    lz = fm.load_livelihood_zones()
+    key_to_fnid = {(c, k): f for c, k, f in zip(lz["country"], lz["zone_key"], lz["fnid"])}
+    month = lambda d: d.strftime("%Y-%m")
+
+    def fnids(df):
+        return [key_to_fnid.get((str(c), fm.zone_key(str(c), r))) for c, r in zip(df["country"], df["region"])]
+
+    zones = {f: {"obs": [], "ml1": [], "ml2": [], "markets": []} for f in lz["fnid"]}
+    obs = fm.load_fews()
+    obs = obs[obs["area_type"] == "livelihood zone"].assign(fnid=lambda d: fnids(d)).dropna(subset=["fnid"])
+    for r in obs.sort_values("date").itertuples():
+        zones[r.fnid]["obs"].append([month(r.date), int(r.ipc)])
+    for h in ("ml1", "ml2"):
+        ml = fm.load_ml(h)
+        ml = ml[ml["area_type"] == "livelihood zone"].assign(fnid=lambda d: fnids(d)).dropna(subset=["fnid"])
+        for r in ml.sort_values("issued").itertuples():
+            zones[r.fnid][h].append([month(r.issued), month(r.valid_from), month(r.valid_until), int(r.predicted_ipc)])
+
+    # report dates per country (zone-level reports only)
+    report_dates = {c: sorted({month(d) for d in g["date"]}) for c, g in obs.groupby(obs["country"].astype(str))}
+
+    # WFP markets: one staple series each, as a real price index (nominal / annual CPI, mean = 100)
+    prices = fm.load_wfp_prices()
+    prices = prices[(prices["date"] >= "2019-01-01") & prices["commodity"].astype(str).str.contains(STAPLES, case=False)
+                    & ~prices["priceflag"].astype(str).str.contains("forecast")].copy()
+    prices["month"] = prices["date"].dt.to_period("M")
+    prices["series"] = prices["commodity"].astype(str) + " | " + prices["unit"].astype(str) + " | " + prices["pricetype"].astype(str)
+    cpi = fm.load_cpi()
+    cpi_by = {(c, y): v for c, y, v in zip(cpi["country"].astype(str), cpi["year"], cpi["cpi"])}
+    cpi_last = cpi.groupby(cpi["country"].astype(str))["year"].max().to_dict()
+    markets = fm.load_wfp_markets()
+    out_markets = {}
+    for mid, g in prices.groupby("market_id"):
+        months_per = g.groupby("series")["month"].nunique()
+        if months_per.max() < 6:
+            continue
+        series = months_per.idxmax()
+        s_ = g[g["series"] == series].groupby("month")["price"].median().sort_index()
+        country = str(g["country"].iloc[0])
+        real = country in cpi_last
+        if real:
+            defl = [cpi_by.get((country, min(m.year, cpi_last[country]))) for m in s_.index]
+            s_ = s_ / np.array(defl, dtype=float)
+        idx = 100 * s_ / s_.mean()
+        out_markets[int(mid)] = {
+            "name": str(g["market"].iloc[0]), "country": country, "series": series.replace(" | ", ", "),
+            "real": real, "points": [[str(m), round(float(v), 1)] for m, v in idx.items()],
+        }
+
+    # attach markets to zones: those inside the zone, else the two nearest in the same country
+    mk = markets[markets["market_id"].isin(out_markets)]
+    mk = gpd.GeoDataFrame(mk, geometry=gpd.points_from_xy(mk["longitude"], mk["latitude"]), crs=4326).to_crs(6933)
+    zz = lz.to_crs(6933)
+    inside = gpd.sjoin(mk[["market_id", "geometry"]], zz[["fnid", "geometry"]], predicate="within")
+    for z in zz.itertuples():
+        ids = inside.loc[inside["fnid"] == z.fnid, "market_id"].tolist()
+        if ids:
+            picks = [(int(i), 0.0) for i in ids[:4]]
+        else:
+            same = mk[mk["country"] == z.country]
+            if same.empty:
+                continue
+            d = same.distance(z.geometry.representative_point()) / 1000
+            picks = [(int(same.loc[i, "market_id"]), round(float(d[i]))) for i in d.nsmallest(2).index]
+        zones[z.fnid]["markets"] = [{"id": i, "km": km} for i, km in picks]
+
+    cf = fm.load_conflict("monthly")
+    conflict = {str(c): [[month(r.date), int(r.political_violence_events), int(r.political_violence_fatalities)]
+                         for r in g.sort_values("date").itertuples()] for c, g in cf.groupby(cf["country"].astype(str))}
+
+    payload = {"reportDates": report_dates, "zones": zones, "markets": out_markets, "conflict": conflict,
+               "cpiLastYear": cpi_last}
+    path = OUT / "history.json"
+    path.write_text(json.dumps(payload, separators=(",", ":")))
+    print(f"  history.json  {len(zones)} zones, {len(out_markets)} markets  {path.stat().st_size / 1e6:.2f} MB")
+
+
 def coverage():
     months = pd.period_range("2018-12", "2026-09", freq="M")
     out = {"months": [str(m) for m in months], "countries": fm.COUNTRIES, "datasets": [], "counts": {}}
@@ -224,6 +310,7 @@ def main():
     write_geojson(zones.drop(columns=["zone_key"]), "zones", SIMPLIFY["zones"])
 
     export_fao_areas(regions)
+    export_history()
     export_access_rasters()
 
     (OUT / "coverage.json").write_text(json.dumps(cov))

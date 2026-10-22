@@ -4,7 +4,7 @@
 
 export const ZONE_METRICS = {
   ipc_mean: {
-    tab: 'Mean IPC',
+    tab: 'IPC phase',
     list: 'Zones by mean IPC',
     label: 'Mean observed IPC phase since 2020',
     unit: '',
@@ -105,8 +105,9 @@ export function zoneColor(key, css) {
   const m = ZONE_METRICS[key];
   const missing = css('--ramp-0');
   if (m.ipc) {
-    return ['case', ['==', ['get', key], null], missing,
-      ['interpolate', ['linear'], ['get', key], 1, css('--ipc-1'), 2, css('--ipc-2'), 3, css('--ipc-3'), 4, css('--ipc-4')]];
+    // the IPC fill reads `ipc_fill`: the phase in the selected report, or the mean since 2020
+    return ['case', ['==', ['get', 'ipc_fill'], null], missing,
+      ['interpolate', ['linear'], ['get', 'ipc_fill'], 1, css('--ipc-1'), 2, css('--ipc-2'), 3, css('--ipc-3'), 4, css('--ipc-4')]];
   }
   const colors = RAMP.map(css);
   const step = ['step', ['get', key], colors[0]];

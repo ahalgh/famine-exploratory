@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
   import MapView from './lib/MapView.svelte';
   import CoverageView from './lib/CoverageView.svelte';
+  import TimeBar from './lib/TimeBar.svelte';
+  import ZoneHistory from './lib/ZoneHistory.svelte';
   import { ZONE_METRICS, METRIC_KEYS, colorCss, fmt, isMissing, legendSwatches, spearman } from './lib/metrics.js';
 
   const COUNTRIES = ['Kenya', 'Malawi', 'Nigeria', 'Uganda', 'Somalia', 'Guatemala'];
@@ -21,6 +23,8 @@
   let faoCount = $state(null);
   let faoAreas = $state([]);
   let loadError = $state(null);
+  let history = $state(null);
+  let asOf = $state(null); // a report month 'YYYY-MM', 'mean', or null for the latest report
 
   // theme: auto follows the system; light/dark pin it
   let theme = $state('auto');
@@ -36,6 +40,7 @@
     if (['zones', 'coverage'].includes(h.get('view'))) view = h.get('view');
     if (['auto', 'light', 'dark'].includes(h.get('theme'))) theme = h.get('theme');
     if (h.get('zone')) selectedZone = h.get('zone');
+    if (h.get('asof')) asOf = h.get('asof');
   }
 
   onMount(() => {
@@ -59,12 +64,14 @@
         faoAreas = fa.features.map((f) => f.properties);
       })
       .catch((e) => (loadError = String(e)));
+    fetch('/data/history.json').then((r) => r.json()).then((h) => (history = h)).catch(() => {});
     return () => { mq.removeEventListener('change', onChange); removeEventListener('hashchange', readHash); };
   });
 
   $effect(() => {
     const h = new URLSearchParams({ view, country, measure: zoneMetric });
     if (selectedZone) h.set('zone', selectedZone);
+    if (asOf) h.set('asof', asOf);
     if (theme !== 'auto') h.set('theme', theme);
     const next = `#${h}`;
     if (location.hash !== next) history.replaceState(null, '', next);
@@ -78,12 +85,55 @@
 
   // ---- derived data ------------------------------------------------------------------------
   const metric = $derived(ZONE_METRICS[zoneMetric]);
-  const zones = $derived(zonesGeo ? zonesGeo.features.map((f) => f.properties).filter((p) => p.country === country) : []);
+
+  // ---- time: which FEWS report the IPC view shows ----------------------------------------------
+  const monthLabel = (m) => new Date(`${m}-15`).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+  const reportDates = $derived(history?.reportDates[country] ?? []);
+  const shownDate = $derived(
+    asOf === 'mean' ? 'mean' : asOf && reportDates.includes(asOf) ? asOf : reportDates.at(-1) ?? 'mean',
+  );
+  // the phase in force at a month: the latest report at or before it, if no older than 5 months
+  function phaseAt(fnid, m) {
+    const obs = history?.zones[fnid]?.obs;
+    if (!obs) return null;
+    let best = null;
+    for (const [om, p] of obs) if (om <= m) best = [om, p];
+    if (!best) return null;
+    const gap = (Number(m.slice(0, 4)) - Number(best[0].slice(0, 4))) * 12 + Number(m.slice(5)) - Number(best[0].slice(5));
+    return gap <= 5 ? best[1] : null;
+  }
+  const zonesForMap = $derived.by(() => {
+    if (!zonesGeo) return null;
+    const label = shownDate === 'mean' ? 'Mean IPC since 2020' : `IPC phase, ${monthLabel(shownDate)}`;
+    return {
+      ...zonesGeo,
+      features: zonesGeo.features.map((f) => ({
+        ...f,
+        properties: {
+          ...f.properties,
+          ipc_fill: shownDate === 'mean' ? f.properties.ipc_mean : phaseAt(f.properties.fnid, shownDate),
+          ipc_label: label,
+        },
+      })),
+    };
+  });
+  const sharesByDate = $derived.by(() => {
+    const out = {};
+    if (!history) return out;
+    const ids = zonesGeo?.features.filter((f) => f.properties.country === country).map((f) => f.properties.fnid) ?? [];
+    for (const d of reportDates) {
+      const ps = ids.map((id) => history.zones[id]?.obs.find(([m]) => m === d)?.[1]).filter((p) => p !== undefined);
+      out[d] = ps.length ? ps.filter((p) => p >= 3).length / ps.length : 0;
+    }
+    return out;
+  });
+  const zones = $derived(zonesForMap ? zonesForMap.features.map((f) => f.properties).filter((p) => p.country === country) : []);
+  const valueOf = (z) => (metric.ipc ? z.ipc_fill : z[zoneMetric]);
   const ranked = $derived(
     [...zones].sort((a, b) => {
-      const va = isMissing(a[zoneMetric]) ? -Infinity : Number(a[zoneMetric]);
-      const vb = isMissing(b[zoneMetric]) ? -Infinity : Number(b[zoneMetric]);
-      return vb - va;
+      const va = isMissing(valueOf(a)) ? -Infinity : Number(valueOf(a));
+      const vb = isMissing(valueOf(b)) ? -Infinity : Number(valueOf(b));
+      return vb - va || (b.ipc_mean ?? 0) - (a.ipc_mean ?? 0);
     }),
   );
   const zone = $derived(selectedZone ? zones.find((z) => z.fnid === selectedZone) ?? null : null);
@@ -93,6 +143,19 @@
   const finding = $derived.by(() => {
     if (!zones.length) return '';
     const road = ZONE_METRICS.city_motorized_median_h;
+    if (hasIpc && metric.ipc && shownDate !== 'mean') {
+      const at = (d) => zones.map((z) => phaseAt(z.fnid, d)).filter((p) => p !== null);
+      const now = at(shownDate);
+      const n3 = now.filter((p) => p >= 3).length;
+      const i = reportDates.indexOf(shownDate);
+      let s = `In the ${monthLabel(shownDate)} report, ${n3} of ${now.length} zones were in phase 3 or worse`;
+      if (i > 0) {
+        const before = at(reportDates[i - 1]).filter((p) => p >= 3).length;
+        s += before === n3 ? `, the same as in ${monthLabel(reportDates[i - 1])}` : `, ${n3 > before ? 'up' : 'down'} from ${before} in ${monthLabel(reportDates[i - 1])}`;
+      }
+      const worst = [...zones].filter((z) => z.ipc_fill !== null).sort((a, b) => b.ipc_fill - a.ipc_fill)[0];
+      return `${s}.${worst ? ` Highest: ${worst.zone} (phase ${worst.ipc_fill}).` : ''}`;
+    }
     if (hasIpc) {
       const top = zones.filter((z) => !isMissing(z.ipc_mean)).sort((a, b) => b.ipc_mean - a.ipc_mean)[0];
       let s = `${top.zone} has the highest mean IPC since 2020 (${Number(top.ipc_mean).toFixed(2)}), ${fmt(top.city_motorized_median_h, road)} by road from a city of 50,000+.`;
@@ -110,7 +173,7 @@
 
   function selectZone(fnid, zoneCountry) {
     selectedMarket = null;
-    if (zoneCountry && zoneCountry !== country) country = zoneCountry; // a click on a neighbour's zone moves there
+    if (zoneCountry && zoneCountry !== country) { country = zoneCountry; asOf = null; } // a click on a neighbour's zone moves there
     selectedZone = fnid === selectedZone ? null : fnid;
   }
   function selectMarket(p) {
@@ -119,6 +182,7 @@
   }
   function setCountry(c) {
     country = c;
+    asOf = null;
     selectedZone = null;
     selectedMarket = null;
   }
@@ -238,21 +302,22 @@
         </div>
 
         <div class="body">
+          <div class="map-col">
           <div class="map-card">
-            {#if zonesGeo}
-              <MapView zones={zonesGeo} {layers} {ipcSource} {zoneMetric} {country} {selectedZone} {dark}
+            {#if zonesForMap}
+              <MapView zones={zonesForMap} {layers} {ipcSource} {zoneMetric} {country} {selectedZone} {dark}
                 selectedFaoArea={selectedMarket?.layer === 'fao-area' ? selectedMarket.region : null}
                 onselectzone={selectZone} onselectmarket={selectMarket} />
             {/if}
             <div class="legend" aria-label="Legend">
-              <p class="legend-title">{metric.label} <span class="muted">({metric.raster ? '1 km cells' : 'one value per zone'})</span></p>
+              <p class="legend-title">{metric.ipc ? (shownDate === 'mean' ? metric.label : `IPC phase in the ${monthLabel(shownDate)} report`) : metric.label} <span class="muted">({metric.raster ? '1 km cells, 2019' : 'one value per zone'})</span></p>
               <div class="swatches">
                 {#each legendSwatches(metric) as s}
                   <span class="sw"><i style="background: var({s.var})"></i>{s.label}</span>
                 {/each}
                 <span class="sw"><i style="background: var(--ramp-0)"></i>No data</span>
               </div>
-              <p class="legend-note">{metric.note}</p>
+              <p class="legend-note">{metric.ipc && shownDate !== 'mean' ? 'FEWS NET current situation. Zones without a report within 5 months show as no data.' : metric.note}</p>
               <div class="keys">
                 {#if layers.fao}<span class="key"><i class="k-town"></i>FAO prices for a town</span>
                 <span class="key"><i class="k-area"></i>FAO prices for an area</span>{/if}
@@ -260,6 +325,13 @@
                 {#if layers.zoneLines}<span class="key"><i class="k-zone"></i>Livelihood zone</span>{/if}
               </div>
             </div>
+          </div>
+
+          {#if metric.ipc && reportDates.length}
+            <TimeBar dates={reportDates} shares={sharesByDate} asOf={shownDate} onchange={(d) => (asOf = d)} />
+          {:else if metric.raster}
+            <p class="static-note">Travel time is a single 2019 surface; it doesn't change with the report date.</p>
+          {/if}
           </div>
 
           <aside class="side" aria-label="Zones">
@@ -293,6 +365,7 @@
                     <tr><td>WFP market, on foot</td><td class="num">{h(zone.market_walking_median_h, 0)}</td><td class="num">{h(zone.market_walking_p90_h, 0)}</td></tr>
                   </tbody>
                 </table>
+                {#if history}<ZoneHistory {zone} {history} {country} asOf={shownDate} />{/if}
               </article>
             {:else if selectedMarket}
               <article class="detail" aria-labelledby="market-name">
@@ -329,7 +402,7 @@
             {/if}
 
             <div class="list-head">
-              <h2>{metric.list}</h2>
+              <h2>{metric.ipc && shownDate !== 'mean' ? `Zones by IPC phase, ${monthLabel(shownDate)}` : metric.list}</h2>
               <span class="muted num">{zones.length}</span>
             </div>
             {#if nationalFao && layers.fao}
@@ -344,13 +417,22 @@
                 {#each ranked as z (z.fnid)}
                   <li>
                     <button class="row" class:selected={z.fnid === selectedZone} aria-pressed={z.fnid === selectedZone} onclick={() => selectZone(z.fnid)}>
-                      <i class="dot" style="background: {colorCss(zoneMetric, z[zoneMetric])}"></i>
+                      <i class="dot" style="background: {colorCss(zoneMetric, valueOf(z))}"></i>
                       <span class="zone-name">{z.zone}</span>
-                      <span class="value num">{fmt(z[zoneMetric], metric)}</span>
+                      <span class="value num">{metric.ipc ? (isMissing(z.ipc_fill) ? '—' : shownDate === 'mean' ? Number(z.ipc_fill).toFixed(2) : `Phase ${z.ipc_fill}`) : fmt(z[zoneMetric], metric)}</span>
                       <span class="sub muted">
-                        {#if metric.ipc}{fmt(z.city_motorized_median_h, ZONE_METRICS.city_motorized_median_h)} to a city by road (median)
+                        {#if metric.ipc}{shownDate === 'mean' ? '' : `Mean ${isMissing(z.ipc_mean) ? '—' : Number(z.ipc_mean).toFixed(2)} · `}{fmt(z.city_motorized_median_h, ZONE_METRICS.city_motorized_median_h)} to a city by road
                         {:else}Median; 90th pct {fmt(z[zoneMetric.replace('_median_', '_p90_')], metric)} · {isMissing(z.ipc_mean) ? 'no IPC' : `IPC ${Number(z.ipc_mean).toFixed(2)}`}{/if}
                       </span>
+                      {#if history && reportDates.length}
+                        {@const obs = new Map(history.zones[z.fnid]?.obs ?? [])}
+                        <span class="strip" aria-label="IPC phase in each report">
+                          {#each reportDates as d}
+                            <i class:now={metric.ipc && d === shownDate} style="background: {obs.has(d) ? colorCss('ipc_mean', obs.get(d)) : 'var(--rule)'}"
+                              title="{monthLabel(d)}: {obs.has(d) ? `phase ${obs.get(d)}` : 'no report'}"></i>
+                          {/each}
+                        </span>
+                      {/if}
                     </button>
                   </li>
                 {/each}
@@ -432,6 +514,11 @@
   input[type='checkbox'] { accent-color: var(--accent); width: 14px; height: 14px; margin: 0; }
 
   .body { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: var(--gap); min-height: 0; }
+  .map-col { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; min-width: 0; }
+  .static-note { font-size: var(--fs-small); color: var(--muted); padding: 10px 2px 0; }
+  .strip { grid-column: 2 / -1; display: flex; gap: 1px; margin-top: 5px; }
+  .strip i { flex: 1; height: 6px; border-radius: 1px; position: relative; }
+  .strip i.now { outline: 1px solid var(--accent); outline-offset: 1px; z-index: 1; }
   .map-card { position: relative; min-height: 420px; border-radius: var(--radius-card); overflow: hidden; background: var(--surface); }
   .legend {
     position: absolute; left: 12px; bottom: 12px; max-width: 340px; padding: 10px 12px; border-radius: 4px;
@@ -459,7 +546,7 @@
   }
   .national:hover { color: var(--text); border-color: var(--muted); }
 
-  .side { display: flex; flex-direction: column; min-height: 0; background: var(--surface); border-radius: var(--radius-card); overflow: hidden; }
+  .side { display: flex; flex-direction: column; min-height: 0; background: var(--surface); border-radius: var(--radius-card); overflow-y: auto; }
   .detail { padding: 16px 18px 18px; border-bottom: 1px solid var(--border); display: grid; gap: 14px; }
   .detail header { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
   .detail h2 { font-size: var(--fs-section); line-height: 1.3; }
@@ -478,7 +565,7 @@
 
   .list-head { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 18px 8px; }
   .list-head h2 { font-size: var(--fs-section); }
-  .ranked { list-style: none; margin: 0; padding: 0 8px 8px; overflow-y: auto; min-height: 0; }
+  .ranked { list-style: none; margin: 0; padding: 0 8px 8px; }
   .ranked li + li .row { border-top-color: var(--rule); }
   .row {
     width: 100%; display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; column-gap: 10px; row-gap: 1px;
@@ -486,7 +573,9 @@
     border-radius: 4px; transition: background-color 150ms var(--ease-out);
   }
   .row:hover { background: var(--raised); }
-  .row.selected { background: var(--raised); box-shadow: inset 1px 0 0 var(--accent); /* taste-skill-ignore: the 1px selection line */ }
+  .row { position: relative; }
+  .row.selected { background: var(--raised); }
+  .row.selected::before { content: ''; position: absolute; left: 0; top: 6px; bottom: 6px; width: 1px; background: var(--accent); }
   .zone-name { overflow-wrap: anywhere; line-height: 1.35; }
   .value { text-align: right; }
   .sub { grid-column: 2 / -1; font-size: var(--fs-small); }

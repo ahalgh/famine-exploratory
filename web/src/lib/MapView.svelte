@@ -191,7 +191,7 @@
         const here = sample(surface, e.lngLat.lng, e.lngLat.lat);
         const hereText = here === null ? 'No data here' : `${fmt(here / 60, { ...m, digits: here < 600 ? 1 : 0 })} from here`;
         html = `<strong>${hereText}</strong><span>${p.zone} · zone median ${fmt(p[zoneMetric], m)}</span>`;
-      } else html = `<strong>${p.zone}</strong><span>${m.tab}: ${fmt(p[zoneMetric], m)}</span>`;
+      } else html = `<strong>${p.zone}</strong><span>${p.ipc_label ?? m.tab}: ${p.ipc_fill === null || p.ipc_fill === undefined ? 'no report' : fmt(p.ipc_fill, { ...m, digits: Number.isInteger(p.ipc_fill) ? 0 : 2 })}</span>`;
       popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
     });
     map.on('mouseout', () => {
@@ -227,6 +227,10 @@
   });
 
   // reactive updates
+  $effect(() => {
+    const data = zones; // new properties (the IPC phase for the selected report) arrive as new data
+    if (ready && map.getSource('zones')) map.getSource('zones').setData(data);
+  });
   $effect(() => {
     layers.zoneLines; layers.admin1; layers.districts; layers.gtIpc; layers.fao; layers.wfp;
     if (ready) applyVisibility();

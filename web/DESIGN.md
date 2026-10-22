@@ -48,6 +48,20 @@ The legend says whether the fill is per zone or 1 km cells, gives the measure's 
 
 The view state lives in the URL hash (`#view=zones&country=Nigeria&measure=city_motorized_median_h&zone=<fnid>&theme=light`), so any view can be linked to and inspected headlessly.
 
+## Time
+
+Only IPC, the projections and prices change over time. Travel time is a single 2019 surface and says so.
+
+- **One date control:** a bar under the map picks the FEWS report the IPC fill shows. It defaults to the latest report, with "Mean since 2020" as an option, and steps report by report (arrow keys, no autoplay). Each report is a column whose height is the share of zones at phase 3+, so the bar doubles as a chart of when things were bad. The date is in the URL (`asof=2022-10`), the legend title and the finding ("In the Oct 2022 report, 12 of 24 zones were in phase 3 or worse, the same as in Jun 2022").
+- **History in every list row:** a strip with one cell per report in the zone's IPC colour; the selected report is outlined.
+- **History of the selected zone:** three small charts on one monthly axis:
+  - observed IPC as a step line, with rings for what ML1 and ML2 had projected for each report date (plus a count of ML2 misses);
+  - a real staple-price index at the zone's WFP markets (CPI-deflated; 2026 uses 2025 CPI);
+  - national political violence.
+
+  The selected report date is drawn through all three, and hovering reads every series at one month.
+- Gaps are shown, never filled in: a zone without a report within 5 months of the selected date is drawn as no data.
+
 ## Coverage view
 
 One table whose last column is the timeline: one cell per month, ink opacity rising with the log row count, and gaps in the rule colour. The finding names what is missing or thin.
