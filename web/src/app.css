@@ -17,6 +17,7 @@
   --accent: #1d5fbf;
   --negative: #c4242a;
   --shadow: 0 8px 24px rgba(17, 18, 20, 0.12);
+  --zone-line: rgba(17, 18, 20, 0.5);
 
   /* travel-time ramp: one hue, more remote = more ink */
   --ramp-0: #ebeced;
@@ -62,6 +63,7 @@
     --accent: #4a8ad6;
     --negative: #e5566f;
     --shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    --zone-line: rgba(242, 242, 243, 0.32);
     --ramp-0: #222226;
     --ramp-1: #1e2a3a;
     --ramp-2: #22395a;
@@ -85,6 +87,7 @@
   --accent: #4a8ad6;
   --negative: #e5566f;
   --shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    --zone-line: rgba(242, 242, 243, 0.32);
   --ramp-0: #222226;
   --ramp-1: #1e2a3a;
   --ramp-2: #22395a;

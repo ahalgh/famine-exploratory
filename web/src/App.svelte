@@ -12,12 +12,14 @@
   let zoneMetric = $state('ipc_mean');
   let selectedZone = $state(null);
   let selectedMarket = $state(null);
-  let layers = $state({ wfp: true, fao: false, admin1: false, districts: false, gtIpc: true, basemap: true });
+  let layers = $state({ zoneLines: true, fao: true, wfp: true, admin1: false, districts: false, gtIpc: true, basemap: true });
   let ipcSource = $state('ipc_fews_2019_02');
   let layersOpen = $state(false);
   let coverage = $state(null);
   let zonesGeo = $state(null);
   let wfpCount = $state(null);
+  let faoCount = $state(null);
+  let faoAreas = $state([]);
   let loadError = $state(null);
 
   // theme: auto follows the system; light/dark pin it
@@ -26,8 +28,20 @@
   const dark = $derived(theme === 'dark' || (theme === 'auto' && systemDark));
   const THEME_NEXT = { auto: 'light', light: 'dark', dark: 'auto' };
 
+  // the view lives in the URL hash so any view can be linked to: #country=Nigeria&measure=ipc_mean&theme=light
+  function readHash() {
+    const h = new URLSearchParams(location.hash.slice(1));
+    if (COUNTRIES.includes(h.get('country'))) country = h.get('country');
+    if (METRIC_KEYS.includes(h.get('measure'))) zoneMetric = h.get('measure');
+    if (['zones', 'coverage'].includes(h.get('view'))) view = h.get('view');
+    if (['auto', 'light', 'dark'].includes(h.get('theme'))) theme = h.get('theme');
+    if (h.get('zone')) selectedZone = h.get('zone');
+  }
+
   onMount(() => {
     try { theme = localStorage.getItem('theme') ?? 'auto'; } catch {}
+    readHash();
+    addEventListener('hashchange', readHash);
     const mq = matchMedia('(prefers-color-scheme: dark)');
     systemDark = mq.matches;
     const onChange = (e) => (systemDark = e.matches);
@@ -36,10 +50,24 @@
       fetch('/data/coverage.json').then((r) => r.json()),
       fetch('/data/zones.geojson').then((r) => r.json()),
       fetch('/data/wfp_markets.geojson').then((r) => r.json()),
+      fetch('/data/markets.geojson').then((r) => r.json()),
+      fetch('/data/fao_areas.geojson').then((r) => r.json()),
     ])
-      .then(([c, z, w]) => { coverage = c; zonesGeo = z; wfpCount = w.features.length; })
+      .then(([c, z, w, fm, fa]) => {
+        coverage = c; zonesGeo = z; wfpCount = w.features.length;
+        faoCount = fm.features.length + fa.features.length;
+        faoAreas = fa.features.map((f) => f.properties);
+      })
       .catch((e) => (loadError = String(e)));
-    return () => mq.removeEventListener('change', onChange);
+    return () => { mq.removeEventListener('change', onChange); removeEventListener('hashchange', readHash); };
+  });
+
+  $effect(() => {
+    const h = new URLSearchParams({ view, country, measure: zoneMetric });
+    if (selectedZone) h.set('zone', selectedZone);
+    if (theme !== 'auto') h.set('theme', theme);
+    const next = `#${h}`;
+    if (location.hash !== next) history.replaceState(null, '', next);
   });
 
   $effect(() => {
@@ -60,6 +88,7 @@
   );
   const zone = $derived(selectedZone ? zones.find((z) => z.fnid === selectedZone) ?? null : null);
   const hasIpc = $derived(zones.some((z) => !isMissing(z.ipc_mean)));
+  const nationalFao = $derived(faoAreas.find((a) => a.country === country && a.scope === 'national average'));
 
   const finding = $derived.by(() => {
     if (!zones.length) return '';
@@ -79,8 +108,9 @@
     return `No zone-level IPC for ${country}. The most remote zone, ${far.zone}, is ${fmt(far.city_motorized_median_h, road)} by road from a city of 50,000+.`;
   });
 
-  function selectZone(fnid) {
+  function selectZone(fnid, zoneCountry) {
     selectedMarket = null;
+    if (zoneCountry && zoneCountry !== country) country = zoneCountry; // a click on a neighbour's zone moves there
     selectedZone = fnid === selectedZone ? null : fnid;
   }
   function selectMarket(p) {
@@ -183,19 +213,24 @@
             </button>
             {#if layersOpen}
               <div class="menu" id="layers-panel" role="group" aria-label="Map layers">
+                <p class="menu-head">Points</p>
+                <label><input type="checkbox" bind:checked={layers.fao} /> FAO price series, labelled <span class="muted num">{faoCount}</span></label>
                 <label><input type="checkbox" bind:checked={layers.wfp} /> WFP markets <span class="muted num">{wfpCount ?? ''}</span></label>
-                <label><input type="checkbox" bind:checked={layers.fao} /> FAO price series <span class="muted num">54</span></label>
+                <p class="menu-head">Lines</p>
+                <label><input type="checkbox" bind:checked={layers.zoneLines} /> Livelihood zone boundaries</label>
                 <label><input type="checkbox" bind:checked={layers.admin1} /> Province and state boundaries</label>
                 <label><input type="checkbox" bind:checked={layers.districts} /> District boundaries</label>
                 {#if country === 'Guatemala'}
-                  <label><input type="checkbox" bind:checked={layers.gtIpc} /> District IPC</label>
-                  {#if layers.gtIpc}
+                  <p class="menu-head">Guatemala</p>
+                  <label><input type="checkbox" bind:checked={layers.gtIpc} disabled={Boolean(metric.raster)} /> District IPC (Mean IPC view)</label>
+                  {#if layers.gtIpc && !metric.raster}
                     <select bind:value={ipcSource} aria-label="Guatemala district IPC source">
                       <option value="ipc_fews_2019_02">Observed, Feb 2019</option>
                       <option value="ipc_ml1_2018_12">Projected (ML1), Dec 2018</option>
                     </select>
                   {/if}
                 {/if}
+                <p class="menu-head">Background</p>
                 <label><input type="checkbox" bind:checked={layers.basemap} /> Base map</label>
               </div>
             {/if}
@@ -206,10 +241,11 @@
           <div class="map-card">
             {#if zonesGeo}
               <MapView zones={zonesGeo} {layers} {ipcSource} {zoneMetric} {country} {selectedZone} {dark}
+                selectedFaoArea={selectedMarket?.layer === 'fao-area' ? selectedMarket.region : null}
                 onselectzone={selectZone} onselectmarket={selectMarket} />
             {/if}
             <div class="legend" aria-label="Legend">
-              <p class="legend-title">{metric.label}</p>
+              <p class="legend-title">{metric.label} <span class="muted">({metric.raster ? '1 km cells' : 'one value per zone'})</span></p>
               <div class="swatches">
                 {#each legendSwatches(metric) as s}
                   <span class="sw"><i style="background: var({s.var})"></i>{s.label}</span>
@@ -217,6 +253,12 @@
                 <span class="sw"><i style="background: var(--ramp-0)"></i>No data</span>
               </div>
               <p class="legend-note">{metric.note}</p>
+              <div class="keys">
+                {#if layers.fao}<span class="key"><i class="k-town"></i>FAO prices for a town</span>
+                <span class="key"><i class="k-area"></i>FAO prices for an area</span>{/if}
+                {#if layers.wfp}<span class="key"><i class="k-wfp"></i>WFP market</span>{/if}
+                {#if layers.zoneLines}<span class="key"><i class="k-zone"></i>Livelihood zone</span>{/if}
+              </div>
             </div>
           </div>
 
@@ -257,24 +299,32 @@
                 <header>
                   <div>
                     <h2 id="market-name">{selectedMarket.market ?? selectedMarket.region}</h2>
-                    <p class="muted meta">{selectedMarket.layer === 'wfp-markets' ? 'WFP market' : 'FAO price series'} · {selectedMarket.country}</p>
+                    <p class="muted meta">
+                      {#if selectedMarket.layer === 'wfp'}WFP market, {selectedMarket.country}
+                      {:else if selectedMarket.layer === 'fao-town'}FAO price series for this town
+                      {:else}FAO price series for an area: {selectedMarket.scope}{/if}
+                    </p>
                   </div>
                   <button class="close" aria-label="Clear selection" onclick={() => (selectedMarket = null)}>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
                   </button>
                 </header>
                 <dl class="kv">
-                  {#if selectedMarket.layer === 'wfp-markets'}
+                  {#if selectedMarket.layer === 'wfp'}
                     <dt>Area</dt><dd>{selectedMarket.admin2 || selectedMarket.admin1}</dd>
                     <dt>Commodities since 2019</dt><dd>{selectedMarket.n_commodities}</dd>
                     <dt>Prices since 2019</dt><dd>{Number(selectedMarket.n_rows).toLocaleString()} over {selectedMarket.n_months} months</dd>
                   {:else}
-                    <dt>Price series</dt><dd>{selectedMarket.n_series} · {Number(selectedMarket.n_rows).toLocaleString()} rows</dd>
-                    <dt>Located by</dt><dd>{selectedMarket.source}</dd>
+                    <dt>Prices refer to</dt>
+                    <dd class="wrap">{selectedMarket.layer === 'fao-town' ? `${selectedMarket.region} (town)` : (selectedMarket.admin1 || selectedMarket.region).replaceAll(';', ', ')}</dd>
+                    {#if selectedMarket.layer === 'fao-town'}<dt>Located by</dt><dd>{selectedMarket.source}</dd>{/if}
+                    <dt>Series</dt><dd>{selectedMarket.n_series} · {Number(selectedMarket.n_rows).toLocaleString()} prices</dd>
                   {/if}
                   <dt>Period</dt><dd>{selectedMarket.first} – {selectedMarket.last}</dd>
                 </dl>
-                {#if selectedMarket.commodities}<p class="muted small">{selectedMarket.commodities}</p>{/if}
+                {#if selectedMarket.commodities}
+                  <div class="commodities"><p class="muted small">Commodities</p><p>{selectedMarket.commodities}</p></div>
+                {/if}
               </article>
             {/if}
 
@@ -282,6 +332,11 @@
               <h2>{metric.list}</h2>
               <span class="muted num">{zones.length}</span>
             </div>
+            {#if nationalFao && layers.fao}
+              <button class="national" onclick={() => selectMarket({ layer: 'fao-area', ...nationalFao })}>
+                FAO national-average prices for {country}: {nationalFao.n_series} {nationalFao.n_series === 1 ? 'commodity' : 'commodities'} (not drawn on the map)
+              </button>
+            {/if}
             {#if !zonesGeo}
               <ol class="ranked">{#each Array(6) as _}<li><span class="skeleton" style="width: 80%"></span></li>{/each}</ol>
             {:else}
@@ -293,9 +348,8 @@
                       <span class="zone-name">{z.zone}</span>
                       <span class="value num">{fmt(z[zoneMetric], metric)}</span>
                       <span class="sub muted">
-                        {#if metric.ipc}{fmt(z.city_motorized_median_h, ZONE_METRICS.city_motorized_median_h)} to a city by road
-                        {:else if isMissing(z.ipc_mean)}No IPC reports
-                        {:else}Mean IPC {Number(z.ipc_mean).toFixed(2)}{/if}
+                        {#if metric.ipc}{fmt(z.city_motorized_median_h, ZONE_METRICS.city_motorized_median_h)} to a city by road (median)
+                        {:else}Median; 90th pct {fmt(z[zoneMetric.replace('_median_', '_p90_')], metric)} · {isMissing(z.ipc_mean) ? 'no IPC' : `IPC ${Number(z.ipc_mean).toFixed(2)}`}{/if}
                       </span>
                     </button>
                   </li>
@@ -368,6 +422,9 @@
     position: absolute; right: 0; top: calc(100% + 4px); z-index: 20; width: 260px; display: grid; gap: 2px;
     padding: 8px; border-radius: var(--radius-card); background: var(--raised); box-shadow: var(--shadow); /* taste-skill-ignore: floating menu */
   }
+  .menu-head { font-size: 11px; color: var(--muted); padding: 8px 6px 2px; }
+  .menu-head:first-child { padding-top: 2px; }
+  .menu label:has(input:disabled) { color: var(--muted); cursor: default; }
   .menu label { display: flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 6px; border-radius: 4px; cursor: pointer; }
   .menu label:hover { background: color-mix(in srgb, var(--text) 6%, transparent); }
   .menu label .muted { margin-left: auto; }
@@ -384,7 +441,23 @@
   .swatches { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 11px; color: var(--muted); }
   .sw { display: inline-flex; align-items: center; gap: 4px; }
   .sw i, .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; flex: none; }
+  .row .dot { margin-top: 4px; }
   .legend-note { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .legend-title .muted { font-weight: 400; }
+  .keys { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; color: var(--muted); padding-top: 4px; border-top: 1px solid var(--rule); }
+  .key { display: inline-flex; align-items: center; gap: 5px; }
+  .key i { display: inline-block; flex: none; }
+  .k-town { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--text); background: var(--surface); }
+  .k-area { width: 16px; height: 0; border-top: 2px dotted var(--text); }
+  .k-wfp { width: 5px; height: 5px; border-radius: 50%; background: var(--text); opacity: 0.6; }
+  .k-zone { width: 16px; height: 0; border-top: 1px solid var(--zone-line); }
+  .wrap { white-space: normal; text-align: right; max-width: 200px; }
+  .commodities { display: grid; gap: 2px; }
+  .national {
+    margin: 0 18px 8px; padding: 6px 10px; border: 1px dashed var(--control); border-radius: 4px; background: none;
+    color: var(--muted); font-size: var(--fs-small); text-align: left;
+  }
+  .national:hover { color: var(--text); border-color: var(--muted); }
 
   .side { display: flex; flex-direction: column; min-height: 0; background: var(--surface); border-radius: var(--radius-card); overflow: hidden; }
   .detail { padding: 16px 18px 18px; border-bottom: 1px solid var(--border); display: grid; gap: 14px; }
@@ -409,12 +482,12 @@
   .ranked li + li .row { border-top-color: var(--rule); }
   .row {
     width: 100%; display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; column-gap: 10px; row-gap: 1px;
-    align-items: center; padding: 8px 10px; border: 0; border-top: 1px solid transparent; background: none; text-align: left;
+    align-items: start; padding: 8px 10px; border: 0; border-top: 1px solid transparent; background: none; text-align: left;
     border-radius: 4px; transition: background-color 150ms var(--ease-out);
   }
   .row:hover { background: var(--raised); }
   .row.selected { background: var(--raised); box-shadow: inset 1px 0 0 var(--accent); /* taste-skill-ignore: the 1px selection line */ }
-  .zone-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .zone-name { overflow-wrap: anywhere; line-height: 1.35; }
   .value { text-align: right; }
   .sub { grid-column: 2 / -1; font-size: var(--fs-small); }
 

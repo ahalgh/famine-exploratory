@@ -10,36 +10,54 @@ export const ZONE_METRICS = {
     unit: '',
     digits: 2,
     ipc: true,
-    note: 'FEWS NET current situation, averaged over every report since 2020.',
+    note: 'FEWS NET current situation, averaged over every report since 2020. One value per zone.',
   },
   city_motorized_median_h: {
-    tab: 'To a city by road',
-    list: 'Zones by road time to a city',
+    tab: 'City, by road',
+    list: 'Zones by median road time to a city',
     label: 'Travel time to a city of 50,000+, by road',
+    raster: 'city_motorized',
     unit: 'h',
     digits: 1,
     bins: [0.5, 1, 2, 4, 8],
-    note: 'Median over the zone on the MAP 2019 friction surface. Ranks zones well; absolute times are optimistic.',
+    note: '1 km cells from the MAP 2019 friction surface. Ranks places well; absolute times are optimistic.',
   },
   city_walking_median_h: {
-    tab: 'To a city on foot',
-    list: 'Zones by walking time to a city',
+    tab: 'City, on foot',
+    list: 'Zones by median walking time to a city',
     label: 'Travel time to a city of 50,000+, on foot',
+    raster: 'city_walking',
     unit: 'h',
     digits: 0,
     bins: [2, 4, 8, 16, 32],
-    note: 'Median over the zone on the MAP 2019 walking-only surface.',
+    note: '1 km cells from the MAP 2019 walking-only friction surface.',
   },
   market_motorized_median_h: {
-    tab: 'To a WFP market',
-    list: 'Zones by road time to a WFP market',
+    tab: 'WFP market, by road',
+    list: 'Zones by median road time to a WFP market',
     label: 'Travel time to a WFP market, by road',
+    raster: 'market_motorized',
     unit: 'h',
     digits: 1,
     bins: [0.5, 1, 2, 4, 8],
-    note: 'WFP places markets where it operates, so short times partly reflect WFP presence, not access.',
+    note: '1 km cells. WFP places markets where it operates, so short times partly reflect WFP presence, not access.',
+  },
+  market_walking_median_h: {
+    tab: 'WFP market, on foot',
+    list: 'Zones by median walking time to a WFP market',
+    label: 'Travel time to a WFP market, on foot',
+    raster: 'market_walking',
+    unit: 'h',
+    digits: 0,
+    bins: [2, 4, 8, 16, 32],
+    note: '1 km cells. WFP places markets where it operates, so short times partly reflect WFP presence, not access.',
   },
 };
+
+/** The ramp colours a raster uses, resolved from CSS custom properties. */
+export function rampColors(m, css) {
+  return RAMP.slice(0, m.bins.length + 1).map(css);
+}
 
 export const METRIC_KEYS = Object.keys(ZONE_METRICS);
 const RAMP = ['--ramp-1', '--ramp-2', '--ramp-3', '--ramp-4', '--ramp-5', '--ramp-6'];

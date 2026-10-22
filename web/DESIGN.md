@@ -27,9 +27,26 @@ Public Sans Variable, self-hosted (`@fontsource-variable`), with tabular figures
 
 ## Zones view
 
-- **Map and rail:** the map card sits beside a 360px rail. The rail holds the selected zone's or market's detail, then the zones ranked worst first by the active metric.
-- **Map overlays:** the legend sits bottom-left with the metric's caveat. On a phone it moves under the map.
-- **Layers:** secondary layers (WFP markets, FAO series, admin and district lines, Guatemala district IPC, the base map) live in a Layers menu, not on the screen.
+The map card sits beside a 360px rail. The rail holds the selected zone's or price series' detail, then the zones ranked worst first by the active measure. The ranked list always says it is ranking **zone medians**, with the 90th percentile beside each.
+
+### Map layers, bottom to top
+
+1. **One fill at a time, chosen by the measure tabs:**
+   - **Mean IPC:** one value per livelihood zone, in the official IPC colours, blended between phases.
+   - **Travel time:** the **1 km surface itself**, not a zone average (`web/public/data/access/*.png`, coloured in the browser from `--ramp-*`). Hovering reads the travel time at the cursor next to the zone median.
+2. **Lines:** livelihood-zone boundaries (`--zone-line`, dark enough to hold on pale fills in light mode), provinces (dashed), districts and country outlines. The selected zone gets a 2.5px accent outline.
+3. **Points and labels:**
+   - **FAO price series** are drawn at what their prices refer to:
+     - a labelled hollow circle for a market town;
+     - a labelled area for a county series (Kenya) or a group of states (Nigeria's geopolitical zones), whose dotted outline appears on hover or selection;
+     - national averages aren't drawn, and are listed above the ranking instead.
+   - **WFP markets** are small dots.
+
+Neighbouring countries' zones stay at 45% opacity as context. Clicking one moves to that country.
+
+The legend says whether the fill is per zone or 1 km cells, gives the measure's caveat, and keys the point and line symbols that are switched on. The Layers menu groups points, lines and background.
+
+The view state lives in the URL hash (`#view=zones&country=Nigeria&measure=city_motorized_median_h&zone=<fnid>&theme=light`), so any view can be linked to and inspected headlessly.
 
 ## Coverage view
 

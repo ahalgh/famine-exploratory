@@ -27,7 +27,7 @@ pip install -r requirements.txt
    ```bash
    python scripts/geocode_markets.py        # -> reports/market_locations.csv
    python scripts/compute_accessibility.py  # -> reports/zone_access_2019.csv
-   python scripts/export_map_data.py        # -> web/public/data/ (git-ignored)
+   python scripts/export_map_data.py        # -> web/public/data/ (git-ignored), incl. 1 km travel-time PNGs
    ```
 
 3. Run the app:

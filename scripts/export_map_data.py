@@ -6,6 +6,11 @@ Outputs
     districts.geojson   ADM2 polygons (simplified); Guatemala districts carry FEWS/ML1 IPC
     markets.geojson     FAO price markets (from reports/market_locations.csv) + series stats
     wfp_markets.geojson WFP markets with prices since 2019 + series stats
+    fao_areas.geojson   FAO price series that refer to an area, not a town: Kenya county series,
+                        Nigerian geopolitical zones (groups of states) and national averages
+    access/*.png        1 km travel-time surfaces per country, reprojected to Web Mercator, with
+                        minutes packed into R (high byte) and G (low byte), A=0 where no data;
+    access/index.json   the corner coordinates of each image
     zones.geojson       FEWS NET livelihood zones (simplified) + travel-time access
                         (reports/zone_access_2019.csv) + observed IPC summary since 2020
     coverage.json       monthly row counts per country x dataset, plus dataset metadata
@@ -48,6 +53,79 @@ def write_geojson(gdf: gpd.GeoDataFrame, name: str, tol: float):
     path = OUT / f"{name}.geojson"
     path.write_text(gdf.to_json(drop_id=True, to_wgs84=True))
     print(f"  {name}.geojson  {len(gdf):4d} features  {path.stat().st_size / 1e6:.2f} MB")
+
+
+ACCESS_LAYERS = ["city_motorized", "city_walking", "market_motorized", "market_walking"]
+
+
+def export_access_rasters():
+    """Reproject each country's travel-time raster to EPSG:3857 and pack minutes into a PNG."""
+    import numpy as np
+    import rasterio
+    from PIL import Image
+    from rasterio.warp import Resampling, calculate_default_transform, reproject, transform as warp_xy
+
+    out_dir = OUT / "access"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    index = {}
+    for country in fm.COUNTRIES:
+        for layer in ACCESS_LAYERS:
+            src_path = fm.DATA_DIR / "derived/access" / f"{country.lower()}_tt_{layer}.tif"
+            if not src_path.exists():
+                continue
+            with rasterio.open(src_path) as src:
+                t, w, h = calculate_default_transform(src.crs, "EPSG:3857", src.width, src.height, *src.bounds)
+                dst = np.full((h, w), np.nan, dtype="float32")
+                reproject(rasterio.band(src, 1), dst, src_transform=src.transform, src_crs=src.crs,
+                          dst_transform=t, dst_crs="EPSG:3857", resampling=Resampling.nearest, dst_nodata=np.nan)
+            valid = np.isfinite(dst)
+            minutes = np.clip(np.nan_to_num(dst, nan=0), 0, 65534).round().astype("uint16")
+            rgba = np.zeros((h, w, 4), dtype="uint8")
+            rgba[..., 0] = minutes >> 8
+            rgba[..., 1] = minutes & 0xFF
+            rgba[..., 3] = np.where(valid, 255, 0)
+            name = f"{country.lower()}_{layer}.png"
+            Image.fromarray(rgba, "RGBA").save(out_dir / name, optimize=True)
+            left, top = t.c, t.f
+            right, bottom = left + t.a * w, top + t.e * h
+            lons, lats = warp_xy("EPSG:3857", "EPSG:4326", [left, right, right, left], [top, top, bottom, bottom])
+            index.setdefault(country, {})[layer] = {
+                "url": f"/data/access/{name}", "width": w, "height": h,
+                "coordinates": [[round(x, 6), round(y, 6)] for x, y in zip(lons, lats)],  # TL, TR, BR, BL
+            }
+    (out_dir / "index.json").write_text(json.dumps(index))
+    size = sum(f.stat().st_size for f in out_dir.glob("*.png")) / 1e6
+    print(f"  access/*.png  {sum(len(v) for v in index.values())} rasters  {size:.1f} MB")
+
+
+def export_fao_areas(regions):
+    """FAO series priced over an area: draw the area itself, not a point at its centre."""
+    loc = pd.read_csv(ROOT / "reports" / "market_locations.csv")
+    prices = fm.load_prices()
+    prices["country"] = prices["country"].astype(str)
+    prices["region"] = prices["region"].astype(str)
+    stats = prices.groupby(["country", "region"]).agg(
+        n_rows=("raw_price", "size"),
+        n_series=("commodity", lambda s: s.astype(str).nunique()),
+        commodities=("commodity", lambda s: ", ".join(sorted(s.astype(str).unique()))),
+        first=("date", lambda d: d.min().strftime("%Y-%m")),
+        last=("date", lambda d: d.max().strftime("%Y-%m")),
+    ).reset_index()
+    admin1 = regions[regions["layer"] == "admin1"]
+    countries = regions[regions["layer"] == "country"].set_index("country")
+    rows = []
+    for r in loc[loc["kind"] != "town"].itertuples():
+        if r.region == "National Average":
+            geom, scope = countries.loc[r.country, "geometry"], "national average"
+        else:
+            names = str(r.admin1).split(";")
+            part = admin1[(admin1["country"] == r.country) & admin1["region"].isin(names)]
+            geom = part.union_all()
+            scope = "Nigerian geopolitical zone" if r.kind == "aggregate" else "county or district series"
+        rows.append({"country": r.country, "region": r.region, "scope": scope, "admin1": r.admin1 if isinstance(r.admin1, str) else "",
+                     "geometry": geom})
+    areas = gpd.GeoDataFrame(rows, crs=4326).merge(stats, on=["country", "region"], how="left")
+    write_geojson(areas, "fao_areas", SIMPLIFY["admin1"])
 
 
 def coverage():
@@ -109,7 +187,7 @@ def main():
         last=("date", lambda d: d.max().strftime("%Y-%m")),
         n_months=("date", lambda d: d.dt.to_period("M").nunique()),
     ).reset_index()
-    markets = loc.merge(stats, on=["country", "region"], how="left")
+    markets = loc[loc["kind"] == "town"].merge(stats, on=["country", "region"], how="left")
     markets = gpd.GeoDataFrame(markets, geometry=gpd.points_from_xy(markets["lon"], markets["lat"]), crs=4326)
     markets["admin1"] = markets["admin1"].fillna("")
     write_geojson(markets.drop(columns=["lat", "lon"]), "markets", 0)
@@ -144,6 +222,9 @@ def main():
     ipc["ipc_latest_date"] = latest["date"].dt.strftime("%Y-%m")
     zones = zones.merge(ipc.round(2).reset_index(), on=["country", "zone_key"], how="left")
     write_geojson(zones.drop(columns=["zone_key"]), "zones", SIMPLIFY["zones"])
+
+    export_fao_areas(regions)
+    export_access_rasters()
 
     (OUT / "coverage.json").write_text(json.dumps(cov))
     print(f"  coverage.json  {len(cov['datasets'])} datasets x {len(cov['months'])} months")
