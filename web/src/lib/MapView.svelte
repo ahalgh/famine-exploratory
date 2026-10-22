@@ -155,9 +155,10 @@
         walk(f.geometry.coordinates);
         bounds[f.properties.country] = [[b[0], b[1]], [b[2], b[3]]];
       }
-      const first = () => { map.resize(); fit(0); };
-      if (map.loaded()) requestAnimationFrame(first);
-      else map.once('load', first);
+      // the camera can be set before the style finishes loading, so fit now rather than waiting
+      // for a 'load' event that may already have fired
+      map.resize();
+      fit(0);
     });
 
     return () => map.remove();
@@ -179,7 +180,8 @@
     const id = selectedZone ?? '';
     if (ready && map.getLayer('zones-selected')) map.setFilter('zones-selected', ['==', ['get', 'fnid'], id]);
   });
-  let lastCountry = country;
+  // the first run with a map records the baseline; later runs react to changes
+  let lastCountry = null;
   $effect(() => {
     const c = country;
     if (!map) return;
@@ -188,12 +190,15 @@
       map.setPaintProperty('zones-fill', 'fill-opacity', zoneOpacity());
       map.setPaintProperty('wfp-markets', 'circle-opacity', ['case', ['==', ['get', 'country'], c], 0.6, 0.25]);
     }
-    if (c !== lastCountry) { lastCountry = c; fit(); }
+    if (lastCountry === null) lastCountry = c;
+    else if (c !== lastCountry) { lastCountry = c; fit(); }
   });
-  let lastLook = `${dark}|${layers.basemap}`;
+  let lastLook = null;
   $effect(() => {
     const look = `${dark}|${layers.basemap}`;
-    if (map && look !== lastLook) { lastLook = look; loadStyle(); }
+    if (!map) return;
+    if (lastLook === null) lastLook = look;
+    else if (look !== lastLook) { lastLook = look; loadStyle(); }
   });
 </script>
 
