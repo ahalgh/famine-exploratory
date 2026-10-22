@@ -2,7 +2,7 @@
   /** Where every dataset on this site comes from, what it is used for, and its terms. */
   let { publicBuild = false } = $props();
 
-  const SOURCES = [
+  const SOURCES = $derived([
     {
       name: 'FEWS NET IPC classifications and livelihood zones',
       use: 'Observed IPC phase (current situation), ML1 and ML2 projections, and the livelihood-zone map.',
@@ -55,7 +55,7 @@
       use: 'Counted in the coverage view only. Their values are not shown on this site.',
       terms: 'Provided to this project.',
     },
-  ];
+  ]);
 </script>
 
 <section class="sources" aria-labelledby="sources-title">
