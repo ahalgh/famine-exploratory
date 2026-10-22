@@ -4,6 +4,7 @@
   import CoverageView from './lib/CoverageView.svelte';
   import TimeBar from './lib/TimeBar.svelte';
   import ZoneHistory from './lib/ZoneHistory.svelte';
+  import SourcesView from './lib/SourcesView.svelte';
   import { asset } from './lib/paths.js';
   import { ZONE_METRICS, METRIC_KEYS, colorCss, fmt, isMissing, legendSwatches, spearman } from './lib/metrics.js';
 
@@ -38,7 +39,7 @@
     const h = new URLSearchParams(location.hash.slice(1));
     if (COUNTRIES.includes(h.get('country'))) country = h.get('country');
     if (METRIC_KEYS.includes(h.get('measure'))) zoneMetric = h.get('measure');
-    if (['zones', 'coverage'].includes(h.get('view'))) view = h.get('view');
+    if (['zones', 'coverage', 'sources'].includes(h.get('view'))) view = h.get('view');
     if (['auto', 'light', 'dark'].includes(h.get('theme'))) theme = h.get('theme');
     if (h.get('zone')) selectedZone = h.get('zone');
     if (h.get('asof')) asOf = h.get('asof');
@@ -222,6 +223,10 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h16M4 20h10" /></svg>
       <span class="label">Coverage</span>
     </button>
+    <button class="nav" class:active={view === 'sources'} aria-current={view === 'sources' ? 'page' : undefined} onclick={() => (view = 'sources')}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><path d="M12 11v5.5M12 7.6v.1" /></svg>
+      <span class="label">Sources</span>
+    </button>
     <span class="spacer"></span>
     <button class="nav util" onclick={() => (theme = THEME_NEXT[theme])} title="Theme: {theme}" aria-label="Theme: {theme}. Switch to {THEME_NEXT[theme]}">
       {#if theme === 'auto'}
@@ -238,6 +243,8 @@
   <main>
     {#if loadError}
       <p class="error">Couldn't load the map data ({loadError}). Run <code>python scripts/export_map_data.py</code>, then reload.</p>
+    {:else if view === 'sources'}
+      <SourcesView publicBuild={import.meta.env.VITE_PUBLIC === '1'} />
     {:else if view === 'coverage'}
       {#if coverage}
         <div class="coverage-wrap">

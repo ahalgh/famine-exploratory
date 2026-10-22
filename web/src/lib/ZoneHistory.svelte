@@ -140,6 +140,7 @@
     <p class="empty">No WFP staple series near this zone.</p>
   {/if}
 
+  {#if conflict.length}
   <div class="panel-head">
     <h3>Political violence, {country}</h3>
     <span class="key">events per month, national</span>
@@ -155,13 +156,18 @@
     {#if hover}<line x1={hover.x} x2={hover.x} y1="0" y2={CONF_H} class="cursor" />{/if}
     <rect x={LEFT} y="0" width={plotW} height={CONF_H} fill="transparent" role="presentation" onmousemove={onmove} onmouseleave={() => (hover = null)} />
   </svg>
+  {:else}
+  <svg width={width} height="16" aria-hidden="true">
+    {#each years as y}<text x={x(`${y}-01`)} y="12" class="tick">{y}</text>{/each}
+  </svg>
+  {/if}
 
   <div class="readout" aria-live="polite">
     {#if hover}
       <strong>{label(hover.m)}</strong>
       <span>IPC: {hover.ipc}</span>
       {#each hover.prices as p}<span>{p.name}: {p.v ?? '—'}</span>{/each}
-      <span>Political violence: {hover.conflict ? `${hover.conflict[1]} events, ${hover.conflict[2]} deaths` : '—'}</span>
+      {#if conflict.length}<span>Political violence: {hover.conflict ? `${hover.conflict[1]} events, ${hover.conflict[2]} deaths` : '—'}</span>{/if}
     {:else}
       <span class="muted">Hover a chart to read every series at one month.</span>
     {/if}
