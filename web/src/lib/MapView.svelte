@@ -1,106 +1,105 @@
 <script>
   import * as maplibregl from 'maplibre-gl';
   import { onMount } from 'svelte';
-  import { ZONE_METRICS, zoneColor } from './metrics.js';
+  import { ZONE_METRICS, fmt, zoneColor } from './metrics.js';
 
   // Serve MapLibre's worker as a static file (copied to public/vendor by `npm run copy-worker`):
   // Vite's dev server injects its client into module scripts it serves from node_modules, which
   // breaks the worker, and pre-bundling breaks MapLibre's relative worker URL.
   maplibregl.setWorkerUrl('/vendor/maplibre-gl-worker.mjs');
 
-  /** @type {{ layers: Record<string, boolean>, ipcSource: string, zoneMetric: string, basemap: boolean, selectedCountry: string | null, onselect: (sel: any) => void }} */
-  let { layers, ipcSource, zoneMetric, basemap, selectedCountry, onselect } = $props();
+  /**
+   * @type {{
+   *   zones: any, layers: Record<string, boolean>, ipcSource: string, zoneMetric: string,
+   *   country: string, selectedZone: string | null, dark: boolean,
+   *   onselectzone: (fnid: string | null) => void, onselectmarket: (p: any) => void
+   * }}
+   */
+  let { zones, layers, ipcSource, zoneMetric, country, selectedZone, dark, onselectzone, onselectmarket } = $props();
 
-  // OpenFreeMap styles (no API key); pick the one matching the colour scheme
-  const basemapUrl = () => `https://tiles.openfreemap.org/styles/${isDark() ? 'dark' : 'positron'}`;
+  const basemapUrl = (isDark) => `https://tiles.openfreemap.org/styles/${isDark ? 'dark' : 'positron'}`;
   let container;
   let map = $state(null);
   let ready = $state(false);
   let basemapFailed = $state(false);
+  let bounds = {};
 
   const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  const isDark = () => matchMedia('(prefers-color-scheme: dark)').matches;
 
   function blankStyle() {
-    return {
-      version: 8,
-      sources: {},
-      layers: [{ id: 'background', type: 'background', paint: { 'background-color': css('--surface-0') } }],
-    };
+    return { version: 8, sources: {}, layers: [{ id: 'background', type: 'background', paint: { 'background-color': css('--ground') } }] };
   }
 
-  function seqStep(prop) {
-    // 0..8 datasets -> one-hue sequential ramp
-    return ['step', ['get', prop], css('--seq-0'), 1, css('--seq-1'), 3, css('--seq-2'), 5, css('--seq-4'), 7, css('--seq-6')];
-  }
+  // the selected country's zones carry the data; neighbours recede to context
+  const zoneOpacity = () => ['case', ['==', ['get', 'country'], country], dark ? 0.85 : 0.9, 0.22];
+  const countryWidth = () => ['case', ['==', ['get', 'country'], country], 1.4, 0.7];
+  const gtIpcColor = (src) => ['match', ['to-number', ['get', src]], 1, css('--ipc-1'), 2, css('--ipc-2'), 3, css('--ipc-3'), 4, css('--ipc-4'), css('--ramp-0')];
 
   function addOverlay() {
-    const src = (id, url) => !map.getSource(id) && map.addSource(id, { type: 'geojson', data: url });
+    const src = (id, data) => !map.getSource(id) && map.addSource(id, { type: 'geojson', data });
     src('countries', '/data/countries.geojson');
     src('admin1', '/data/admin1.geojson');
     src('districts', '/data/districts.geojson');
-    src('zones', '/data/zones.geojson');
-    if (!map.getSource('markets')) map.addSource('markets', { type: 'geojson', data: '/data/markets.geojson' });
-    if (!map.getSource('wfp-markets')) map.addSource('wfp-markets', { type: 'geojson', data: '/data/wfp_markets.geojson' });
+    src('zones', zones);
+    src('markets', '/data/markets.geojson');
+    src('wfp-markets', '/data/wfp_markets.geojson');
 
-    map.addLayer({ id: 'countries-fill', type: 'fill', source: 'countries',
-      paint: { 'fill-color': seqStep('n_datasets'), 'fill-opacity': 0.55 } });
     map.addLayer({ id: 'zones-fill', type: 'fill', source: 'zones',
-      paint: { 'fill-color': zoneColor(zoneMetric, css), 'fill-opacity': 0.85 } });
-    map.addLayer({ id: 'zones-line', type: 'line', source: 'zones',
-      paint: { 'line-color': css('--surface-1'), 'line-width': 0.6 } });
+      paint: { 'fill-color': zoneColor(zoneMetric, css), 'fill-opacity': zoneOpacity() } });
     map.addLayer({ id: 'gt-ipc', type: 'fill', source: 'districts',
       filter: ['all', ['==', ['get', 'country'], 'Guatemala'], ['has', ipcSource]],
-      paint: { 'fill-color': ipcColor(ipcSource), 'fill-opacity': 0.9, 'fill-outline-color': css('--surface-1') } });
+      paint: { 'fill-color': gtIpcColor(ipcSource), 'fill-opacity': 0.9 } });
+    map.addLayer({ id: 'zones-line', type: 'line', source: 'zones',
+      paint: { 'line-color': css('--ground'), 'line-width': 0.6 } });
     map.addLayer({ id: 'districts-line', type: 'line', source: 'districts',
-      paint: { 'line-color': css('--text-muted'), 'line-width': 0.3, 'line-opacity': 0.6 } });
+      paint: { 'line-color': css('--faint'), 'line-width': 0.3, 'line-opacity': 0.5 } });
     map.addLayer({ id: 'admin1-line', type: 'line', source: 'admin1',
-      paint: { 'line-color': css('--text-secondary'), 'line-width': 0.8, 'line-opacity': 0.8 } });
+      paint: { 'line-color': css('--muted'), 'line-width': 0.6, 'line-opacity': 0.55 } });
     map.addLayer({ id: 'countries-line', type: 'line', source: 'countries',
-      paint: { 'line-color': css('--text-primary'), 'line-width': ['case', ['==', ['get', 'country'], selectedCountry ?? ''], 2.5, 1.2] } });
+      paint: { 'line-color': css('--text'), 'line-opacity': 0.75, 'line-width': countryWidth() } });
+    map.addLayer({ id: 'zones-hover', type: 'line', source: 'zones', filter: ['==', ['get', 'fnid'], ''],
+      paint: { 'line-color': css('--text'), 'line-width': 1 } });
+    map.addLayer({ id: 'zones-selected', type: 'line', source: 'zones', filter: ['==', ['get', 'fnid'], selectedZone ?? ''],
+      paint: { 'line-color': css('--accent'), 'line-width': 2 } });
     map.addLayer({ id: 'wfp-markets', type: 'circle', source: 'wfp-markets',
       paint: {
-        'circle-color': css('--text-primary'),
-        'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 1.6, 7, 3.5],
-        'circle-stroke-color': css('--surface-1'),
-        'circle-stroke-width': 1,
+        'circle-color': css('--text'),
+        'circle-opacity': ['case', ['==', ['get', 'country'], country], 0.6, 0.25],
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 1.2, 6, 2.2, 9, 3.5],
       } });
     map.addLayer({ id: 'markets', type: 'circle', source: 'markets',
       paint: {
-        'circle-color': ['match', ['get', 'kind'], 'town', css('--series-1'), 'admin1', css('--series-2'), 'aggregate', css('--series-3'), css('--text-muted')],
-        'circle-radius': ['interpolate', ['linear'], ['sqrt', ['coalesce', ['get', 'n_rows'], 1]], 1, 4, 35, 11],
-        'circle-stroke-color': css('--surface-1'),
-        'circle-stroke-width': 2,
+        'circle-color': 'rgba(0,0,0,0)',
+        'circle-stroke-color': css('--text'),
+        'circle-stroke-width': 1.2,
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 3, 8, 5],
       } });
     applyVisibility();
   }
 
-  function ipcColor(prop) {
-    return ['match', ['to-number', ['get', prop]], 1, css('--ipc-1'), 2, css('--ipc-2'), 3, css('--ipc-3'), 4, css('--ipc-4'), 5, css('--ipc-5'), css('--text-muted')];
-  }
-
   function applyVisibility() {
-    if (!map || !map.getLayer('markets')) return;
+    if (!map?.getLayer('markets')) return;
     const vis = (id, on) => map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none');
-    vis('countries-fill', layers.coverage);
     vis('admin1-line', layers.admin1);
     vis('districts-line', layers.districts);
-    vis('gt-ipc', layers.ipc);
-    vis('markets', layers.markets);
-    vis('zones-fill', layers.zones);
-    vis('zones-line', layers.zones);
+    vis('gt-ipc', layers.gtIpc);
+    vis('markets', layers.fao);
     vis('wfp-markets', layers.wfp);
   }
 
-  function loadStyle(useBasemap) {
-    const style = useBasemap && !basemapFailed ? basemapUrl() : blankStyle();
-    map.setStyle(style);
+  function loadStyle() {
+    ready = false;
+    map.setStyle(layers.basemap && !basemapFailed ? basemapUrl(dark) : blankStyle());
+  }
+
+  function fit(duration = 600) {
+    if (map && bounds[country]) map.fitBounds(bounds[country], { padding: 32, duration });
   }
 
   onMount(() => {
     map = new maplibregl.Map({
       container,
-      style: basemap ? basemapUrl() : blankStyle(),
+      style: layers.basemap ? basemapUrl(dark) : blankStyle(),
       center: [22, 6],
       zoom: 2.4,
       attributionControl: { compact: true },
@@ -108,111 +107,116 @@
     if (import.meta.env.DEV) window.__map = map; // for debugging in the browser console
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
     map.addControl(new maplibregl.ScaleControl(), 'bottom-right');
-
     map.on('style.load', () => { addOverlay(); ready = true; });
     map.on('error', (e) => {
-      // basemap unreachable (offline, blocked): fall back to plain background
       if (!basemapFailed && String(e?.error?.message ?? '').match(/openfreemap|Failed to fetch|NetworkError/i)) {
         basemapFailed = true;
         map.setStyle(blankStyle());
       }
     });
 
-    const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 10, className: 'hover-popup' });
-    const hoverable = ['markets', 'wfp-markets', 'gt-ipc', 'zones-fill', 'countries-fill'];
-    const fmt = (v, unit) => (v === null || v === undefined || v === 'null' ? '—' : `${Number(v).toFixed(1)}${unit ? ' ' + unit : ''}`);
+    const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 12, className: 'hover-popup' });
+    const hoverable = () => ['markets', 'wfp-markets', 'gt-ipc', 'zones-fill'].filter((l) => map.getLayer(l));
     map.on('mousemove', (e) => {
-      const f = map.queryRenderedFeatures(e.point, { layers: hoverable.filter((l) => map.getLayer(l)) })[0];
+      if (!ready) return;
+      const f = map.queryRenderedFeatures(e.point, { layers: hoverable() })[0];
       map.getCanvas().style.cursor = f ? 'pointer' : '';
+      map.setFilter('zones-hover', ['==', ['get', 'fnid'], f?.layer.id === 'zones-fill' ? f.properties.fnid : '']);
       if (!f) return popup.remove();
       const p = f.properties;
       let html;
-      if (f.layer.id === 'markets') html = `<b>${p.region}</b>, ${p.country}<br>${p.kind} · ${p.n_series} series · ${p.first}–${p.last}`;
-      else if (f.layer.id === 'wfp-markets') html = `<b>${p.market}</b>, ${p.country}<br>WFP · ${p.n_commodities} commodities · ${p.first}–${p.last}`;
-      else if (f.layer.id === 'gt-ipc') html = `<b>${p.region}</b><br>IPC phase ${p[ipcSource]}`;
-      else if (f.layer.id === 'zones-fill') {
+      if (f.layer.id === 'wfp-markets') html = `<strong>${p.market}</strong><span>WFP market · ${p.n_commodities} commodities · ${p.first}–${p.last}</span>`;
+      else if (f.layer.id === 'markets') html = `<strong>${p.region}</strong><span>FAO price series · ${p.n_series} series</span>`;
+      else if (f.layer.id === 'gt-ipc') html = `<strong>${p.region}</strong><span>IPC phase ${p[ipcSource]}</span>`;
+      else {
         const m = ZONE_METRICS[zoneMetric];
-        html = `<b>${p.zone}</b><br>${m.label}: ${fmt(p[zoneMetric], m.unit)}`;
+        html = `<strong>${p.zone}</strong><span>${m.tab}: ${fmt(p[zoneMetric], m)}</span>`;
       }
-      else html = `<b>${p.country}</b><br>${p.n_datasets} of 8 datasets`;
       popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
     });
-    map.on('mouseout', () => popup.remove());
-
+    map.on('mouseout', () => {
+      popup.remove();
+      if (map.getLayer('zones-hover')) map.setFilter('zones-hover', ['==', ['get', 'fnid'], '']);
+    });
     map.on('click', (e) => {
-      const f = map.queryRenderedFeatures(e.point, { layers: hoverable.filter((l) => map.getLayer(l)) })[0];
-      if (!f) return;
-      if (f.layer.id === 'markets') onselect({ type: 'market', ...f.properties });
-      else if (f.layer.id === 'zones-fill') onselect({ type: 'zone', ...f.properties });
-      else if (f.layer.id === 'wfp-markets') onselect({ type: 'wfp', ...f.properties });
-      else onselect({ type: 'country', country: f.properties.country });
+      if (!ready) return;
+      const f = map.queryRenderedFeatures(e.point, { layers: hoverable() })[0];
+      if (!f) return onselectzone(null);
+      if (f.layer.id === 'wfp-markets' || f.layer.id === 'markets') onselectmarket({ layer: f.layer.id, ...f.properties });
+      else if (f.layer.id === 'zones-fill') onselectzone(f.properties.fnid);
     });
 
-    const mq = matchMedia('(prefers-color-scheme: dark)');
-    const onScheme = () => loadStyle(basemap);
-    mq.addEventListener('change', onScheme);
-    return () => { mq.removeEventListener('change', onScheme); map.remove(); };
+    fetch('/data/countries.geojson').then((r) => r.json()).then((gj) => {
+      for (const f of gj.features) {
+        const b = [Infinity, Infinity, -Infinity, -Infinity];
+        const walk = (c) => (typeof c[0] === 'number'
+          ? ((b[0] = Math.min(b[0], c[0])), (b[1] = Math.min(b[1], c[1])), (b[2] = Math.max(b[2], c[0])), (b[3] = Math.max(b[3], c[1])))
+          : c.forEach(walk));
+        walk(f.geometry.coordinates);
+        bounds[f.properties.country] = [[b[0], b[1]], [b[2], b[3]]];
+      }
+      const first = () => { map.resize(); fit(0); };
+      if (map.loaded()) requestAnimationFrame(first);
+      else map.once('load', first);
+    });
+
+    return () => map.remove();
   });
 
-  $effect(() => { layers.coverage; layers.admin1; layers.districts; layers.ipc; layers.markets; layers.zones; layers.wfp; if (ready) applyVisibility(); });
+  // reactive updates
+  $effect(() => { layers.admin1; layers.districts; layers.gtIpc; layers.fao; layers.wfp; if (ready) applyVisibility(); });
   $effect(() => {
     const key = zoneMetric;
     if (ready && map.getLayer('zones-fill')) map.setPaintProperty('zones-fill', 'fill-color', zoneColor(key, css));
   });
   $effect(() => {
+    const s = ipcSource;
     if (!ready || !map.getLayer('gt-ipc')) return;
-    map.setFilter('gt-ipc', ['all', ['==', ['get', 'country'], 'Guatemala'], ['has', ipcSource]]);
-    map.setPaintProperty('gt-ipc', 'fill-color', ipcColor(ipcSource));
+    map.setFilter('gt-ipc', ['all', ['==', ['get', 'country'], 'Guatemala'], ['has', s]]);
+    map.setPaintProperty('gt-ipc', 'fill-color', gtIpcColor(s));
   });
   $effect(() => {
-    if (!ready || !map.getLayer('countries-line')) return;
-    map.setPaintProperty('countries-line', 'line-width', ['case', ['==', ['get', 'country'], selectedCountry ?? ''], 2.5, 1.2]);
+    const id = selectedZone ?? '';
+    if (ready && map.getLayer('zones-selected')) map.setFilter('zones-selected', ['==', ['get', 'fnid'], id]);
   });
-  // zoom to the selected country
-  let bounds = {};
-  onMount(async () => {
-    const gj = await (await fetch('/data/countries.geojson')).json();
-    for (const f of gj.features) {
-      const b = [Infinity, Infinity, -Infinity, -Infinity];
-      const walk = (c) => (typeof c[0] === 'number'
-        ? (b[0] = Math.min(b[0], c[0]), b[1] = Math.min(b[1], c[1]), b[2] = Math.max(b[2], c[0]), b[3] = Math.max(b[3], c[1]))
-        : c.forEach(walk));
-      walk(f.geometry.coordinates);
-      bounds[f.properties.country] = [[b[0], b[1]], [b[2], b[3]]];
-    }
-    fitInitial();
-  });
-  function fitInitial() {
-    if (!map || !selectedCountry || !bounds[selectedCountry]) return;
-    const fit = () => { map.resize(); map.fitBounds(bounds[selectedCountry], { padding: 40, duration: 0 }); };
-    if (map.loaded()) requestAnimationFrame(fit);
-    else map.once('load', fit);
-    lastCountry = selectedCountry;
-  }
-  let lastCountry = null;
+  let lastCountry = country;
   $effect(() => {
-    if (map && selectedCountry && selectedCountry !== lastCountry && bounds[selectedCountry]) {
-      lastCountry = selectedCountry;
-      map.fitBounds(bounds[selectedCountry], { padding: 40, duration: 600 });
+    const c = country;
+    if (!map) return;
+    if (ready && map.getLayer('countries-line')) {
+      map.setPaintProperty('countries-line', 'line-width', countryWidth());
+      map.setPaintProperty('zones-fill', 'fill-opacity', zoneOpacity());
+      map.setPaintProperty('wfp-markets', 'circle-opacity', ['case', ['==', ['get', 'country'], c], 0.6, 0.25]);
     }
+    if (c !== lastCountry) { lastCountry = c; fit(); }
   });
-
-  let lastBasemap = basemap;
-  $effect(() => { if (map && basemap !== lastBasemap) { lastBasemap = basemap; ready = false; loadStyle(basemap); } });
+  let lastLook = `${dark}|${layers.basemap}`;
+  $effect(() => {
+    const look = `${dark}|${layers.basemap}`;
+    if (map && look !== lastLook) { lastLook = look; loadStyle(); }
+  });
 </script>
 
-<div class="map" bind:this={container}></div>
-{#if basemapFailed}<div class="note">Base map unavailable, showing boundaries only</div>{/if}
+<div class="map" bind:this={container} role="region" aria-label="Map of livelihood zones"></div>
+{#if basemapFailed}<p class="note">Base map unavailable; showing boundaries only.</p>{/if}
 
 <style>
   .map { position: absolute; inset: 0; }
   .note {
-    position: absolute; left: 12px; bottom: 12px; padding: 4px 8px; border-radius: 6px;
-    background: var(--surface-1); color: var(--text-secondary); border: 1px solid var(--border); font-size: 12px;
+    position: absolute; right: 12px; bottom: 36px; padding: 4px 8px; border-radius: 4px;
+    background: var(--surface); color: var(--muted); font-size: var(--fs-small);
   }
   :global(.hover-popup .maplibregl-popup-content) {
-    background: var(--surface-1); color: var(--text-primary); border: 1px solid var(--border);
-    border-radius: 6px; padding: 6px 9px; font-size: 12px; box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+    display: grid; gap: 2px; background: var(--raised); color: var(--text);
+    border-radius: 4px; padding: 7px 10px; font: 400 var(--fs-small) / 1.4 var(--font);
+    box-shadow: var(--shadow); /* taste-skill-ignore: tooltip */
   }
+  :global(.hover-popup .maplibregl-popup-content strong) { font-size: var(--fs-body); font-weight: 600; }
+  :global(.hover-popup .maplibregl-popup-content span) { color: var(--muted); }
   :global(.hover-popup .maplibregl-popup-tip) { display: none; }
+  :global(.maplibregl-ctrl-group) { background: var(--surface) !important; box-shadow: none !important; border: 1px solid var(--border); } /* taste-skill-ignore: removes MapLibre's shadow */
+  :global(.maplibregl-ctrl-group button + button) { border-top: 1px solid var(--border) !important; }
+  :global(.maplibregl-ctrl-scale) { background: color-mix(in srgb, var(--surface) 85%, transparent) !important; color: var(--muted) !important; border-color: var(--muted) !important; font-size: 11px; }
+  :global(.maplibregl-ctrl-attrib) { background: color-mix(in srgb, var(--surface) 85%, transparent) !important; color: var(--muted); font-size: 11px; }
+  :global(.maplibregl-ctrl-attrib a) { color: var(--muted) !important; }
 </style>

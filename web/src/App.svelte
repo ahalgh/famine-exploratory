@@ -1,218 +1,453 @@
 <script>
   import { onMount } from 'svelte';
   import MapView from './lib/MapView.svelte';
-  import CoverageTimeline from './lib/CoverageTimeline.svelte';
-  import { ZONE_METRICS, binLabels, seqVars } from './lib/metrics.js';
+  import CoverageView from './lib/CoverageView.svelte';
+  import { ZONE_METRICS, METRIC_KEYS, colorCss, fmt, isMissing, legendSwatches, spearman } from './lib/metrics.js';
 
-  let coverage = $state(null);
-  let selected = $state({ type: 'country', country: 'Kenya' });
-  let layers = $state({ zones: true, coverage: false, admin1: true, districts: false, ipc: true, markets: false, wfp: true });
-  let zoneMetric = $state('city_motorized_median_h');
-  const metric = $derived(ZONE_METRICS[zoneMetric]);
-  const fmtH = (v) => (v === null || v === undefined ? '—' : `${Number(v).toFixed(1)} h`);
+  const COUNTRIES = ['Kenya', 'Malawi', 'Nigeria', 'Uganda', 'Somalia', 'Guatemala'];
+
+  // ---- state -------------------------------------------------------------------------------
+  let view = $state('zones');
+  let country = $state('Kenya');
+  let zoneMetric = $state('ipc_mean');
+  let selectedZone = $state(null);
+  let selectedMarket = $state(null);
+  let layers = $state({ wfp: true, fao: false, admin1: false, districts: false, gtIpc: true, basemap: true });
   let ipcSource = $state('ipc_fews_2019_02');
-  let basemap = $state(true);
+  let layersOpen = $state(false);
+  let coverage = $state(null);
+  let zonesGeo = $state(null);
+  let wfpCount = $state(null);
+  let loadError = $state(null);
 
-  const country = $derived(selected?.country ?? 'Kenya');
-  const summary = $derived(
-    coverage
-      ? coverage.datasets.map((d) => {
-          const c = coverage.counts[d.key][country];
-          const idx = c.map((n, i) => (n ? i : -1)).filter((i) => i >= 0);
-          return { ...d, rows: d.rows_by_country[country], first: coverage.months[idx[0]], last: coverage.months[idx.at(-1)] };
-        })
-      : []
-  );
+  // theme: auto follows the system; light/dark pin it
+  let theme = $state('auto');
+  let systemDark = $state(false);
+  const dark = $derived(theme === 'dark' || (theme === 'auto' && systemDark));
+  const THEME_NEXT = { auto: 'light', light: 'dark', dark: 'auto' };
 
-  onMount(async () => {
-    coverage = await (await fetch('/data/coverage.json')).json();
+  onMount(() => {
+    try { theme = localStorage.getItem('theme') ?? 'auto'; } catch {}
+    const mq = matchMedia('(prefers-color-scheme: dark)');
+    systemDark = mq.matches;
+    const onChange = (e) => (systemDark = e.matches);
+    mq.addEventListener('change', onChange);
+    Promise.all([
+      fetch('/data/coverage.json').then((r) => r.json()),
+      fetch('/data/zones.geojson').then((r) => r.json()),
+      fetch('/data/wfp_markets.geojson').then((r) => r.json()),
+    ])
+      .then(([c, z, w]) => { coverage = c; zonesGeo = z; wfpCount = w.features.length; })
+      .catch((e) => (loadError = String(e)));
+    return () => mq.removeEventListener('change', onChange);
   });
 
-  const LAYER_LABELS = {
-    zones: 'Livelihood zones',
-    coverage: 'Countries shaded by datasets covered',
-    admin1: 'Admin1 boundaries',
-    districts: 'District boundaries',
-    ipc: 'Guatemala district IPC',
-    markets: 'FAO price markets',
-    wfp: 'WFP markets (prices since 2019)',
-  };
+  $effect(() => {
+    if (theme === 'auto') delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem('theme', theme); } catch {}
+  });
+
+  // ---- derived data ------------------------------------------------------------------------
+  const metric = $derived(ZONE_METRICS[zoneMetric]);
+  const zones = $derived(zonesGeo ? zonesGeo.features.map((f) => f.properties).filter((p) => p.country === country) : []);
+  const ranked = $derived(
+    [...zones].sort((a, b) => {
+      const va = isMissing(a[zoneMetric]) ? -Infinity : Number(a[zoneMetric]);
+      const vb = isMissing(b[zoneMetric]) ? -Infinity : Number(b[zoneMetric]);
+      return vb - va;
+    }),
+  );
+  const zone = $derived(selectedZone ? zones.find((z) => z.fnid === selectedZone) ?? null : null);
+  const hasIpc = $derived(zones.some((z) => !isMissing(z.ipc_mean)));
+
+  const finding = $derived.by(() => {
+    if (!zones.length) return '';
+    const road = ZONE_METRICS.city_motorized_median_h;
+    if (hasIpc) {
+      const top = zones.filter((z) => !isMissing(z.ipc_mean)).sort((a, b) => b.ipc_mean - a.ipc_mean)[0];
+      let s = `${top.zone} has the highest mean IPC since 2020 (${Number(top.ipc_mean).toFixed(2)}), ${fmt(top.city_motorized_median_h, road)} by road from a city of 50,000+.`;
+      const { rho, n } = spearman(zones.map((z) => z.city_motorized_median_h), zones.map((z) => z.ipc_mean));
+      if (rho !== null && n >= 8) {
+        s += Math.abs(rho) >= 0.3
+          ? ` Across ${n} zones, more remote zones average ${rho > 0 ? 'higher' : 'lower'} IPC (Spearman ρ ${rho.toFixed(2)}).`
+          : ` Across ${n} zones, remoteness and IPC are only weakly related (Spearman ρ ${rho.toFixed(2)}).`;
+      }
+      return s;
+    }
+    const far = [...zones].sort((a, b) => (b.city_motorized_median_h ?? 0) - (a.city_motorized_median_h ?? 0))[0];
+    return `No zone-level IPC for ${country}. The most remote zone, ${far.zone}, is ${fmt(far.city_motorized_median_h, road)} by road from a city of 50,000+.`;
+  });
+
+  function selectZone(fnid) {
+    selectedMarket = null;
+    selectedZone = fnid === selectedZone ? null : fnid;
+  }
+  function selectMarket(p) {
+    selectedZone = null;
+    selectedMarket = p;
+  }
+  function setCountry(c) {
+    country = c;
+    selectedZone = null;
+    selectedMarket = null;
+  }
+
+  function onWindowKey(e) {
+    if (e.key === 'Escape') {
+      if (layersOpen) layersOpen = false;
+      else { selectedZone = null; selectedMarket = null; }
+    }
+  }
+  function onWindowClick(e) {
+    if (layersOpen && !e.target.closest('.layers')) layersOpen = false;
+  }
+  const pct = (v) => (isMissing(v) ? '—' : `${Math.round(Number(v) * 100)}%`);
+  const h = (v, digits = 1) => (isMissing(v) ? '—' : `${Number(v).toFixed(digits)} h`);
 </script>
 
+<svelte:window onkeydown={onWindowKey} onclick={onWindowClick} />
+
+{#snippet countrySelect()}
+  <label class="scope">
+    <span class="sr-only">Country</span>
+    <select value={country} onchange={(e) => setCountry(e.currentTarget.value)}>
+      {#each COUNTRIES as c}<option>{c}</option>{/each}
+    </select>
+  </label>
+{/snippet}
+
 <div class="app">
-  <aside>
-    <header>
-      <h1>Data coverage</h1>
-      <p class="muted">Which datasets exist where and when, and how accessible each livelihood zone is. Click a zone, market or country.</p>
-    </header>
-
-    <section>
-      <h2>Layers</h2>
-      {#each Object.keys(LAYER_LABELS) as key}
-        <label class="check"><input type="checkbox" bind:checked={layers[key]} /> {LAYER_LABELS[key]}</label>
-        {#if key === 'zones' && layers.zones}
-          <select bind:value={zoneMetric} aria-label="Zone metric">
-            {#each Object.entries(ZONE_METRICS) as [k, m]}<option value={k}>{m.label}</option>{/each}
-          </select>
-        {/if}
-        {#if key === 'ipc' && layers.ipc}
-          <select bind:value={ipcSource} aria-label="Guatemala IPC source">
-            <option value="ipc_fews_2019_02">Observed, FEWS Feb 2019</option>
-            <option value="ipc_ml1_2018_12">Projected, ML1 Dec 2018</option>
-          </select>
-        {/if}
-      {/each}
-      <label class="check"><input type="checkbox" bind:checked={basemap} /> Base map (OpenFreeMap)</label>
-    </section>
-
-    <section>
-      <h2>Legend</h2>
-      {#if layers.zones}
-        <div class="legend-title">{metric.label}</div>
-        {#if metric.ipc}
-          <div class="legend-row"><span class="ramp ipc-ramp"></span><span class="muted">1 → 4 (mean phase)</span></div>
-        {:else}
-          <div class="bins">
-            {#each binLabels(metric) as label, i}<span class="bin"><span class="swatch-sq" style="background:var({seqVars(metric)[i]})"></span>{label}</span>{/each}
-          </div>
-        {/if}
-        <div class="legend-row"><span class="swatch-sq" style="background:var(--seq-0)"></span><span class="muted">No data</span></div>
-        <p class="muted small">{metric.note}</p>
-      {/if}
-      {#if layers.wfp}<div class="legend-row"><span class="dot small-dot" style="background:var(--text-primary)"></span>WFP market</div>{/if}
-      {#if layers.coverage}<div class="legend-row"><span class="ramp"></span><span class="muted">Countries: 1 → 9 datasets</span></div>{/if}
-      {#if layers.markets}
-        <div class="legend-row"><span class="dot" style="background:var(--series-1)"></span>FAO market town</div>
-        <div class="legend-row"><span class="dot" style="background:var(--series-2)"></span>FAO county/district price (Kenya)</div>
-        <div class="legend-row"><span class="dot" style="background:var(--series-3)"></span>FAO aggregate (national / Nigerian zone)</div>
-        <div class="legend-row muted">FAO dot size = number of price rows</div>
-      {/if}
-      {#if layers.ipc}<div class="legend-row ipc">
-        {#each [1, 2, 3, 4] as p}<span class="swatch" style="background:var(--ipc-{p})"></span>{p}{/each}
-        <span class="muted">IPC phase</span>
-      </div>
-      <div class="legend-row"><span class="swatch-sq" style="background:var(--text-muted)"></span><span class="muted">Guatemala district with no IPC name match</span></div>{/if}
-    </section>
-
-    <section class="details">
-      {#if selected?.type === 'zone'}
-        <h2>{selected.zone}</h2>
-        <p class="muted small">{selected.country} · {selected.lzcode} · map {selected.map_version} · {Number(selected.area_km2).toLocaleString()} km²</p>
-        <table>
-          <thead><tr><th>Travel time to nearest</th><th>Median</th><th>90th pct</th></tr></thead>
-          <tbody>
-            <tr><td>City 50k+, vehicle</td><td class="num">{fmtH(selected.city_motorized_median_h)}</td><td class="num">{fmtH(selected.city_motorized_p90_h)}</td></tr>
-            <tr><td>City 50k+, on foot</td><td class="num">{fmtH(selected.city_walking_median_h)}</td><td class="num">{fmtH(selected.city_walking_p90_h)}</td></tr>
-            <tr><td>WFP market, vehicle</td><td class="num">{fmtH(selected.market_motorized_median_h)}</td><td class="num">{fmtH(selected.market_motorized_p90_h)}</td></tr>
-            <tr><td>WFP market, on foot</td><td class="num">{fmtH(selected.market_walking_median_h)}</td><td class="num">{fmtH(selected.market_walking_p90_h)}</td></tr>
-          </tbody>
-        </table>
-        <dl class="zone-dl">
-          <dt>WFP markets</dt><dd>{selected.wfp_markets_in_zone} inside the zone</dd>
-          {#if selected.ipc_mean !== null && selected.ipc_mean !== undefined}
-            <dt>Observed IPC</dt><dd>mean {Number(selected.ipc_mean).toFixed(2)} over {selected.ipc_reports} reports since 2020; {Math.round(selected.ipc3_share * 100)}% at phase 3+</dd>
-            <dt>Latest</dt><dd>phase {selected.ipc_latest} ({selected.ipc_latest_date})</dd>
-          {:else}
-            <dt>Observed IPC</dt><dd class="muted">none for this zone</dd>
-          {/if}
-        </dl>
-        <button class="link" onclick={() => (selected = { type: 'country', country: selected.country })}>Show {selected.country} coverage</button>
-      {:else if selected?.type === 'wfp'}
-        <h2>{selected.market}, {selected.country}</h2>
-        <dl>
-          <dt>Source</dt><dd>WFP (HDX), market {selected.market_id}</dd>
-          <dt>Admin</dt><dd>{selected.admin1}{selected.admin2 ? `, ${selected.admin2}` : ''}</dd>
-          <dt>Since 2019</dt><dd>{selected.n_rows} prices · {selected.n_commodities} commodities · {selected.n_months} months</dd>
-          <dt>Period</dt><dd>{selected.first} – {selected.last}</dd>
-        </dl>
-        <button class="link" onclick={() => (selected = { type: 'country', country: selected.country })}>Show {selected.country} coverage</button>
-      {:else if selected?.type === 'market'}
-        <h2>{selected.region}, {selected.country}</h2>
-        <dl>
-          <dt>Location type</dt><dd>{selected.kind}</dd>
-          <dt>Price series</dt><dd>{selected.n_series} ({selected.n_rows} rows)</dd>
-          <dt>Period</dt><dd>{selected.first} – {selected.last} · {selected.n_months} months</dd>
-          <dt>Commodities</dt><dd>{selected.commodities}</dd>
-          {#if selected.admin1}<dt>Admin1</dt><dd>{selected.admin1.replaceAll(';', ', ')}</dd>{/if}
-          <dt>Located by</dt><dd>{selected.source}<br /><span class="muted">{selected.note}</span></dd>
-        </dl>
-        <button class="link" onclick={() => (selected = { type: 'country', country: selected.country })}>Show {selected.country} coverage</button>
+  <nav class="rail" aria-label="Views">
+    <span class="mark" title="Famine exploratory" aria-label="Famine exploratory">
+      <svg viewBox="0 0 20 20" aria-hidden="true">
+        <rect x="3" y="3" width="14" height="3" rx="1" fill="var(--ipc-1)" />
+        <rect x="3" y="7" width="14" height="3" rx="1" fill="var(--ipc-2)" />
+        <rect x="3" y="11" width="14" height="3" rx="1" fill="var(--ipc-3)" />
+        <rect x="3" y="15" width="14" height="3" rx="1" fill="var(--ipc-4)" />
+      </svg>
+    </span>
+    <button class="nav" class:active={view === 'zones'} aria-current={view === 'zones' ? 'page' : undefined} onclick={() => (view = 'zones')}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z" /><path d="M9 4v13.5M15 6.5V20" /></svg>
+      <span class="label">Zones</span>
+    </button>
+    <button class="nav" class:active={view === 'coverage'} aria-current={view === 'coverage' ? 'page' : undefined} onclick={() => (view = 'coverage')}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h16M4 20h10" /></svg>
+      <span class="label">Coverage</span>
+    </button>
+    <span class="spacer"></span>
+    <button class="nav util" onclick={() => (theme = THEME_NEXT[theme])} title="Theme: {theme}" aria-label="Theme: {theme}. Switch to {THEME_NEXT[theme]}">
+      {#if theme === 'auto'}
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 4v16" /><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none" /></svg>
+      {:else if theme === 'light'}
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4" /></svg>
       {:else}
-        <h2>{country}</h2>
-        <table>
-          <thead><tr><th>Dataset</th><th>Rows</th><th>Span</th></tr></thead>
-          <tbody>
-            {#each summary as d}
-              <tr class:empty={!d.rows}>
-                <td>{d.label}</td>
-                <td class="num">{d.rows ? d.rows.toLocaleString() : '—'}</td>
-                <td class="muted">{d.rows ? `${d.first} – ${d.last}` : 'not covered'}</td>
-              </tr>
-            {/each}
-          </tbody>
-        </table>
-        <p class="muted small">CPI is annual (shown across each year's months in the timeline). Soil-moisture regions have no boundaries in the data, so they aren't drawn. Click a livelihood zone for its access and IPC details.</p>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" /></svg>
       {/if}
-    </section>
-  </aside>
+      <span class="label">Theme</span>
+    </button>
+  </nav>
 
   <main>
-    <div class="map-wrap">
-      <MapView {layers} {ipcSource} {zoneMetric} {basemap} selectedCountry={country} onselect={(s) => (selected = s)} />
-    </div>
-    <div class="timeline">
-      <div class="timeline-head">
-        <h2>{country}: rows per month</h2>
-        <select bind:value={() => country, (c) => (selected = { type: 'country', country: c })} aria-label="Country">
-          {#each coverage?.countries ?? [] as c}<option>{c}</option>{/each}
-        </select>
-      </div>
-      {#if coverage}<CoverageTimeline {coverage} {country} />{/if}
-    </div>
+    {#if loadError}
+      <p class="error">Couldn't load the map data ({loadError}). Run <code>python scripts/export_map_data.py</code>, then reload.</p>
+    {:else if view === 'coverage'}
+      {#if coverage}
+        <div class="coverage-wrap">
+          <div class="coverage-scope">{@render countrySelect()}</div>
+          <CoverageView {coverage} {country} />
+        </div>
+      {/if}
+    {:else}
+      <section class="zones">
+        <header class="title-row">
+          <div class="title">
+            <h1>{country} livelihood zones</h1>
+            <p class="finding">{#if zonesGeo}{finding}{:else}<span class="skeleton" style="width: 60%"></span>{/if}</p>
+          </div>
+          {@render countrySelect()}
+        </header>
+
+        <div class="toolbar">
+          <div class="tabs" role="tablist" aria-label="Zone measure">
+            {#each METRIC_KEYS as key}
+              <button role="tab" aria-selected={zoneMetric === key} class:active={zoneMetric === key} onclick={() => (zoneMetric = key)}>
+                {ZONE_METRICS[key].tab}
+              </button>
+            {/each}
+          </div>
+          <div class="layers">
+            <button class="ghost" aria-expanded={layersOpen} aria-controls="layers-panel" onclick={() => (layersOpen = !layersOpen)}>
+              Layers
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            {#if layersOpen}
+              <div class="menu" id="layers-panel" role="group" aria-label="Map layers">
+                <label><input type="checkbox" bind:checked={layers.wfp} /> WFP markets <span class="muted num">{wfpCount ?? ''}</span></label>
+                <label><input type="checkbox" bind:checked={layers.fao} /> FAO price series <span class="muted num">54</span></label>
+                <label><input type="checkbox" bind:checked={layers.admin1} /> Province and state boundaries</label>
+                <label><input type="checkbox" bind:checked={layers.districts} /> District boundaries</label>
+                {#if country === 'Guatemala'}
+                  <label><input type="checkbox" bind:checked={layers.gtIpc} /> District IPC</label>
+                  {#if layers.gtIpc}
+                    <select bind:value={ipcSource} aria-label="Guatemala district IPC source">
+                      <option value="ipc_fews_2019_02">Observed, Feb 2019</option>
+                      <option value="ipc_ml1_2018_12">Projected (ML1), Dec 2018</option>
+                    </select>
+                  {/if}
+                {/if}
+                <label><input type="checkbox" bind:checked={layers.basemap} /> Base map</label>
+              </div>
+            {/if}
+          </div>
+        </div>
+
+        <div class="body">
+          <div class="map-card">
+            {#if zonesGeo}
+              <MapView zones={zonesGeo} {layers} {ipcSource} {zoneMetric} {country} {selectedZone} {dark}
+                onselectzone={selectZone} onselectmarket={selectMarket} />
+            {/if}
+            <div class="legend" aria-label="Legend">
+              <p class="legend-title">{metric.label}</p>
+              <div class="swatches">
+                {#each legendSwatches(metric) as s}
+                  <span class="sw"><i style="background: var({s.var})"></i>{s.label}</span>
+                {/each}
+                <span class="sw"><i style="background: var(--ramp-0)"></i>No data</span>
+              </div>
+              <p class="legend-note">{metric.note}</p>
+            </div>
+          </div>
+
+          <aside class="side" aria-label="Zones">
+            {#if zone}
+              <article class="detail" aria-labelledby="zone-name">
+                <header>
+                  <div>
+                    <h2 id="zone-name">{zone.zone}</h2>
+                    <p class="muted meta">{zone.lzcode} · {Number(zone.area_km2).toLocaleString()} km² · map {zone.map_version}</p>
+                  </div>
+                  <button class="close" aria-label="Clear selection" onclick={() => (selectedZone = null)}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+                  </button>
+                </header>
+                <dl class="kv">
+                  <dt>Mean IPC since 2020</dt>
+                  <dd>{#if isMissing(zone.ipc_mean)}<span class="muted">—</span>{:else}<i class="dot" style="background: {colorCss('ipc_mean', zone.ipc_mean)}"></i>{Number(zone.ipc_mean).toFixed(2)}{/if}</dd>
+                  <dt>Reports at phase 3+</dt>
+                  <dd>{isMissing(zone.ipc3_share) ? '—' : `${pct(zone.ipc3_share)} of ${zone.ipc_reports}`}</dd>
+                  <dt>Latest report</dt>
+                  <dd>{isMissing(zone.ipc_latest) ? '—' : `Phase ${zone.ipc_latest}, ${zone.ipc_latest_date}`}</dd>
+                  <dt>WFP markets in zone</dt>
+                  <dd>{zone.wfp_markets_in_zone}</dd>
+                </dl>
+                <table class="times">
+                  <thead><tr><th>Travel time to nearest</th><th class="num">Median</th><th class="num">90th pct</th></tr></thead>
+                  <tbody>
+                    <tr><td>City 50,000+, by road</td><td class="num">{h(zone.city_motorized_median_h)}</td><td class="num">{h(zone.city_motorized_p90_h)}</td></tr>
+                    <tr><td>City 50,000+, on foot</td><td class="num">{h(zone.city_walking_median_h, 0)}</td><td class="num">{h(zone.city_walking_p90_h, 0)}</td></tr>
+                    <tr><td>WFP market, by road</td><td class="num">{h(zone.market_motorized_median_h)}</td><td class="num">{h(zone.market_motorized_p90_h)}</td></tr>
+                    <tr><td>WFP market, on foot</td><td class="num">{h(zone.market_walking_median_h, 0)}</td><td class="num">{h(zone.market_walking_p90_h, 0)}</td></tr>
+                  </tbody>
+                </table>
+              </article>
+            {:else if selectedMarket}
+              <article class="detail" aria-labelledby="market-name">
+                <header>
+                  <div>
+                    <h2 id="market-name">{selectedMarket.market ?? selectedMarket.region}</h2>
+                    <p class="muted meta">{selectedMarket.layer === 'wfp-markets' ? 'WFP market' : 'FAO price series'} · {selectedMarket.country}</p>
+                  </div>
+                  <button class="close" aria-label="Clear selection" onclick={() => (selectedMarket = null)}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+                  </button>
+                </header>
+                <dl class="kv">
+                  {#if selectedMarket.layer === 'wfp-markets'}
+                    <dt>Area</dt><dd>{selectedMarket.admin2 || selectedMarket.admin1}</dd>
+                    <dt>Commodities since 2019</dt><dd>{selectedMarket.n_commodities}</dd>
+                    <dt>Prices since 2019</dt><dd>{Number(selectedMarket.n_rows).toLocaleString()} over {selectedMarket.n_months} months</dd>
+                  {:else}
+                    <dt>Price series</dt><dd>{selectedMarket.n_series} · {Number(selectedMarket.n_rows).toLocaleString()} rows</dd>
+                    <dt>Located by</dt><dd>{selectedMarket.source}</dd>
+                  {/if}
+                  <dt>Period</dt><dd>{selectedMarket.first} – {selectedMarket.last}</dd>
+                </dl>
+                {#if selectedMarket.commodities}<p class="muted small">{selectedMarket.commodities}</p>{/if}
+              </article>
+            {/if}
+
+            <div class="list-head">
+              <h2>{metric.list}</h2>
+              <span class="muted num">{zones.length}</span>
+            </div>
+            {#if !zonesGeo}
+              <ol class="ranked">{#each Array(6) as _}<li><span class="skeleton" style="width: 80%"></span></li>{/each}</ol>
+            {:else}
+              <ol class="ranked">
+                {#each ranked as z (z.fnid)}
+                  <li>
+                    <button class="row" class:selected={z.fnid === selectedZone} aria-pressed={z.fnid === selectedZone} onclick={() => selectZone(z.fnid)}>
+                      <i class="dot" style="background: {colorCss(zoneMetric, z[zoneMetric])}"></i>
+                      <span class="zone-name">{z.zone}</span>
+                      <span class="value num">{fmt(z[zoneMetric], metric)}</span>
+                      <span class="sub muted">
+                        {#if metric.ipc}{fmt(z.city_motorized_median_h, ZONE_METRICS.city_motorized_median_h)} to a city by road
+                        {:else if isMissing(z.ipc_mean)}No IPC reports
+                        {:else}Mean IPC {Number(z.ipc_mean).toFixed(2)}{/if}
+                      </span>
+                    </button>
+                  </li>
+                {/each}
+              </ol>
+            {/if}
+          </aside>
+        </div>
+      </section>
+    {/if}
   </main>
 </div>
 
 <style>
-  .app { display: grid; grid-template-columns: 320px minmax(0, 1fr); height: 100vh; }
-  aside {
-    background: var(--surface-1); border-right: 1px solid var(--border);
-    overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 18px;
+  .app { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); height: 100vh; }
+
+  /* rail: unlabelled icons; the active view is a 1px accent line on the rail's edge */
+  .rail {
+    display: flex; flex-direction: column; align-items: stretch; gap: 4px; padding: 14px 0;
+    border-right: 1px solid var(--border); background: var(--ground);
   }
-  h1 { font-size: 18px; }
-  h2 { font-size: 13px; margin-bottom: 6px; }
-  .muted { color: var(--text-secondary); }
-  .small { font-size: 12px; margin: 8px 0 0; }
-  header p { margin: 4px 0 0; }
-  .check { display: flex; gap: 6px; align-items: center; margin: 3px 0; cursor: pointer; }
-  select { margin: 4px 0 4px 22px; padding: 3px 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-1); }
-  .legend-row { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
-  .dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--surface-1); box-shadow: 0 0 0 1px var(--border); }
-  .ramp { width: 64px; height: 10px; border-radius: 3px; background: linear-gradient(90deg, var(--seq-1), var(--seq-2), var(--seq-4), var(--seq-6)); }
-  .swatch-sq { width: 12px; height: 12px; border-radius: 3px; flex: none; }
-  .small-dot { width: 8px; height: 8px; border-width: 1px; }
-  .legend-title { font-size: 12px; margin: 2px 0 4px; }
-  .bins { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 10px; font-size: 12px; }
-  .bin { display: flex; align-items: center; gap: 6px; }
-  .ipc-ramp { background: linear-gradient(90deg, var(--ipc-1), var(--ipc-2), var(--ipc-3), var(--ipc-4)); }
-  .zone-dl { margin-top: 8px; }
-  .ipc .swatch { width: 12px; height: 12px; border-radius: 3px; margin-left: 4px; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th { text-align: left; color: var(--text-secondary); font-weight: 500; border-bottom: 1px solid var(--border); padding: 3px 4px; }
-  td { padding: 3px 4px; border-bottom: 1px solid var(--border); vertical-align: top; }
-  td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  tr.empty td:first-child { color: var(--text-muted); }
-  dl { display: grid; grid-template-columns: 92px 1fr; gap: 4px 8px; margin: 0; font-size: 12px; }
-  dt { color: var(--text-secondary); }
-  dd { margin: 0; }
-  .link { margin-top: 10px; background: none; border: none; color: var(--accent); padding: 0; cursor: pointer; }
-  main { display: grid; grid-template-rows: 1fr auto; min-width: 0; }
-  .map-wrap { position: relative; min-height: 300px; }
-  .timeline { min-width: 0; overflow: hidden; background: var(--surface-1); border-top: 1px solid var(--border); padding: 10px 16px 12px; }
-  .timeline-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-  .timeline-head select { margin: 0; }
+  .mark { display: grid; place-items: center; height: 36px; margin-bottom: 14px; }
+  .mark svg { width: 22px; height: 22px; }
+  .nav {
+    position: relative; display: grid; place-items: center; height: 42px; border: 0; background: none;
+    color: var(--muted); transition: color 150ms var(--ease-out);
+  }
+  .nav svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .nav:hover { color: var(--text); }
+  .nav.active { color: var(--text); }
+  .nav.active::after { content: ''; position: absolute; right: -1px; top: 9px; bottom: 9px; width: 1px; background: var(--accent); }
+  .nav .label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .spacer { flex: 1; }
+
+  main { min-width: 0; overflow: auto; }
+
+  /* zones view */
+  .zones { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); height: 100%; padding: 22px var(--pad) var(--pad); gap: 14px; }
+  .title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--gap); }
+  .title { display: grid; gap: 6px; min-width: 0; }
+  h1 { font-size: var(--fs-title); line-height: 1.2; letter-spacing: -0.01em; }
+  .finding { color: var(--muted); font-size: 14px; max-width: 90ch; min-height: 21px; }
+
+  .scope select, .menu select {
+    height: var(--control-height); padding: 0 30px 0 12px; border-radius: 999px; border: 1px solid var(--control);
+    background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center / 14px;
+    appearance: none; cursor: pointer;
+  }
+  .coverage-wrap { position: relative; }
+  .coverage-scope { position: absolute; right: var(--pad); top: 22px; z-index: 2; }
+
+  .toolbar { min-width: 0; display: flex; justify-content: space-between; align-items: flex-end; gap: var(--gap); border-bottom: 1px solid var(--border); }
+  .tabs { display: flex; gap: 22px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
+  .tabs button {
+    position: relative; height: 36px; padding: 0; border: 0; background: none; color: var(--muted); white-space: nowrap;
+    transition: color 150ms var(--ease-out);
+  }
+  .tabs button:hover { color: var(--text); }
+  .tabs button.active { color: var(--text); font-weight: 500; }
+  .tabs button.active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--accent); }
+
+  .layers { position: relative; padding-bottom: 6px; }
+  .ghost {
+    display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 999px;
+    border: 1px solid var(--control); background: none; color: var(--text);
+  }
+  .ghost svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .ghost[aria-expanded='true'] svg { transform: rotate(180deg); }
+  .menu {
+    position: absolute; right: 0; top: calc(100% + 4px); z-index: 20; width: 260px; display: grid; gap: 2px;
+    padding: 8px; border-radius: var(--radius-card); background: var(--raised); box-shadow: var(--shadow); /* taste-skill-ignore: floating menu */
+  }
+  .menu label { display: flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 6px; border-radius: 4px; cursor: pointer; }
+  .menu label:hover { background: color-mix(in srgb, var(--text) 6%, transparent); }
+  .menu label .muted { margin-left: auto; }
+  .menu select { width: calc(100% - 28px); margin: 2px 0 4px 28px; }
+  input[type='checkbox'] { accent-color: var(--accent); width: 14px; height: 14px; margin: 0; }
+
+  .body { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: var(--gap); min-height: 0; }
+  .map-card { position: relative; min-height: 420px; border-radius: var(--radius-card); overflow: hidden; background: var(--surface); }
+  .legend {
+    position: absolute; left: 12px; bottom: 12px; max-width: 340px; padding: 10px 12px; border-radius: 4px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent); display: grid; gap: 6px;
+  }
+  .legend-title { font-size: var(--fs-small); font-weight: 600; }
+  .swatches { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 11px; color: var(--muted); }
+  .sw { display: inline-flex; align-items: center; gap: 4px; }
+  .sw i, .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; flex: none; }
+  .legend-note { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  .side { display: flex; flex-direction: column; min-height: 0; background: var(--surface); border-radius: var(--radius-card); overflow: hidden; }
+  .detail { padding: 16px 18px 18px; border-bottom: 1px solid var(--border); display: grid; gap: 14px; }
+  .detail header { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .detail h2 { font-size: var(--fs-section); line-height: 1.3; }
+  .meta { font-size: var(--fs-small); margin-top: 2px; }
+  .close { flex: none; width: 28px; height: 28px; display: grid; place-items: center; border: 0; border-radius: 4px; background: none; color: var(--muted); }
+  .close:hover { color: var(--text); background: var(--raised); }
+  .close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+  .kv { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; margin: 0; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; text-align: right; display: inline-flex; gap: 6px; align-items: center; justify-content: flex-end; }
+  .times { width: 100%; border-collapse: collapse; }
+  .times th { text-align: left; font-weight: 400; font-size: var(--fs-small); color: var(--muted); padding: 0 0 6px; }
+  .times td { padding: 6px 0; border-top: 1px solid var(--rule); }
+  .times .num { text-align: right; padding-left: 12px; }
+  .small { font-size: var(--fs-small); }
+
+  .list-head { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 18px 8px; }
+  .list-head h2 { font-size: var(--fs-section); }
+  .ranked { list-style: none; margin: 0; padding: 0 8px 8px; overflow-y: auto; min-height: 0; }
+  .ranked li + li .row { border-top-color: var(--rule); }
+  .row {
+    width: 100%; display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; column-gap: 10px; row-gap: 1px;
+    align-items: center; padding: 8px 10px; border: 0; border-top: 1px solid transparent; background: none; text-align: left;
+    border-radius: 4px; transition: background-color 150ms var(--ease-out);
+  }
+  .row:hover { background: var(--raised); }
+  .row.selected { background: var(--raised); box-shadow: inset 1px 0 0 var(--accent); /* taste-skill-ignore: the 1px selection line */ }
+  .zone-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .value { text-align: right; }
+  .sub { grid-column: 2 / -1; font-size: var(--fs-small); }
+
+  .skeleton { display: inline-block; height: 0.9em; border-radius: 3px; background: var(--raised); vertical-align: middle; }
+  .error { padding: var(--pad); color: var(--muted); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* tablet: the list goes under the map */
+  @media (max-width: 1100px) {
+    .zones { height: auto; }
+    .body { grid-template-columns: 1fr; }
+    .map-card { height: 58vh; }
+    .ranked { overflow: visible; }
+  }
+  /* phone: the rail becomes a bottom bar */
   @media (max-width: 760px) {
-    .app { grid-template-columns: 1fr; grid-template-rows: auto 1fr; height: auto; }
-    aside { border-right: none; border-bottom: 1px solid var(--border); }
-    main { height: 80vh; }
+    .app { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; height: 100dvh; }
+    .rail { order: 2; flex-direction: row; justify-content: space-around; padding: 0; border-right: 0; border-top: 1px solid var(--border); }
+    .mark, .spacer { display: none; }
+    .nav { flex: 1; height: 56px; grid-template-rows: auto auto; gap: 2px; }
+    .nav .label { position: static; width: auto; height: auto; clip: auto; font-size: 11px; }
+    .nav.active::after { left: 30%; right: 30%; top: -1px; bottom: auto; width: auto; height: 1px; }
+    .zones { padding: 16px; gap: 12px; }
+    .title-row { flex-direction: column; gap: 10px; }
+    h1 { font-size: 22px; }
+    .toolbar { flex-direction: column; align-items: stretch; border-bottom: 0; gap: 8px; }
+    .tabs { border-bottom: 1px solid var(--border); }
+    .layers { align-self: flex-start; }
+    .map-card { height: 48vh; min-height: 300px; overflow: visible; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+    .map-card :global(.map) { position: relative; inset: auto; height: 100%; border-radius: var(--radius-card); overflow: hidden; }
+    .legend { position: static; max-width: none; background: none; padding: 10px 2px 0; }
+    .ranked { padding: 0 6px 8px; }
+    .list-head { padding: 14px 16px 8px; }
+    .coverage-scope { position: static; padding: 16px 16px 0; }
   }
 </style>
