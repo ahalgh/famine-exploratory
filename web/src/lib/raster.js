@@ -3,11 +3,13 @@
 // channels with alpha 0 where there is no data, in Web Mercator, so colour comes from the CSS tokens
 // at draw time and the exact value under the cursor can be read back.
 
+import { asset } from './paths.js';
+
 const cache = new Map();
 let index = null;
 
 export async function loadIndex() {
-  index ??= await (await fetch('/data/access/index.json')).json();
+  index ??= await (await fetch(asset('/data/access/index.json'))).json();
   return index;
 }
 
@@ -18,7 +20,7 @@ export async function loadSurface(country, layer) {
   if (!meta) return null;
   if (cache.has(meta.url)) return cache.get(meta.url);
   const img = new Image();
-  img.src = meta.url;
+  img.src = asset(meta.url);
   await img.decode();
   const canvas = new OffscreenCanvas(meta.width, meta.height);
   const ctx = canvas.getContext('2d', { colorSpace: 'srgb' });

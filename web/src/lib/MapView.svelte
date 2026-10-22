@@ -3,11 +3,12 @@
   import { onMount } from 'svelte';
   import { ZONE_METRICS, fmt, rampColors, zoneColor } from './metrics.js';
   import { colorize, loadSurface, sample } from './raster.js';
+  import { asset } from './paths.js';
 
   // Serve MapLibre's worker as a static file (copied to public/vendor by `npm run copy-worker`):
   // Vite's dev server injects its client into module scripts it serves from node_modules, which
   // breaks the worker, and pre-bundling breaks MapLibre's relative worker URL.
-  maplibregl.setWorkerUrl('/vendor/maplibre-gl-worker.mjs');
+  maplibregl.setWorkerUrl(asset('/vendor/maplibre-gl-worker.mjs'));
 
   /**
    * Layer order, bottom to top. One fill at a time (IPC by zone, or a 1 km travel-time surface),
@@ -49,13 +50,13 @@
 
   function addOverlay() {
     const src = (id, data) => !map.getSource(id) && map.addSource(id, { type: 'geojson', data });
-    src('countries', '/data/countries.geojson');
-    src('admin1', '/data/admin1.geojson');
-    src('districts', '/data/districts.geojson');
+    src('countries', asset('/data/countries.geojson'));
+    src('admin1', asset('/data/admin1.geojson'));
+    src('districts', asset('/data/districts.geojson'));
     src('zones', zones);
-    src('markets', '/data/markets.geojson');
-    src('fao-areas', '/data/fao_areas.geojson');
-    src('wfp-markets', '/data/wfp_markets.geojson');
+    src('markets', asset('/data/markets.geojson'));
+    src('fao-areas', asset('/data/fao_areas.geojson'));
+    src('wfp-markets', asset('/data/wfp_markets.geojson'));
 
     // fills
     map.addLayer({ id: 'zones-fill', type: 'fill', source: 'zones',
@@ -208,7 +209,7 @@
       else if (f.layer.id === 'zones-fill') onselectzone(f.properties.fnid, f.properties.country);
     });
 
-    fetch('/data/countries.geojson').then((r) => r.json()).then((gj) => {
+    fetch(asset('/data/countries.geojson')).then((r) => r.json()).then((gj) => {
       for (const f of gj.features) {
         const b = [Infinity, Infinity, -Infinity, -Infinity];
         const walk = (c) => (typeof c[0] === 'number'

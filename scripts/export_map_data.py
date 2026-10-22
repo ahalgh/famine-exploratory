@@ -92,7 +92,7 @@ def export_access_rasters():
             right, bottom = left + t.a * w, top + t.e * h
             lons, lats = warp_xy("EPSG:3857", "EPSG:4326", [left, right, right, left], [top, top, bottom, bottom])
             index.setdefault(country, {})[layer] = {
-                "url": f"/data/access/{name}", "width": w, "height": h,
+                "url": f"data/access/{name}", "width": w, "height": h,
                 "coordinates": [[round(x, 6), round(y, 6)] for x, y in zip(lons, lats)],  # TL, TR, BR, BL
             }
     (out_dir / "index.json").write_text(json.dumps(index))

@@ -4,6 +4,7 @@
   import CoverageView from './lib/CoverageView.svelte';
   import TimeBar from './lib/TimeBar.svelte';
   import ZoneHistory from './lib/ZoneHistory.svelte';
+  import { asset } from './lib/paths.js';
   import { ZONE_METRICS, METRIC_KEYS, colorCss, fmt, isMissing, legendSwatches, spearman } from './lib/metrics.js';
 
   const COUNTRIES = ['Kenya', 'Malawi', 'Nigeria', 'Uganda', 'Somalia', 'Guatemala'];
@@ -52,11 +53,11 @@
     const onChange = (e) => (systemDark = e.matches);
     mq.addEventListener('change', onChange);
     Promise.all([
-      fetch('/data/coverage.json').then((r) => r.json()),
-      fetch('/data/zones.geojson').then((r) => r.json()),
-      fetch('/data/wfp_markets.geojson').then((r) => r.json()),
-      fetch('/data/markets.geojson').then((r) => r.json()),
-      fetch('/data/fao_areas.geojson').then((r) => r.json()),
+      fetch(asset('/data/coverage.json')).then((r) => r.json()),
+      fetch(asset('/data/zones.geojson')).then((r) => r.json()),
+      fetch(asset('/data/wfp_markets.geojson')).then((r) => r.json()),
+      fetch(asset('/data/markets.geojson')).then((r) => r.json()),
+      fetch(asset('/data/fao_areas.geojson')).then((r) => r.json()),
     ])
       .then(([c, z, w, fm, fa]) => {
         coverage = c; zonesGeo = z; wfpCount = w.features.length;
@@ -64,7 +65,7 @@
         faoAreas = fa.features.map((f) => f.properties);
       })
       .catch((e) => (loadError = String(e)));
-    fetch('/data/history.json').then((r) => r.json()).then((h) => (history = h)).catch(() => {});
+    fetch(asset('/data/history.json')).then((r) => r.json()).then((h) => (history = h)).catch(() => {});
     return () => { mq.removeEventListener('change', onChange); removeEventListener('hashchange', readHash); };
   });
 
@@ -213,14 +214,6 @@
 
 <div class="app">
   <nav class="rail" aria-label="Views">
-    <span class="mark" title="Famine exploratory" aria-label="Famine exploratory">
-      <svg viewBox="0 0 20 20" aria-hidden="true">
-        <rect x="3" y="3" width="14" height="3" rx="1" fill="var(--ipc-1)" />
-        <rect x="3" y="7" width="14" height="3" rx="1" fill="var(--ipc-2)" />
-        <rect x="3" y="11" width="14" height="3" rx="1" fill="var(--ipc-3)" />
-        <rect x="3" y="15" width="14" height="3" rx="1" fill="var(--ipc-4)" />
-      </svg>
-    </span>
     <button class="nav" class:active={view === 'zones'} aria-current={view === 'zones' ? 'page' : undefined} onclick={() => (view = 'zones')}>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z" /><path d="M9 4v13.5M15 6.5V20" /></svg>
       <span class="label">Zones</span>
@@ -453,8 +446,6 @@
     display: flex; flex-direction: column; align-items: stretch; gap: 4px; padding: 14px 0;
     border-right: 1px solid var(--border); background: var(--ground);
   }
-  .mark { display: grid; place-items: center; height: 36px; margin-bottom: 14px; }
-  .mark svg { width: 22px; height: 22px; }
   .nav {
     position: relative; display: grid; place-items: center; height: 42px; border: 0; background: none;
     color: var(--muted); transition: color 150ms var(--ease-out);
@@ -595,7 +586,7 @@
   @media (max-width: 760px) {
     .app { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; height: 100dvh; }
     .rail { order: 2; flex-direction: row; justify-content: space-around; padding: 0; border-right: 0; border-top: 1px solid var(--border); }
-    .mark, .spacer { display: none; }
+    .spacer { display: none; }
     .nav { flex: 1; height: 56px; grid-template-rows: auto auto; gap: 2px; }
     .nav .label { position: static; width: auto; height: auto; clip: auto; font-size: 11px; }
     .nav.active::after { left: 30%; right: 30%; top: -1px; bottom: auto; width: auto; height: 1px; }
