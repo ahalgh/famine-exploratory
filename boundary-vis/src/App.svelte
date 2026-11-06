@@ -53,24 +53,6 @@
   const n = (x) => (x === null || x === undefined ? '—' : Math.round(x).toLocaleString());
   const cells = (x) => (x === null || x === undefined ? '—' : x < 10 ? x.toFixed(2) : Math.round(x).toLocaleString());
 
-  const recs = $derived.by(() => {
-    if (!s) return [];
-    const out = [];
-    out.push(s.hfid_nested_share >= 0.7
-      ? `Use the HFID admin-2 units as the common target: ${pct(s.hfid_nested_share)} sit at least 80% inside one livelihood zone, so zone-level FEWS IPC maps onto them by area.`
-      : `HFID units often straddle livelihood zones (only ${pct(s.hfid_nested_share)} sit 80% inside one): split zone-level IPC by area share instead of assigning whole zones.`);
-    out.push(s.hfid_below_one_smap_cell >= 0.5
-      ? `${pct(s.hfid_below_one_smap_cell)} of HFID units are smaller than one 36 km SMAP cell, so soil moisture cannot vary within them: aggregate it to zones (median ${cells(s.units.zones.median_smap_cells)} cells each) or use 9 km SMAP.`
-      : `HFID units span a median ${cells(s.units.hfid.median_smap_cells)} SMAP cells, enough to average soil moisture per unit.`);
-    out.push(s.hfid_with_any_market < 0.5
-      ? `Only ${pct(s.hfid_with_any_market)} of units contain a price market: borrow prices from the nearest market (by travel time) rather than joining by location.`
-      : `${pct(s.hfid_with_any_market)} of units contain a price market; the rest need prices from a neighbour.`);
-    out.push(s.hfid_gb_median_iou < 0.5
-      ? `HFID units do not match the geoBoundaries districts (median overlap ${s.hfid_gb_median_iou.toFixed(2)}): use HFID's own geometry, not geoBoundaries, for the target.`
-      : `HFID units mostly match the geoBoundaries districts (median overlap ${s.hfid_gb_median_iou.toFixed(2)}).`);
-    if (s.hfid_months.months_fews) out.push(`HFID carries FEWS IPC for up to ${s.hfid_months.months_fews} months per unit (${s.hfid_span[0]} to ${s.hfid_span[1]}).`);
-    return out;
-  });
 
   const table = $derived(s ? [
     { label: 'HFID admin-2 units', cls: 'k-hfid', count: s.units.hfid.n, km2: s.units.hfid.median_km2, cells: s.units.hfid.median_smap_cells },
@@ -86,7 +68,7 @@
   <header class="top">
     <div class="title">
       <h1>{country} boundaries</h1>
-      <p class="muted">How the units behind each dataset line up, and what that means for putting IPC and other targets on one common unit.</p>
+      <p class="muted">Geographical inconsistencies between different measurement units.</p>
     </div>
     <div class="controls">
       <select bind:value={country} aria-label="Country" onchange={() => (selected = null)}>
@@ -95,10 +77,6 @@
       <button class="ghost" onclick={() => (theme = { auto: 'light', light: 'dark', dark: 'auto' }[theme])}>Theme: {theme}</button>
     </div>
   </header>
-
-  <section class="recs" aria-label="Normalisation recommendations">
-    {#each recs as r}<p>{r}</p>{/each}
-  </section>
 
   <div class="body">
     <div class="map-card">
@@ -201,15 +179,13 @@
 </div>
 
 <style>
-  .app { display: grid; grid-template-rows: auto auto minmax(0, 1fr); height: 100vh; padding: 20px 24px 24px; gap: 12px; }
+  .app { display: grid; grid-template-rows: auto minmax(0, 1fr); height: 100vh; padding: 20px 24px 24px; gap: 12px; }
   .top { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
   .title { display: grid; gap: 4px; }
   h1 { font-size: var(--fs-title); line-height: 1.2; letter-spacing: -0.01em; }
   h2 { font-size: var(--fs-section); }
   .controls { display: flex; gap: 8px; align-items: center; }
   select, .ghost { height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--control); background: var(--surface); color: var(--text); }
-  .recs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px 20px; }
-  .recs p { font-size: 13px; line-height: 1.45; padding-left: 10px; border-left: 1px solid var(--accent); }
   .body { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 20px; min-height: 0; }
   .map-card { position: relative; border-radius: var(--radius-card); overflow: hidden; background: var(--surface); min-height: 420px; }
   .key {
