@@ -9,6 +9,11 @@
       terms: 'Famine Early Warning Systems Network (FEWS NET), fews.net. Cite FEWS NET as the source.',
     },
     {
+      name: 'FEWS NET livelihood zone profiles',
+      use: 'Guatemala only, from the November 2016 profiles: the "Food bought" and "Labour income" measures and each zone\'s livelihood profile (seasonal calendar, food and income sources by wealth group, hazards). Shares marked ≈ were measured from the reports\' charts by this project.',
+      terms: 'Famine Early Warning Systems Network (FEWS NET), fews.net. Cite FEWS NET as the source.',
+    },
+    {
       name: 'WFP market prices (VAM)',
       use: 'WFP market locations, and a staple-price index per market deflated with World Bank CPI.',
       terms: 'World Food Programme, via the Humanitarian Data Exchange (data.humdata.org). CC BY-IGO.',
