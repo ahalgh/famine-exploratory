@@ -43,7 +43,7 @@ else
   git branch -f gh-pages "$ROOT_COMMIT"
   git worktree add "$TMP" gh-pages
 fi
-rsync -a --delete --exclude .git "$OUT/" "$TMP/"
+rsync -a --delete --exclude .git --exclude boundary-vis "$OUT/" "$TMP/"  # boundary-vis/ is published separately
 cd "$TMP"
 git add -A
 if git diff --cached --quiet; then
