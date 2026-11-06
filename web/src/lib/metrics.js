@@ -52,6 +52,26 @@ export const ZONE_METRICS = {
     bins: [2, 4, 8, 16, 32],
     note: '1 km cells. WFP places markets where it operates, so short times partly reflect WFP presence, not access.',
   },
+  lh_purchase_poorest: {
+    tab: 'Food bought',
+    list: 'Zones by share of food bought, poorest group',
+    label: "Share of the poorest group's food that is bought",
+    unit: '%',
+    digits: 0,
+    bins: [20, 40, 60, 80, 90],
+    livelihood: true,
+    note: 'FEWS NET livelihood profile, % of annual food needs. Higher means more exposed to food prices. Often read off the report\'s chart.',
+  },
+  lh_labour_poorest: {
+    tab: 'Labour income',
+    list: 'Zones by share of cash income from casual labour, poorest group',
+    label: "Share of the poorest group's cash income from casual labour",
+    unit: '%',
+    digits: 0,
+    bins: [20, 40, 60, 80, 90],
+    livelihood: true,
+    note: 'FEWS NET livelihood profile: farm plus other casual labour, % of annual cash income. Higher means more exposed to labour demand.',
+  },
 };
 
 /** The ramp colours a raster uses, resolved from CSS custom properties. */
@@ -68,7 +88,7 @@ export const isMissing = (v) => v === null || v === undefined || v === 'null' ||
 export function fmt(v, m) {
   if (isMissing(v)) return '—';
   const s = Number(v).toFixed(m.digits);
-  return m.unit ? `${s} ${m.unit}` : s;
+  return m.unit === '%' ? `${s}%` : m.unit ? `${s} ${m.unit}` : s;
 }
 
 export function binLabels(m) {

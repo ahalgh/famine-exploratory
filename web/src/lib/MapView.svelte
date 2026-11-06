@@ -113,7 +113,7 @@
     vis('zones-line', layers.zoneLines);
     vis('admin1-line', layers.admin1);
     vis('districts-line', layers.districts);
-    vis('gt-ipc', layers.gtIpc && !isRaster());
+    vis('gt-ipc', layers.gtIpc && Boolean(ZONE_METRICS[zoneMetric].ipc)); // district IPC belongs to the IPC view only
     for (const id of ['markets', 'markets-label', 'fao-areas-line', 'fao-areas-label']) vis(id, layers.fao);
     vis('wfp-markets', layers.wfp);
   }
@@ -184,15 +184,16 @@
       const p = f.properties;
       const m = ZONE_METRICS[zoneMetric];
       let html;
-      if (f.layer.id === 'wfp-markets') html = `<strong>${p.market}</strong><span>WFP market · ${p.n_commodities} commodities · ${p.first}–${p.last}</span>`;
-      else if (f.layer.id === 'markets') html = `<strong>${p.region}</strong><span>FAO prices for this town · ${p.n_series} series · ${p.first}–${p.last}</span>`;
-      else if (f.layer.id === 'fao-areas-label') html = `<strong>${p.region}</strong><span>FAO prices for this area (${p.scope}) · ${p.n_series} series</span>`;
+      if (f.layer.id === 'wfp-markets') html = `<strong>${p.market}</strong><span>WFP market, ${p.n_commodities} commodities, ${p.first}–${p.last}</span>`;
+      else if (f.layer.id === 'markets') html = `<strong>${p.region}</strong><span>FAO prices for this town, ${p.n_series} series, ${p.first}–${p.last}</span>`;
+      else if (f.layer.id === 'fao-areas-label') html = `<strong>${p.region}</strong><span>FAO prices for this area (${p.scope}), ${p.n_series} series</span>`;
       else if (f.layer.id === 'gt-ipc') html = `<strong>${p.region}</strong><span>IPC phase ${p[ipcSource]}</span>`;
       else if (m.raster) {
         const here = sample(surface, e.lngLat.lng, e.lngLat.lat);
         const hereText = here === null ? 'No data here' : `${fmt(here / 60, { ...m, digits: here < 600 ? 1 : 0 })} from here`;
-        html = `<strong>${hereText}</strong><span>${p.zone} · zone median ${fmt(p[zoneMetric], m)}</span>`;
-      } else html = `<strong>${p.zone}</strong><span>${p.ipc_label ?? m.tab}: ${p.ipc_fill === null || p.ipc_fill === undefined ? 'no report' : fmt(p.ipc_fill, { ...m, digits: Number.isInteger(p.ipc_fill) ? 0 : 2 })}</span>`;
+        html = `<strong>${hereText}</strong><span>${p.zone}, zone median ${fmt(p[zoneMetric], m)}</span>`;
+      } else if (m.livelihood) html = `<strong>${p.zone}</strong><span>${m.tab}, poorest group: ${p[zoneMetric] === null || p[zoneMetric] === undefined ? 'no profile' : fmt(p[zoneMetric], m)}</span>`;
+      else html = `<strong>${p.zone}</strong><span>${p.ipc_label ?? m.tab}: ${p.ipc_fill === null || p.ipc_fill === undefined ? 'no report' : fmt(p.ipc_fill, { ...m, digits: Number.isInteger(p.ipc_fill) ? 0 : 2 })}</span>`;
       popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
     });
     map.on('mouseout', () => {

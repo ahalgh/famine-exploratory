@@ -6,3 +6,5 @@ nbformat
 nbconvert
 rasterio
 scikit-image
+anthropic
+pydantic>=2

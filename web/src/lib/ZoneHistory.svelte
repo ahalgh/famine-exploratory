@@ -133,7 +133,7 @@
     </svg>
     <ul class="market-key">
       {#each markets as mk, k}
-        <li><i class:lead={k === 0}></i>{mk.name} <span class="muted">· {mk.series}{mk.km ? ` · ${mk.km} km away` : ' · in zone'}{mk.real ? '' : ' · nominal (no CPI)'}</span></li>
+        <li><i class:lead={k === 0}></i>{mk.name}<span class="muted">: {mk.series}{mk.km ? `, ${mk.km} km away` : ', in zone'}{mk.real ? '' : ', nominal (no CPI)'}</span></li>
       {/each}
     </ul>
   {:else}

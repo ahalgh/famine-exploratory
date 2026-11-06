@@ -65,7 +65,7 @@
           {#each row.counts as n, i}
             <rect x={i + 0.08} y="0" width="0.84" height="1" class:on={n} fill-opacity={n ? opacity(n) : 1}
               role="presentation"
-              onmouseenter={(e) => (hover = { x: e.clientX, y: e.clientY, text: `${row.label} · ${months[i]} · ${n.toLocaleString()} rows` })}
+              onmouseenter={(e) => (hover = { x: e.clientX, y: e.clientY, text: `${row.label}, ${months[i]}: ${n.toLocaleString()} rows` })}
               onmouseleave={() => (hover = null)} />
           {/each}
         </svg>

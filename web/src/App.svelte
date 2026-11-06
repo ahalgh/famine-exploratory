@@ -5,6 +5,7 @@
   import TimeBar from './lib/TimeBar.svelte';
   import ZoneHistory from './lib/ZoneHistory.svelte';
   import SourcesView from './lib/SourcesView.svelte';
+  import LivelihoodProfile from './lib/LivelihoodProfile.svelte';
   import { asset } from './lib/paths.js';
   import { ZONE_METRICS, METRIC_KEYS, colorCss, fmt, isMissing, legendSwatches, spearman } from './lib/metrics.js';
 
@@ -27,6 +28,8 @@
   let loadError = $state(null);
   let history = $state(null);
   let asOf = $state(null); // a report month 'YYYY-MM', 'mean', or null for the latest report
+  let livelihood = $state({}); // FEWS NET livelihood profiles by zone FNID (scripts/export_livelihood.py)
+  let livelihoodReady = $state(false);
 
   // theme: auto follows the system; light/dark pin it
   let theme = $state('auto');
@@ -67,6 +70,8 @@
       })
       .catch((e) => (loadError = String(e)));
     fetch(asset('/data/history.json')).then((r) => r.json()).then((h) => (history = h)).catch(() => {});
+    fetch(asset('/data/livelihood.json')).then((r) => r.json()).then((l) => (livelihood = l.zones)).catch(() => {})
+      .finally(() => (livelihoodReady = true));
     return () => { mq.removeEventListener('change', onChange); removeEventListener('hashchange', readHash); };
   });
 
@@ -76,7 +81,7 @@
     if (asOf) h.set('asof', asOf);
     if (theme !== 'auto') h.set('theme', theme);
     const next = `#${h}`;
-    if (location.hash !== next) history.replaceState(null, '', next);
+    if (location.hash !== next) window.history.replaceState(null, '', next); // `history` is the IPC data
   });
 
   $effect(() => {
@@ -113,6 +118,7 @@
         ...f,
         properties: {
           ...f.properties,
+          ...(livelihood[f.properties.fnid]?.metrics ?? {}),
           ipc_fill: shownDate === 'mean' ? f.properties.ipc_mean : phaseAt(f.properties.fnid, shownDate),
           ipc_label: label,
         },
@@ -139,12 +145,29 @@
     }),
   );
   const zone = $derived(selectedZone ? zones.find((z) => z.fnid === selectedZone) ?? null : null);
+  // livelihood measures get a tab only where at least one zone of the country has a profile
+  const hasProfiles = $derived(zones.some((z) => livelihood[z.fnid]));
+  const tabKeys = $derived(METRIC_KEYS.filter((k) => !ZONE_METRICS[k].livelihood || hasProfiles));
+  $effect(() => { if (zonesGeo && livelihoodReady && !tabKeys.includes(zoneMetric)) zoneMetric = 'ipc_mean'; });
+  const profiledCount = $derived(zones.filter((z) => livelihood[z.fnid]).length);
   const hasIpc = $derived(zones.some((z) => !isMissing(z.ipc_mean)));
   const nationalFao = $derived(faoAreas.find((a) => a.country === country && a.scope === 'national average'));
 
   const finding = $derived.by(() => {
     if (!zones.length) return '';
     const road = ZONE_METRICS.city_motorized_median_h;
+    if (metric.livelihood) {
+      const have = zones.filter((z) => !isMissing(z[zoneMetric]));
+      if (!have.length) return `No livelihood profile gives this for ${country}.`;
+      const top = [...have].sort((a, b) => b[zoneMetric] - a[zoneMetric])[0];
+      const low = [...have].sort((a, b) => a[zoneMetric] - b[zoneMetric])[0];
+      let s = `${metric.label}: highest in ${top.zone} (${fmt(top[zoneMetric], metric)}), lowest in ${low.zone} (${fmt(low[zoneMetric], metric)}), across ${have.length} of ${zones.length} zones.`;
+      const both = have.filter((z) => !isMissing(z.ipc_mean));
+      const { rho, n } = spearman(both.map((z) => z[zoneMetric]), both.map((z) => z.ipc_mean));
+      if (rho !== null && n >= 8) s += ` Rank correlation with mean IPC since 2020: ρ ${rho.toFixed(2)} (${n} zones).`;
+      else if (!both.length) s += ' No zone-level IPC to compare against.';
+      return s;
+    }
     if (hasIpc && metric.ipc && shownDate !== 'mean') {
       const at = (d) => zones.map((z) => phaseAt(z.fnid, d)).filter((p) => p !== null);
       const now = at(shownDate);
@@ -264,7 +287,7 @@
 
         <div class="toolbar">
           <div class="tabs" role="tablist" aria-label="Zone measure">
-            {#each METRIC_KEYS as key}
+            {#each tabKeys as key}
               <button role="tab" aria-selected={zoneMetric === key} class:active={zoneMetric === key} onclick={() => (zoneMetric = key)}>
                 {ZONE_METRICS[key].tab}
               </button>
@@ -286,8 +309,8 @@
                 <label><input type="checkbox" bind:checked={layers.districts} /> District boundaries</label>
                 {#if country === 'Guatemala'}
                   <p class="menu-head">Guatemala</p>
-                  <label><input type="checkbox" bind:checked={layers.gtIpc} disabled={Boolean(metric.raster)} /> District IPC (Mean IPC view)</label>
-                  {#if layers.gtIpc && !metric.raster}
+                  <label><input type="checkbox" bind:checked={layers.gtIpc} disabled={!metric.ipc} /> District IPC (IPC view)</label>
+                  {#if layers.gtIpc && metric.ipc}
                     <select bind:value={ipcSource} aria-label="Guatemala district IPC source">
                       <option value="ipc_fews_2019_02">Observed, Feb 2019</option>
                       <option value="ipc_ml1_2018_12">Projected (ML1), Dec 2018</option>
@@ -340,7 +363,7 @@
                 <header>
                   <div>
                     <h2 id="zone-name">{zone.zone}</h2>
-                    <p class="muted meta">{zone.lzcode} · {Number(zone.area_km2).toLocaleString()} km² · map {zone.map_version}</p>
+                    <p class="muted meta">{zone.lzcode}, {Number(zone.area_km2).toLocaleString()} km², map {zone.map_version}</p>
                   </div>
                   <button class="close" aria-label="Clear selection" onclick={() => (selectedZone = null)}>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
@@ -366,6 +389,7 @@
                   </tbody>
                 </table>
                 {#if history}<ZoneHistory {zone} {history} {country} asOf={shownDate} />{/if}
+                {#if livelihood[zone.fnid]}<LivelihoodProfile profile={livelihood[zone.fnid]} />{/if}
               </article>
             {:else if selectedMarket}
               <article class="detail" aria-labelledby="market-name">
@@ -391,7 +415,7 @@
                     <dt>Prices refer to</dt>
                     <dd class="wrap">{selectedMarket.layer === 'fao-town' ? `${selectedMarket.region} (town)` : (selectedMarket.admin1 || selectedMarket.region).replaceAll(';', ', ')}</dd>
                     {#if selectedMarket.layer === 'fao-town'}<dt>Located by</dt><dd>{selectedMarket.source}</dd>{/if}
-                    <dt>Series</dt><dd>{selectedMarket.n_series} · {Number(selectedMarket.n_rows).toLocaleString()} prices</dd>
+                    <dt>Series</dt><dd>{selectedMarket.n_series} series, {Number(selectedMarket.n_rows).toLocaleString()} prices</dd>
                   {/if}
                   <dt>Period</dt><dd>{selectedMarket.first} – {selectedMarket.last}</dd>
                 </dl>
@@ -421,8 +445,9 @@
                       <span class="zone-name">{z.zone}</span>
                       <span class="value num">{metric.ipc ? (isMissing(z.ipc_fill) ? '—' : shownDate === 'mean' ? Number(z.ipc_fill).toFixed(2) : `Phase ${z.ipc_fill}`) : fmt(z[zoneMetric], metric)}</span>
                       <span class="sub muted">
-                        {#if metric.ipc}{shownDate === 'mean' ? '' : `Mean ${isMissing(z.ipc_mean) ? '—' : Number(z.ipc_mean).toFixed(2)} · `}{fmt(z.city_motorized_median_h, ZONE_METRICS.city_motorized_median_h)} to a city by road
-                        {:else}Median; 90th pct {fmt(z[zoneMetric.replace('_median_', '_p90_')], metric)} · {isMissing(z.ipc_mean) ? 'no IPC' : `IPC ${Number(z.ipc_mean).toFixed(2)}`}{/if}
+                        {#if metric.ipc}{shownDate === 'mean' ? '' : `Mean ${isMissing(z.ipc_mean) ? '—' : Number(z.ipc_mean).toFixed(2)}, `}{fmt(z.city_motorized_median_h, ZONE_METRICS.city_motorized_median_h)} to a city by road
+                        {:else if metric.livelihood}{isMissing(z[zoneMetric]) ? 'No profile' : `${z.lh_poorest_group === 'very poor' ? 'Very poor' : 'Poor'} households`}, {isMissing(z.ipc_mean) ? 'no IPC' : `IPC ${Number(z.ipc_mean).toFixed(2)}`}
+                        {:else}Median; 90th pct {fmt(z[zoneMetric.replace('_median_', '_p90_')], metric)}, {isMissing(z.ipc_mean) ? 'no IPC' : `IPC ${Number(z.ipc_mean).toFixed(2)}`}{/if}
                       </span>
                       {#if history && reportDates.length}
                         {@const obs = new Map(history.zones[z.fnid]?.obs ?? [])}
