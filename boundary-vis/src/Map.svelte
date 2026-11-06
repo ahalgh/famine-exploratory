@@ -121,8 +121,8 @@
         'fao-areas-label': () => `<strong>${p.region}</strong><span>FAO price series priced over an area (${p.scope})</span>`,
         'hfid-fill': () => `<strong>${p.admin2 || p.admin1}</strong><span>HFID unit · ${p.admin1} · ${Number(p.smap_cells).toFixed(2)} SMAP cells</span>`,
         zones: () => `<strong>${p.zone}</strong><span>Livelihood zone ${p.fnid}</span>`,
-        'catch-wfp-fill': () => `<strong>${p.market}</strong><span>WFP price catchment · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_km} km away</span>`,
-        'catch-fao-fill': () => `<strong>${p.market}</strong><span>FAO price catchment · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_km} km away</span>`,
+        'catch-wfp-fill': () => `<strong>${p.market}</strong><span>Nearest WFP price market · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_km} km away</span>`,
+        'catch-fao-fill': () => `<strong>${p.market}</strong><span>Nearest FAO price market · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_km} km away</span>`,
       }[f.layer.id]();
       popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
     });

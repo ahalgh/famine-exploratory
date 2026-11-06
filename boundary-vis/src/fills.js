@@ -26,14 +26,14 @@ export const FILLS = {
     ramp: ['--ramp-6', '--ramp-4', '--ramp-2', '--ramp-1'],
   },
   wfp_km: {
-    label: 'Distance to its WFP price market',
+    label: 'Distance to nearest WFP price market',
     question: 'How far is this unit from the WFP market whose price would stand in for it?',
     expr: ['coalesce', ['get', 'wfp_km'], 9999],
     bins: [{ max: 10, label: 'under 10 km' }, { max: 25, label: '10–25 km' }, { max: 50, label: '25–50 km' }, { max: 100, label: '50–100 km' }, { max: 200, label: '100–200 km' }, { max: Infinity, label: '200 km or more' }],
     ramp: ['--ramp-1', '--ramp-2', '--ramp-3', '--ramp-4', '--ramp-5', '--ramp-6'],
   },
   fao_km: {
-    label: 'Distance to its FAO price town',
+    label: 'Distance to nearest FAO price market',
     question: 'How far is this unit from the FAO town series whose price would stand in for it?',
     expr: ['coalesce', ['get', 'fao_km'], 9999],
     bins: [{ max: 10, label: 'under 10 km' }, { max: 25, label: '10–25 km' }, { max: 50, label: '25–50 km' }, { max: 100, label: '50–100 km' }, { max: 200, label: '100–200 km' }, { max: Infinity, label: '200 km or more' }],
