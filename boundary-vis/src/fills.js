@@ -33,10 +33,17 @@ export const FILLS = {
     ramp: ['--ramp-1', '--ramp-2', '--ramp-3', '--ramp-4', '--ramp-5', '--ramp-6'],
   },
   fao_km: {
-    label: 'Distance to nearest FAO price market',
+    label: 'Distance to nearest FAO price market (straight line)',
     question: 'How far is this unit from the FAO town series whose price would stand in for it?',
     expr: ['coalesce', ['get', 'fao_km'], 9999],
     bins: [{ max: 10, label: 'under 10 km' }, { max: 25, label: '10–25 km' }, { max: 50, label: '25–50 km' }, { max: 100, label: '50–100 km' }, { max: 200, label: '100–200 km' }, { max: Infinity, label: '200 km or more' }],
+    ramp: ['--ramp-1', '--ramp-2', '--ramp-3', '--ramp-4', '--ramp-5', '--ramp-6'],
+  },
+  fao_road_h: {
+    label: 'Road time to nearest FAO price market',
+    question: 'How long is the drive from this unit to the FAO town series whose price would stand in for it?',
+    expr: ['coalesce', ['get', 'fao_road_h'], 99],
+    bins: [{ max: 0.5, label: 'under 30 min' }, { max: 1, label: '½–1 h' }, { max: 2, label: '1–2 h' }, { max: 4, label: '2–4 h' }, { max: 8, label: '4–8 h' }, { max: Infinity, label: '8 h or more' }],
     ramp: ['--ramp-1', '--ramp-2', '--ramp-3', '--ramp-4', '--ramp-5', '--ramp-6'],
   },
   months_fews: {

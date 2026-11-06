@@ -29,7 +29,7 @@
 
   function addLayers() {
     const src = (id, file) => !map.getSource(id) && map.addSource(id, { type: 'geojson', data: asset(`/data/${file}.geojson`) });
-    ['countries', 'admin1', 'admin2', 'zones', 'hfid', 'smap_grid', 'fao_towns', 'fao_areas', 'wfp_markets', 'catchments_wfp', 'catchments_fao'].forEach((f) => src(f, f));
+    ['countries', 'admin1', 'admin2', 'zones', 'hfid', 'smap_grid', 'fao_towns', 'fao_areas', 'wfp_markets', 'catchments_wfp', 'catchments_fao', 'catchments_fao_road'].forEach((f) => src(f, f));
 
     map.addLayer({ id: 'hfid-fill', type: 'fill', source: 'hfid', filter: inCountry(),
       paint: { 'fill-color': fillColor(fill, css), 'fill-opacity': fill === 'none' ? 0 : 0.75 } });
@@ -50,10 +50,14 @@
       paint: { 'fill-color': css('--sys-price'), 'fill-opacity': ['case', ['==', ['get', 'market'], selMarket('wfp')], 0.28, 0] } });
     map.addLayer({ id: 'catch-fao-fill', type: 'fill', source: 'catchments_fao', filter: inCountry(),
       paint: { 'fill-color': css('--sys-price'), 'fill-opacity': ['case', ['==', ['get', 'market'], selMarket('fao')], 0.28, 0] } });
+    map.addLayer({ id: 'catch-faoroad-fill', type: 'fill', source: 'catchments_fao_road', filter: inCountry(),
+      paint: { 'fill-color': css('--sys-price'), 'fill-opacity': ['case', ['==', ['get', 'market'], selMarket('fao')], 0.28, 0] } });
     map.addLayer({ id: 'catch-wfp', type: 'line', source: 'catchments_wfp', filter: inCountry(),
       paint: { 'line-color': css('--sys-price'), 'line-width': 1, 'line-opacity': 0.8 } });
     map.addLayer({ id: 'catch-fao', type: 'line', source: 'catchments_fao', filter: inCountry(),
       paint: { 'line-color': css('--sys-price'), 'line-width': 1.8 } });
+    map.addLayer({ id: 'catch-faoroad', type: 'line', source: 'catchments_fao_road', filter: inCountry(),
+      paint: { 'line-color': css('--sys-price'), 'line-width': 2.2, 'line-dasharray': [2.5, 1.5] } });
     map.addLayer({ id: 'selected', type: 'line', source: 'hfid', filter: ['==', ['get', 'hfid'], ''],
       paint: { 'line-color': css('--accent'), 'line-width': 3 } });
     map.addLayer({ id: 'selected-zone', type: 'line', source: 'zones', filter: ['==', ['get', 'fnid'], ''],
@@ -86,11 +90,12 @@
     vis('wfp', layers.wfp);
     for (const id of ['catch-wfp', 'catch-wfp-fill']) vis(id, layers.wfpCatch);
     for (const id of ['catch-fao', 'catch-fao-fill']) vis(id, layers.faoCatch);
+    for (const id of ['catch-faoroad', 'catch-faoroad-fill']) vis(id, layers.faoRoadCatch);
   }
 
   function applyCountry() {
     if (!map?.getLayer('fao')) return;
-    for (const id of ['hfid-fill', 'smap', 'admin2', 'hfid-line', 'admin1', 'zones', 'fao-areas', 'wfp', 'fao', 'fao-label', 'fao-areas-label', 'catch-wfp', 'catch-wfp-fill', 'catch-fao', 'catch-fao-fill']) {
+    for (const id of ['hfid-fill', 'smap', 'admin2', 'hfid-line', 'admin1', 'zones', 'fao-areas', 'wfp', 'fao', 'fao-label', 'fao-areas-label', 'catch-wfp', 'catch-wfp-fill', 'catch-fao', 'catch-fao-fill', 'catch-faoroad', 'catch-faoroad-fill']) {
       map.setFilter(id, inCountry());
     }
     map.setPaintProperty('countries', 'line-width', ['case', inCountry(), 1.8, 0.7]);
@@ -109,7 +114,7 @@
     });
 
     const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 12, className: 'hover-popup' });
-    const hit = () => ['fao', 'wfp', 'fao-areas-label', 'hfid-fill', 'zones', 'catch-fao-fill', 'catch-wfp-fill'].filter((l) => map.getLayer(l) && map.getLayoutProperty(l, 'visibility') !== 'none');
+    const hit = () => ['fao', 'wfp', 'fao-areas-label', 'hfid-fill', 'zones', 'catch-fao-fill', 'catch-faoroad-fill', 'catch-wfp-fill'].filter((l) => map.getLayer(l) && map.getLayoutProperty(l, 'visibility') !== 'none');
     map.on('mousemove', (e) => {
       const f = map.queryRenderedFeatures(e.point, { layers: hit() })[0];
       map.getCanvas().style.cursor = f ? 'pointer' : '';
@@ -122,14 +127,15 @@
         'hfid-fill': () => `<strong>${p.admin2 || p.admin1}</strong><span>HFID unit · ${p.admin1} · ${Number(p.smap_cells).toFixed(2)} SMAP cells</span>`,
         zones: () => `<strong>${p.zone}</strong><span>Livelihood zone ${p.fnid}</span>`,
         'catch-wfp-fill': () => `<strong>${p.market}</strong><span>Nearest WFP price market · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_km} km away</span>`,
-        'catch-fao-fill': () => `<strong>${p.market}</strong><span>Nearest FAO price market · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_km} km away</span>`,
+        'catch-fao-fill': () => `<strong>${p.market}</strong><span>Nearest FAO price market (straight line) · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_km} km away</span>`,
+        'catch-faoroad-fill': () => `<strong>${p.market}</strong><span>Nearest FAO price market (road time) · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_h} h by road</span>`,
       }[f.layer.id]();
       popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
     });
     map.on('mouseout', () => popup.remove());
     map.on('click', (e) => {
       const visible = (l) => map.getLayer(l) && map.getLayoutProperty(l, 'visibility') !== 'none';
-      const f = map.queryRenderedFeatures(e.point, { layers: ['fao', 'wfp', 'catch-fao-fill', 'catch-wfp-fill', 'hfid-fill', 'zones'].filter(visible) })[0];
+      const f = map.queryRenderedFeatures(e.point, { layers: ['fao', 'wfp', 'catch-fao-fill', 'catch-faoroad-fill', 'catch-wfp-fill', 'hfid-fill', 'zones'].filter(visible) })[0];
       if (!f) return onselect(null);
       const p = f.properties;
       if (f.layer.id === 'fao') onselect({ kind: 'market', source: 'fao', market: p.region, country: p.country });
@@ -153,7 +159,7 @@
     return () => map.remove();
   });
 
-  $effect(() => { layers.hfid; layers.zones; layers.admin1; layers.admin2; layers.smap; layers.fao; layers.wfp; layers.wfpCatch; layers.faoCatch; if (ready) applyLayers(); });
+  $effect(() => { layers.hfid; layers.zones; layers.admin1; layers.admin2; layers.smap; layers.fao; layers.wfp; layers.wfpCatch; layers.faoCatch; layers.faoRoadCatch; if (ready) applyLayers(); });
   $effect(() => {
     const f = fill;
     if (!ready || !map.getLayer('hfid-fill')) return;
@@ -165,8 +171,8 @@
     if (!ready || !map.getLayer('selected')) return;
     map.setFilter('selected', ['==', ['get', 'hfid'], s?.kind === 'hfid' ? s.hfid : '']);
     map.setFilter('selected-zone', ['==', ['get', 'fnid'], s?.kind === 'zone' ? s.fnid : '']);
-    for (const source of ['wfp', 'fao']) {
-      map.setPaintProperty(`catch-${source}-fill`, 'fill-opacity', ['case', ['==', ['get', 'market'], selMarket(source)], 0.28, 0]);
+    for (const [layer, source] of [['wfp', 'wfp'], ['fao', 'fao'], ['faoroad', 'fao']]) {
+      map.setPaintProperty(`catch-${layer}-fill`, 'fill-opacity', ['case', ['==', ['get', 'market'], selMarket(source)], 0.28, 0]);
     }
   });
   let lastCountry = null;

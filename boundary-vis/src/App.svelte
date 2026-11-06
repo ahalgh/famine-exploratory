@@ -12,15 +12,16 @@
     { key: 'admin2', label: 'Districts (geoBoundaries)', cls: 'k-a2' },
     { key: 'smap', label: 'SMAP 36 km grid (reference)', cls: 'k-smap' },
     { key: 'fao', label: 'FAO price series (towns and areas)', cls: 'k-fao' },
-    { key: 'faoCatch', label: 'Nearest FAO price market', cls: 'k-catch-fao' },
+    { key: 'faoCatch', label: 'Nearest FAO price market (straight line)', cls: 'k-catch-fao' },
+    { key: 'faoRoadCatch', label: 'Nearest FAO price market (road time)', cls: 'k-catch-faoroad' },
     { key: 'wfp', label: 'WFP markets', cls: 'k-wfp' },
     { key: 'wfpCatch', label: 'Nearest WFP price market', cls: 'k-catch-wfp' },
   ];
 
   let country = $state('Kenya');
   let fill = $state('dominant_share');
-  let layers = $state({ hfid: true, zones: false, admin1: false, admin2: false, smap: false, fao: true, wfp: true, faoCatch: true, wfpCatch: false });
-  let catchments = $state({ wfp: [], fao: [] });
+  let layers = $state({ hfid: true, zones: false, admin1: false, admin2: false, smap: false, fao: true, wfp: true, faoCatch: true, faoRoadCatch: true, wfpCatch: false });
+  let catchments = $state({ wfp: [], fao: [], fao_road: [] });
   let selected = $state(null);
   let summary = $state(null);
   let theme = $state('auto');
@@ -40,7 +41,7 @@
     readHash();
     addEventListener('hashchange', readHash);
     fetch(asset('/data/summary.json')).then((r) => r.json()).then((s) => (summary = s));
-    for (const source of ['wfp', 'fao']) {
+    for (const source of ['wfp', 'fao', 'fao_road']) {
       fetch(asset(`/data/catchments_${source}.geojson`)).then((r) => r.json())
         .then((g) => (catchments[source] = g.features.map((f) => ({ ...f.properties, geometry: undefined }))));
     }
@@ -105,12 +106,13 @@
           {#if selected.kind === 'market'}
             {@const c = catchments[selected.source].find((x) => x.market === selected.market && x.country === selected.country)}
             <p class="muted small">{selected.source === 'wfp' ? 'WFP market' : 'FAO town price series'} · the area nearest to it is shaded on the map</p>
+            {@const r = selected.source === 'fao' ? catchments.fao_road.find((x) => x.market === selected.market && x.country === selected.country) : null}
             {#if c}
               <dl>
-                <dt>Area nearest to it</dt><dd>{n(c.area_km2)} km²</dd>
-                <dt>Distance inside it</dt><dd>median {c.median_km} km · 90th pct {c.p90_km} km</dd>
+                <dt>Area nearest{r ? ', straight line' : ''}</dt><dd>{n(c.area_km2)} km² <span class="muted">(median {c.median_km} km · 90th pct {c.p90_km} km)</span></dd>
+                {#if r}<dt>Area nearest, road time</dt><dd>{n(r.area_km2)} km² <span class="muted">(median {r.median_h} h · 90th pct {r.p90_h} h)</span></dd>{/if}
               </dl>
-              <p class="muted small">Every 1 km cell in the shaded area is closer in a straight line to this market than to any other {selected.source === 'wfp' ? 'WFP market' : 'FAO town series'}, so this is the area its price stands in for.</p>
+              <p class="muted small">Every 1 km cell in the shaded area is closer to this market than to any other {selected.source === 'wfp' ? 'WFP market' : 'FAO town series'}{r ? ' — in a straight line (solid outline) or by road travel time (dashed outline)' : ' in a straight line'}, so this is the area its price stands in for.</p>
             {:else}
               <p class="muted small">No area: the market sits outside the country's land or shares a cell with another market.</p>
             {/if}
@@ -123,7 +125,8 @@
               <dt>geoBoundaries district</dt><dd>{selected.gb_district ?? '—'} <span class="muted">(overlap {selected.gb_iou ? Number(selected.gb_iou).toFixed(2) : '—'})</span></dd>
               <dt>Markets inside</dt><dd>{selected.n_wfp} WFP · {selected.n_fao} FAO</dd>
               <dt>Nearest WFP price market</dt><dd>{selected.wfp_market ?? '—'} <span class="muted">({selected.wfp_km ?? '—'} km{selected.wfp_n_catchments > 1 ? `; the unit is split between ${selected.wfp_n_catchments} markets` : ''})</span></dd>
-              <dt>Nearest FAO price market</dt><dd>{selected.fao_market ?? '—'} <span class="muted">({selected.fao_km ?? '—'} km)</span></dd>
+              <dt>Nearest FAO price market, straight line</dt><dd>{selected.fao_market ?? '—'} <span class="muted">({selected.fao_km ?? '—'} km)</span></dd>
+              <dt>Nearest FAO price market, road time</dt><dd>{selected.fao_road_market ?? '—'} <span class="muted">({selected.fao_road_h ?? '—'} h by road)</span></dd>
               <dt>HFID months</dt><dd>FEWS {selected.months_fews} · IPC/CH {selected.months_ipcch} · FCS {selected.months_fcs}</dd>
               <dt>Latest FEWS IPC</dt><dd>{selected.fews_latest ? `Phase ${Number(selected.fews_latest)} (${selected.fews_latest_month})` : '—'}</dd>
             </dl>
@@ -215,6 +218,7 @@
   .k-fao { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--sys-price); }
   .k-wfp { width: 6px; height: 6px; border-radius: 50%; background: var(--sys-price); }
   .k-catch-fao { width: 18px; border-top: 2px solid var(--sys-price); }
+  .k-catch-faoroad { width: 18px; border-top: 2px dashed var(--sys-price); }
   .k-catch-wfp { width: 18px; border-top: 1px solid var(--sys-price); }
   td i { margin-right: 8px; }
   .side { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; min-height: 0; }

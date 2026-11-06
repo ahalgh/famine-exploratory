@@ -4,9 +4,11 @@ nearest market.
 Every 1 km land cell in the country is assigned to the market nearest to it in a straight line
 (Voronoi cells clipped to land, distances in EPSG:6933). Straight-line distance predicts price co-movement as
 well as road travel time does (reports/access_validation_summary.csv) and is simpler to explain.
-Two sets, computed separately:
+FAO town series are also assigned by road travel time (MAP 2019 motorized friction surface) so the two
+rules can be compared. Sets, computed separately:
     wfp   WFP markets with prices since 2019
-    fao   FAO GIEWS town series (FAO area series already name their area: county, group of states, nation)
+    fao       FAO GIEWS town series (FAO area series already name their area: county, group of states, nation)
+    fao_road  the same towns, nearest by road travel time
 
 Outputs (boundary-vis/public/data/)
     catchments_wfp.geojson, catchments_fao.geojson   one polygon per market: area, travel-time median/p90
@@ -55,7 +57,23 @@ def allocate(grid, points):
     return km, label
 
 
-def polygons(label, hours, grid, markets, source, country):
+def allocate_road(grid, points):
+    """Running minimum over per-market travel-time surfaces: (hours to nearest, index of nearest)."""
+    best = np.full(grid.shape, np.inf)
+    label = np.full(grid.shape, -1, dtype=np.int32)
+    for k, (lon, lat) in enumerate(points):
+        px = grid.pixel(lon, lat)
+        if px is None:
+            continue
+        tt = grid.travel_time([px])
+        better = np.isfinite(tt) & (tt < best)
+        best[better] = tt[better]
+        label[better] = k
+    best[~np.isfinite(best)] = np.nan
+    return best / 60, label
+
+
+def polygons(label, values, grid, markets, source, country, unit="km"):
     rows = []
     for geom, k in shapes(label, mask=label >= 0, transform=grid.transform):
         rows.append({"k": int(k), "geometry": shape(geom)})
@@ -64,12 +82,12 @@ def polygons(label, hours, grid, markets, source, country):
     g = gpd.GeoDataFrame(rows, crs=4326).dissolve("k", as_index=False)
     out = []
     for r in g.itertuples():
-        h = hours[label == r.k]
+        h = values[label == r.k]
         h = h[np.isfinite(h)]
         m = markets.iloc[r.k]
         out.append({"source": source, "country": country, "market": m["name"],
-                    "median_km": round(float(np.median(h)), 1) if h.size else None,
-                    "p90_km": round(float(np.percentile(h, 90)), 1) if h.size else None,
+                    f"median_{unit}": round(float(np.median(h)), 1) if h.size else None,
+                    f"p90_{unit}": round(float(np.percentile(h, 90)), 1) if h.size else None,
                     "geometry": r.geometry})
     g = gpd.GeoDataFrame(out, crs=4326)
     g["area_km2"] = (g.to_crs(6933).area / 1e6).round(0)
@@ -83,29 +101,31 @@ def main():
     fao = loc[loc["kind"] == "town"].rename(columns={"region": "name"})
     hfid = gpd.read_file(OUT / "hfid.geojson")[["hfid", "country", "geometry"]]
 
-    catch = {"wfp": [], "fao": []}
+    catch = {"wfp": [], "fao": [], "fao_road": []}
     unit_stats = {}
     for country in fm.COUNTRIES:
         grid = CostGrid(countries.loc[country, "geometry"], "motorized")
         units = hfid[hfid["country"] == country].reset_index(drop=True)
         unit_id = rasterize(((g, i + 1) for i, g in enumerate(units.geometry)), out_shape=grid.shape,
                             transform=grid.transform, fill=0, dtype="int32")
-        for source, mk in (("wfp", wfp), ("fao", fao)):
+        for key, mk, alloc, unit in (("wfp", wfp, allocate, "km"), ("fao", fao, allocate, "km"),
+                                     ("fao_road", fao, allocate_road, "h")):
+            source = key.split("_")[0]
             m = mk[mk["country"] == country].reset_index(drop=True)
             if m.empty:
                 continue
-            hours, label = allocate(grid, zip(m["lon"], m["lat"]))
-            catch[source].append(polygons(label, hours, grid, m, source, country))
+            hours, label = alloc(grid, zip(m["lon"], m["lat"]))
+            catch[key].append(polygons(label, hours, grid, m, source, country, unit))
             for i, u in units.iterrows():
                 sel = unit_id == i + 1
                 h, lab = hours[sel], label[sel]
                 ok = np.isfinite(h) & (lab >= 0)
                 st = unit_stats.setdefault(u["hfid"], {})
                 if ok.any():
-                    st[f"{source}_km"] = round(float(np.median(h[ok])), 1)
-                    st[f"{source}_market"] = str(m.iloc[np.bincount(lab[ok]).argmax()]["name"])
-                    st[f"{source}_n_catchments"] = int(np.unique(lab[ok]).size)
-            print(f"  {country:9s} {source}: {len(m)} markets")
+                    st[f"{key}_{unit}"] = round(float(np.median(h[ok])), 1)
+                    st[f"{key}_market"] = str(m.iloc[np.bincount(lab[ok]).argmax()]["name"])
+                    st[f"{key}_n_catchments"] = int(np.unique(lab[ok]).size)
+            print(f"  {country:9s} {key}: {len(m)} markets")
 
     for source, parts in catch.items():
         g = pd.concat(parts, ignore_index=True)
