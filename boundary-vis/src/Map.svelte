@@ -45,7 +45,7 @@
       paint: { 'line-color': css('--sys-zone'), 'line-width': 2.2 } });
     map.addLayer({ id: 'countries', type: 'line', source: 'countries',
       paint: { 'line-color': css('--text'), 'line-width': ['case', inCountry(), 1.8, 0.7], 'line-opacity': 0.9 } });
-    // price catchments: the area each market's price stands in for (nearest market by road time)
+    // price catchments: the area each market's price stands in for (nearest market in a straight line)
     map.addLayer({ id: 'catch-wfp-fill', type: 'fill', source: 'catchments_wfp', filter: inCountry(),
       paint: { 'fill-color': css('--sys-price'), 'fill-opacity': ['case', ['==', ['get', 'market'], selMarket('wfp')], 0.28, 0] } });
     map.addLayer({ id: 'catch-fao-fill', type: 'fill', source: 'catchments_fao', filter: inCountry(),
@@ -121,8 +121,8 @@
         'fao-areas-label': () => `<strong>${p.region}</strong><span>FAO price series priced over an area (${p.scope})</span>`,
         'hfid-fill': () => `<strong>${p.admin2 || p.admin1}</strong><span>HFID unit · ${p.admin1} · ${Number(p.smap_cells).toFixed(2)} SMAP cells</span>`,
         zones: () => `<strong>${p.zone}</strong><span>Livelihood zone ${p.fnid}</span>`,
-        'catch-wfp-fill': () => `<strong>${p.market}</strong><span>WFP price catchment · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_h} h by road</span>`,
-        'catch-fao-fill': () => `<strong>${p.market}</strong><span>FAO price catchment · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_h} h by road</span>`,
+        'catch-wfp-fill': () => `<strong>${p.market}</strong><span>WFP price catchment · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_km} km away</span>`,
+        'catch-fao-fill': () => `<strong>${p.market}</strong><span>FAO price catchment · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_km} km away</span>`,
       }[f.layer.id]();
       popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
     });

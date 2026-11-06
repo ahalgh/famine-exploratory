@@ -25,18 +25,18 @@ export const FILLS = {
     bins: [{ max: 0.5, label: 'none' }, { max: 1.5, label: '1' }, { max: 4.5, label: '2–4' }, { max: Infinity, label: '5 or more' }],
     ramp: ['--ramp-6', '--ramp-4', '--ramp-2', '--ramp-1'],
   },
-  wfp_h: {
-    label: 'Road time to its WFP price market',
+  wfp_km: {
+    label: 'Distance to its WFP price market',
     question: 'How far is this unit from the WFP market whose price would stand in for it?',
-    expr: ['coalesce', ['get', 'wfp_h'], 99],
-    bins: [{ max: 0.5, label: 'under 30 min' }, { max: 1, label: '½–1 h' }, { max: 2, label: '1–2 h' }, { max: 4, label: '2–4 h' }, { max: 8, label: '4–8 h' }, { max: Infinity, label: '8 h or more' }],
+    expr: ['coalesce', ['get', 'wfp_km'], 9999],
+    bins: [{ max: 10, label: 'under 10 km' }, { max: 25, label: '10–25 km' }, { max: 50, label: '25–50 km' }, { max: 100, label: '50–100 km' }, { max: 200, label: '100–200 km' }, { max: Infinity, label: '200 km or more' }],
     ramp: ['--ramp-1', '--ramp-2', '--ramp-3', '--ramp-4', '--ramp-5', '--ramp-6'],
   },
-  fao_h: {
-    label: 'Road time to its FAO price town',
+  fao_km: {
+    label: 'Distance to its FAO price town',
     question: 'How far is this unit from the FAO town series whose price would stand in for it?',
-    expr: ['coalesce', ['get', 'fao_h'], 99],
-    bins: [{ max: 0.5, label: 'under 30 min' }, { max: 1, label: '½–1 h' }, { max: 2, label: '1–2 h' }, { max: 4, label: '2–4 h' }, { max: 8, label: '4–8 h' }, { max: Infinity, label: '8 h or more' }],
+    expr: ['coalesce', ['get', 'fao_km'], 9999],
+    bins: [{ max: 10, label: 'under 10 km' }, { max: 25, label: '10–25 km' }, { max: 50, label: '25–50 km' }, { max: 100, label: '50–100 km' }, { max: 200, label: '100–200 km' }, { max: Infinity, label: '200 km or more' }],
     ramp: ['--ramp-1', '--ramp-2', '--ramp-3', '--ramp-4', '--ramp-5', '--ramp-6'],
   },
   months_fews: {

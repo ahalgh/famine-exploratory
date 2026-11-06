@@ -108,9 +108,9 @@
             {#if c}
               <dl>
                 <dt>Catchment area</dt><dd>{n(c.area_km2)} km²</dd>
-                <dt>Road time inside it</dt><dd>median {c.median_h} h · 90th pct {c.p90_h} h</dd>
+                <dt>Distance inside it</dt><dd>median {c.median_km} km · 90th pct {c.p90_km} km</dd>
               </dl>
-              <p class="muted small">Every 1 km cell in the catchment reaches this market faster by road than any other {selected.source === 'wfp' ? 'WFP market' : 'FAO town series'}, so this is the area its price stands in for.</p>
+              <p class="muted small">Every 1 km cell in the catchment is closer in a straight line to this market than to any other {selected.source === 'wfp' ? 'WFP market' : 'FAO town series'}, so this is the area its price stands in for.</p>
             {:else}
               <p class="muted small">No catchment: the market sits outside the country's land or shares a cell with another market.</p>
             {/if}
@@ -122,8 +122,8 @@
               <dt>Size in SMAP cells</dt><dd>{cells(Number(selected.smap_cells))}</dd>
               <dt>geoBoundaries district</dt><dd>{selected.gb_district ?? '—'} <span class="muted">(overlap {selected.gb_iou ? Number(selected.gb_iou).toFixed(2) : '—'})</span></dd>
               <dt>Markets inside</dt><dd>{selected.n_wfp} WFP · {selected.n_fao} FAO</dd>
-              <dt>WFP price source</dt><dd>{selected.wfp_market ?? '—'} <span class="muted">({selected.wfp_h ?? '—'} h by road{selected.wfp_n_catchments > 1 ? `; spans ${selected.wfp_n_catchments} catchments` : ''})</span></dd>
-              <dt>FAO price source</dt><dd>{selected.fao_market ?? '—'} <span class="muted">({selected.fao_h ?? '—'} h by road)</span></dd>
+              <dt>WFP price source</dt><dd>{selected.wfp_market ?? '—'} <span class="muted">({selected.wfp_km ?? '—'} km{selected.wfp_n_catchments > 1 ? `; spans ${selected.wfp_n_catchments} catchments` : ''})</span></dd>
+              <dt>FAO price source</dt><dd>{selected.fao_market ?? '—'} <span class="muted">({selected.fao_km ?? '—'} km)</span></dd>
               <dt>HFID months</dt><dd>FEWS {selected.months_fews} · IPC/CH {selected.months_ipcch} · FCS {selected.months_fcs}</dd>
               <dt>Latest FEWS IPC</dt><dd>{selected.fews_latest ? `Phase ${Number(selected.fews_latest)} (${selected.fews_latest_month})` : '—'}</dd>
             </dl>
@@ -186,15 +186,6 @@
         </section>
       {/if}
 
-      <section class="panel sources">
-        <h2>Sources</h2>
-        <p class="muted small">
-          HFID, the Harmonized Food Insecurity Dataset (admin-2 units and monthly IPC, IPC/CH and food-consumption records) ·
-          FEWS NET livelihood zones · geoBoundaries (CC BY 4.0) · WFP market locations via HDX (CC BY-IGO) ·
-          FAO GIEWS price-series locations (no prices shown) · SMAP EASE-Grid 2.0 36 km grid (NASA) as a reference ·
-          base map OpenFreeMap / OpenStreetMap. An exploratory research view, not an official product.
-        </p>
-      </section>
     </aside>
   </div>
 </div>

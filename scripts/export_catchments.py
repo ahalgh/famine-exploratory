@@ -1,14 +1,16 @@
 """Price catchments: the area each market's price is generalised to when prices are borrowed by
 nearest market.
 
-Every 1 km cell (MAP 2019 motorized friction surface, within the country) is assigned to the market it
-reaches fastest by road. Two sets, computed separately:
+Every 1 km land cell in the country is assigned to the market nearest to it in a straight line
+(Voronoi cells clipped to land, distances in EPSG:6933). Straight-line distance predicts price co-movement as
+well as road travel time does (reports/access_validation_summary.csv) and is simpler to explain.
+Two sets, computed separately:
     wfp   WFP markets with prices since 2019
     fao   FAO GIEWS town series (FAO area series already name their area: county, group of states, nation)
 
 Outputs (boundary-vis/public/data/)
     catchments_wfp.geojson, catchments_fao.geojson   one polygon per market: area, travel-time median/p90
-    hfid_prices.json                                  per HFID unit: road hours to the nearest WFP / FAO market
+    hfid_prices.json                                  per HFID unit: straight-line km to the nearest WFP / FAO market
                                                       (median over the unit) and the market whose catchment
                                                       covers most of it
 Run after scripts/export_boundaries.py:  python scripts/export_catchments.py
@@ -24,7 +26,9 @@ sys.path.insert(0, str(ROOT))
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+from pyproj import Transformer
 from rasterio.features import rasterize, shapes
+from scipy.spatial import cKDTree
 from shapely.geometry import shape
 
 import famine as fm
@@ -33,20 +37,22 @@ from famine.access import CostGrid
 OUT = ROOT / "boundary-vis" / "public" / "data"
 
 
+EQUAL_AREA = Transformer.from_crs(4326, 6933, always_xy=True)
+
+
 def allocate(grid, points):
-    """Running minimum over per-market travel-time surfaces: (hours to nearest, index of nearest)."""
-    best = np.full(grid.shape, np.inf)
+    """Nearest market in a straight line for every land cell: (km to nearest, index of nearest)."""
+    lon, lat = np.array(list(points), dtype=float).T
+    tree = cKDTree(np.column_stack(EQUAL_AREA.transform(lon, lat)))
+    land = np.isfinite(grid.cost)
+    rows, cols = np.nonzero(land)
+    x, y = grid.transform * (cols + 0.5, rows + 0.5)
+    dist, idx = tree.query(np.column_stack(EQUAL_AREA.transform(x, y)))
+    km = np.full(grid.shape, np.nan)
     label = np.full(grid.shape, -1, dtype=np.int32)
-    for k, (lon, lat) in enumerate(points):
-        px = grid.pixel(lon, lat)
-        if px is None:
-            continue
-        tt = grid.travel_time([px])
-        better = np.isfinite(tt) & (tt < best)
-        best[better] = tt[better]
-        label[better] = k
-    best[~np.isfinite(best)] = np.nan
-    return best / 60, label
+    km[rows, cols] = dist / 1000
+    label[rows, cols] = idx
+    return km, label
 
 
 def polygons(label, hours, grid, markets, source, country):
@@ -62,8 +68,8 @@ def polygons(label, hours, grid, markets, source, country):
         h = h[np.isfinite(h)]
         m = markets.iloc[r.k]
         out.append({"source": source, "country": country, "market": m["name"],
-                    "median_h": round(float(np.median(h)), 2) if h.size else None,
-                    "p90_h": round(float(np.percentile(h, 90)), 2) if h.size else None,
+                    "median_km": round(float(np.median(h)), 1) if h.size else None,
+                    "p90_km": round(float(np.percentile(h, 90)), 1) if h.size else None,
                     "geometry": r.geometry})
     g = gpd.GeoDataFrame(out, crs=4326)
     g["area_km2"] = (g.to_crs(6933).area / 1e6).round(0)
@@ -96,7 +102,7 @@ def main():
                 ok = np.isfinite(h) & (lab >= 0)
                 st = unit_stats.setdefault(u["hfid"], {})
                 if ok.any():
-                    st[f"{source}_h"] = round(float(np.median(h[ok])), 2)
+                    st[f"{source}_km"] = round(float(np.median(h[ok])), 1)
                     st[f"{source}_market"] = str(m.iloc[np.bincount(lab[ok]).argmax()]["name"])
                     st[f"{source}_n_catchments"] = int(np.unique(lab[ok]).size)
             print(f"  {country:9s} {source}: {len(m)} markets")
@@ -113,7 +119,8 @@ def main():
     # fold the price fields into hfid.geojson so the map can fill units by them
     full = gpd.read_file(OUT / "hfid.geojson")
     extra = pd.DataFrame.from_dict(unit_stats, orient="index")
-    full = full.drop(columns=[c for c in extra.columns if c in full.columns]).merge(extra, left_on="hfid", right_index=True, how="left")
+    stale = [c for c in full.columns if c in extra.columns or c in ("wfp_h", "fao_h")]
+    full = full.drop(columns=stale).merge(extra, left_on="hfid", right_index=True, how="left")
     (OUT / "hfid.geojson").write_text(full.to_json(drop_id=True))
     print(f"  hfid.geojson updated with {', '.join(extra.columns)}")
 
