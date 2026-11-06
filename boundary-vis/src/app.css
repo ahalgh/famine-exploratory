@@ -135,12 +135,14 @@ button { cursor: pointer; }
   --sys-zone: #eb6834;
   --sys-admin: #2a78d6;
   --sys-smap: #1baf7a;
+  --sys-price: #c2417a;
 }
 :root[data-theme='dark'] {
   --sys-hfid: #f2f2f3;
   --sys-zone: #d95926;
   --sys-admin: #3987e5;
   --sys-smap: #199e70;
+  --sys-price: #e87ba4;
 }
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme='light'])) {
@@ -148,5 +150,6 @@ button { cursor: pointer; }
     --sys-zone: #d95926;
     --sys-admin: #3987e5;
     --sys-smap: #199e70;
+    --sys-price: #e87ba4;
   }
 }

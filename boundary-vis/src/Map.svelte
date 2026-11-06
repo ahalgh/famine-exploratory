@@ -23,11 +23,13 @@
   let bounds = {};
 
   const inCountry = () => ['==', ['get', 'country'], country];
+  // the market whose catchment is highlighted: a selected market or catchment of that source
+  const selMarket = (source) => (selected?.kind === 'market' && selected.source === source ? selected.market : '');
   const blank = () => ({ version: 8, glyphs: GLYPHS, sources: {}, layers: [{ id: 'bg', type: 'background', paint: { 'background-color': css('--ground') } }] });
 
   function addLayers() {
     const src = (id, file) => !map.getSource(id) && map.addSource(id, { type: 'geojson', data: asset(`/data/${file}.geojson`) });
-    ['countries', 'admin1', 'admin2', 'zones', 'hfid', 'smap_grid', 'fao_towns', 'fao_areas', 'wfp_markets'].forEach((f) => src(f, f));
+    ['countries', 'admin1', 'admin2', 'zones', 'hfid', 'smap_grid', 'fao_towns', 'fao_areas', 'wfp_markets', 'catchments_wfp', 'catchments_fao'].forEach((f) => src(f, f));
 
     map.addLayer({ id: 'hfid-fill', type: 'fill', source: 'hfid', filter: inCountry(),
       paint: { 'fill-color': fillColor(fill, css), 'fill-opacity': fill === 'none' ? 0 : 0.75 } });
@@ -43,16 +45,25 @@
       paint: { 'line-color': css('--sys-zone'), 'line-width': 2.2 } });
     map.addLayer({ id: 'countries', type: 'line', source: 'countries',
       paint: { 'line-color': css('--text'), 'line-width': ['case', inCountry(), 1.8, 0.7], 'line-opacity': 0.9 } });
+    // price catchments: the area each market's price stands in for (nearest market by road time)
+    map.addLayer({ id: 'catch-wfp-fill', type: 'fill', source: 'catchments_wfp', filter: inCountry(),
+      paint: { 'fill-color': css('--sys-price'), 'fill-opacity': ['case', ['==', ['get', 'market'], selMarket('wfp')], 0.28, 0] } });
+    map.addLayer({ id: 'catch-fao-fill', type: 'fill', source: 'catchments_fao', filter: inCountry(),
+      paint: { 'fill-color': css('--sys-price'), 'fill-opacity': ['case', ['==', ['get', 'market'], selMarket('fao')], 0.28, 0] } });
+    map.addLayer({ id: 'catch-wfp', type: 'line', source: 'catchments_wfp', filter: inCountry(),
+      paint: { 'line-color': css('--sys-price'), 'line-width': 1, 'line-opacity': 0.8 } });
+    map.addLayer({ id: 'catch-fao', type: 'line', source: 'catchments_fao', filter: inCountry(),
+      paint: { 'line-color': css('--sys-price'), 'line-width': 1.8 } });
     map.addLayer({ id: 'selected', type: 'line', source: 'hfid', filter: ['==', ['get', 'hfid'], ''],
       paint: { 'line-color': css('--accent'), 'line-width': 3 } });
     map.addLayer({ id: 'selected-zone', type: 'line', source: 'zones', filter: ['==', ['get', 'fnid'], ''],
       paint: { 'line-color': css('--accent'), 'line-width': 3 } });
     map.addLayer({ id: 'fao-areas', type: 'line', source: 'fao_areas', filter: inCountry(),
-      paint: { 'line-color': css('--text'), 'line-width': 1.4, 'line-dasharray': [0.6, 1.4] } });
+      paint: { 'line-color': css('--sys-price'), 'line-width': 1.8, 'line-dasharray': [1, 1.5] } });
     map.addLayer({ id: 'wfp', type: 'circle', source: 'wfp_markets', filter: inCountry(),
-      paint: { 'circle-color': css('--text'), 'circle-opacity': 0.75, 'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 1.8, 9, 4] } });
+      paint: { 'circle-color': css('--sys-price'), 'circle-opacity': 0.9, 'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 1.8, 9, 4] } });
     map.addLayer({ id: 'fao', type: 'circle', source: 'fao_towns', filter: inCountry(),
-      paint: { 'circle-color': css('--surface'), 'circle-stroke-color': css('--text'), 'circle-stroke-width': 2,
+      paint: { 'circle-color': css('--surface'), 'circle-stroke-color': css('--sys-price'), 'circle-stroke-width': 2.5,
         'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 4, 9, 7] } });
     map.addLayer({ id: 'fao-label', type: 'symbol', source: 'fao_towns', filter: inCountry(),
       layout: { 'text-field': ['get', 'region'], 'text-font': FONT, 'text-size': 11, 'text-offset': [0, 0.9], 'text-anchor': 'top' },
@@ -73,11 +84,13 @@
     vis('smap', layers.smap);
     for (const id of ['fao', 'fao-label', 'fao-areas', 'fao-areas-label']) vis(id, layers.fao);
     vis('wfp', layers.wfp);
+    for (const id of ['catch-wfp', 'catch-wfp-fill']) vis(id, layers.wfpCatch);
+    for (const id of ['catch-fao', 'catch-fao-fill']) vis(id, layers.faoCatch);
   }
 
   function applyCountry() {
     if (!map?.getLayer('fao')) return;
-    for (const id of ['hfid-fill', 'smap', 'admin2', 'hfid-line', 'admin1', 'zones', 'fao-areas', 'wfp', 'fao', 'fao-label', 'fao-areas-label']) {
+    for (const id of ['hfid-fill', 'smap', 'admin2', 'hfid-line', 'admin1', 'zones', 'fao-areas', 'wfp', 'fao', 'fao-label', 'fao-areas-label', 'catch-wfp', 'catch-wfp-fill', 'catch-fao', 'catch-fao-fill']) {
       map.setFilter(id, inCountry());
     }
     map.setPaintProperty('countries', 'line-width', ['case', inCountry(), 1.8, 0.7]);
@@ -96,7 +109,7 @@
     });
 
     const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 12, className: 'hover-popup' });
-    const hit = () => ['fao', 'wfp', 'fao-areas-label', 'hfid-fill', 'zones'].filter((l) => map.getLayer(l) && map.getLayoutProperty(l, 'visibility') !== 'none');
+    const hit = () => ['fao', 'wfp', 'fao-areas-label', 'hfid-fill', 'zones', 'catch-fao-fill', 'catch-wfp-fill'].filter((l) => map.getLayer(l) && map.getLayoutProperty(l, 'visibility') !== 'none');
     map.on('mousemove', (e) => {
       const f = map.queryRenderedFeatures(e.point, { layers: hit() })[0];
       map.getCanvas().style.cursor = f ? 'pointer' : '';
@@ -108,13 +121,21 @@
         'fao-areas-label': () => `<strong>${p.region}</strong><span>FAO price series priced over an area (${p.scope})</span>`,
         'hfid-fill': () => `<strong>${p.admin2 || p.admin1}</strong><span>HFID unit · ${p.admin1} · ${Number(p.smap_cells).toFixed(2)} SMAP cells</span>`,
         zones: () => `<strong>${p.zone}</strong><span>Livelihood zone ${p.fnid}</span>`,
+        'catch-wfp-fill': () => `<strong>${p.market}</strong><span>WFP price catchment · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_h} h by road</span>`,
+        'catch-fao-fill': () => `<strong>${p.market}</strong><span>FAO price catchment · ${Number(p.area_km2).toLocaleString()} km² · median ${p.median_h} h by road</span>`,
       }[f.layer.id]();
       popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
     });
     map.on('mouseout', () => popup.remove());
     map.on('click', (e) => {
-      const f = map.queryRenderedFeatures(e.point, { layers: ['hfid-fill', 'zones'].filter((l) => map.getLayer(l)) })[0];
-      onselect(f ? { kind: f.layer.id === 'zones' ? 'zone' : 'hfid', ...f.properties } : null);
+      const visible = (l) => map.getLayer(l) && map.getLayoutProperty(l, 'visibility') !== 'none';
+      const f = map.queryRenderedFeatures(e.point, { layers: ['fao', 'wfp', 'catch-fao-fill', 'catch-wfp-fill', 'hfid-fill', 'zones'].filter(visible) })[0];
+      if (!f) return onselect(null);
+      const p = f.properties;
+      if (f.layer.id === 'fao') onselect({ kind: 'market', source: 'fao', market: p.region, country: p.country });
+      else if (f.layer.id === 'wfp') onselect({ kind: 'market', source: 'wfp', market: p.market, country: p.country });
+      else if (f.layer.id.startsWith('catch-')) onselect({ kind: 'market', ...p });
+      else onselect({ kind: f.layer.id === 'zones' ? 'zone' : 'hfid', ...p });
     });
 
     fetch(asset('/data/countries.geojson')).then((r) => r.json()).then((gj) => {
@@ -132,7 +153,7 @@
     return () => map.remove();
   });
 
-  $effect(() => { layers.hfid; layers.zones; layers.admin1; layers.admin2; layers.smap; layers.fao; layers.wfp; if (ready) applyLayers(); });
+  $effect(() => { layers.hfid; layers.zones; layers.admin1; layers.admin2; layers.smap; layers.fao; layers.wfp; layers.wfpCatch; layers.faoCatch; if (ready) applyLayers(); });
   $effect(() => {
     const f = fill;
     if (!ready || !map.getLayer('hfid-fill')) return;
@@ -144,6 +165,9 @@
     if (!ready || !map.getLayer('selected')) return;
     map.setFilter('selected', ['==', ['get', 'hfid'], s?.kind === 'hfid' ? s.hfid : '']);
     map.setFilter('selected-zone', ['==', ['get', 'fnid'], s?.kind === 'zone' ? s.fnid : '']);
+    for (const source of ['wfp', 'fao']) {
+      map.setPaintProperty(`catch-${source}-fill`, 'fill-opacity', ['case', ['==', ['get', 'market'], selMarket(source)], 0.28, 0]);
+    }
   });
   let lastCountry = null;
   $effect(() => {
