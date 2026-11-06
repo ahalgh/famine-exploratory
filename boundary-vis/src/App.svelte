@@ -20,11 +20,11 @@
 
   let country = $state('Kenya');
   let fill = $state('dominant_share');
-  let layers = $state({ hfid: true, zones: false, admin1: false, admin2: false, smap: false, fao: true, wfp: true, faoCatch: true, faoRoadCatch: true, wfpCatch: false });
+  let layers = $state({ hfid: true, zones: false, admin1: false, admin2: false, smap: false, fao: true, wfp: true, faoCatch: true, faoRoadCatch: false, wfpCatch: false });
   let catchments = $state({ wfp: [], fao: [], fao_road: [] });
   let selected = $state(null);
   let summary = $state(null);
-  let theme = $state('auto');
+  let theme = $state('light');
   let systemDark = $state(false);
   const dark = $derived(theme === 'dark' || (theme === 'auto' && systemDark));
 
@@ -52,7 +52,7 @@
   });
   $effect(() => {
     const h = new URLSearchParams({ country, fill });
-    if (theme !== 'auto') h.set('theme', theme);
+    if (theme !== 'light') h.set('theme', theme);
     if (location.hash !== `#${h}`) history.replaceState(null, '', `#${h}`);
   });
 
@@ -82,7 +82,7 @@
       <select bind:value={country} aria-label="Country" onchange={() => (selected = null)}>
         {#each COUNTRIES as c}<option>{c}</option>{/each}
       </select>
-      <button class="ghost" onclick={() => (theme = { auto: 'light', light: 'dark', dark: 'auto' }[theme])}>Theme: {theme}</button>
+      <button class="ghost" onclick={() => (theme = { light: 'dark', dark: 'auto', auto: 'light' }[theme])}>Theme: {theme}</button>
     </div>
   </header>
 
