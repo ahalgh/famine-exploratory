@@ -1,0 +1,1926 @@
+hfid,geoboundaries_district,iou
+Guatemala|Alta Verapaz|Chahal,Chahal,0.568
+Guatemala|Alta Verapaz|Chisec,Chisec,0.523
+Guatemala|Alta Verapaz|Cobán,Cobán,0.741
+Guatemala|Alta Verapaz|Fray Bartolomé de las Casas,Fray Bartolomé de Las Casas,0.814
+Guatemala|Alta Verapaz|Lanquín,Lanquín,0.776
+Guatemala|Alta Verapaz|Panzós,Panzós,0.377
+Guatemala|Alta Verapaz|San Cristóbal Verapaz,San Cristóbal Verapaz,0.839
+Guatemala|Alta Verapaz|San Juan Chamelco,San Juan Chamelco,0.735
+Guatemala|Alta Verapaz|San Pedro Carchá,San Pedro Carchá,0.879
+Guatemala|Alta Verapaz|Santa Cruz Verapaz,Santa Cruz Verapaz,0.626
+Guatemala|Alta Verapaz|Santa María Cahabón,Cahabón,0.708
+Guatemala|Alta Verapaz|Senahú,Senahú,0.801
+Guatemala|Alta Verapaz|Tactic,Tactic,0.771
+Guatemala|Alta Verapaz|Tamahú,Tamahú,0.533
+Guatemala|Alta Verapaz|Tucurú,Tucurú,0.682
+Guatemala|Baja Verapaz|Cubulco,Cubulco,0.684
+Guatemala|Baja Verapaz|Granados,Granados,0.873
+Guatemala|Baja Verapaz|Purulhá,Purulhá,0.638
+Guatemala|Baja Verapaz|Rabinal,Rabinal,0.825
+Guatemala|Baja Verapaz|Salamá,Salamá,0.797
+Guatemala|Baja Verapaz|San Jerónimo,San Jerónimo,0.701
+Guatemala|Baja Verapaz|San Miguel Chicaj,San Miguel Chicaj,0.847
+Guatemala|Baja Verapaz|Santa Cruz El Chol,El Chol,0.866
+Guatemala|Chimaltenango|Acatenango,Acatenango,0.825
+Guatemala|Chimaltenango|Chimaltenango,Chimaltenango,0.708
+Guatemala|Chimaltenango|Comalapa,Comalapa,0.777
+Guatemala|Chimaltenango|El Tejar,El Tejar,0.709
+Guatemala|Chimaltenango|Parramos,Parramos,0.665
+Guatemala|Chimaltenango|Patzicía,Patzicía,0.753
+Guatemala|Chimaltenango|Patzún,Patzún,0.866
+Guatemala|Chimaltenango|Pochuta,Pochuta,0.826
+Guatemala|Chimaltenango|San Andrés Itzapa,San Andrés Itzapa,0.783
+Guatemala|Chimaltenango|San José Poaquil,San José Poaquil,0.835
+Guatemala|Chimaltenango|San Martín Jilotepeque,San Martín Jilotepeque,0.955
+Guatemala|Chimaltenango|Santa Apolonia,Santa Apolonia,0.631
+Guatemala|Chimaltenango|Santa Cruz Balanyá,Santa Cruz Balanyá,0.658
+Guatemala|Chimaltenango|Tecpán Guatemala,Tecpán Guatemala,0.836
+Guatemala|Chimaltenango|Yepocapa,Yepocapa,0.803
+Guatemala|Chimaltenango|Zaragoza,Zaragoza,0.673
+Guatemala|Chiquimula|Camotán,Camotán,0.893
+Guatemala|Chiquimula|Chiquimula,Chiquimula,0.876
+Guatemala|Chiquimula|Concepción Las Minas,Concepción Las Minas,0.845
+Guatemala|Chiquimula|Esquipulas,Esquipulas,0.897
+Guatemala|Chiquimula|Ipala,Ipala,0.791
+Guatemala|Chiquimula|Jocotán,Jocotán,0.863
+Guatemala|Chiquimula|Olopa,Olopa,0.833
+Guatemala|Chiquimula|Quezaltepeque,Quezaltepeque,0.838
+Guatemala|Chiquimula|San Jacinto,San Jacinto,0.721
+Guatemala|Chiquimula|San José La Arada,San José La Arada,0.765
+Guatemala|Chiquimula|San Juan Ermita,San Juan Ermita,0.791
+Guatemala|El Progreso|El Jícaro,El Jícaro,0.786
+Guatemala|El Progreso|Guastatoya,Guastatoya,0.881
+Guatemala|El Progreso|Morazán,Morazán,0.794
+Guatemala|El Progreso|San Agustín Acasaguastlán,San Agustín Acasaguastlán,0.705
+Guatemala|El Progreso|San Antonio La Paz,San Antonio La Paz,0.789
+Guatemala|El Progreso|San Cristóbal Acasaguastlán,San Cristóbal Acasaguastlán,0.779
+Guatemala|El Progreso|Sanarate,Sanarate,0.875
+Guatemala|El Progreso|Sansare,Sansare,0.714
+Guatemala|Escuintla|Escuintla,Escuintla,0.725
+Guatemala|Escuintla|Guanagazapa,Guanagazapa,0.458
+Guatemala|Escuintla|Iztapa,Iztapa,0.371
+Guatemala|Escuintla|La Democracia,La Democracia,0.685
+Guatemala|Escuintla|La Gomera,La Gomera,0.614
+Guatemala|Escuintla|Masagua,Masagua,0.772
+Guatemala|Escuintla|Nueva Concepción,Nueva Concepción,0.929
+Guatemala|Escuintla|Palín,Palín,0.649
+Guatemala|Escuintla|San José,San José,0.558
+Guatemala|Escuintla|San Vicente Pacaya,San Vicente Pacaya,0.726
+Guatemala|Escuintla|Santa Lucía Cotzumalguapa,Santa Lucía Cotzumalguapa,0.868
+Guatemala|Escuintla|Siquinalá,Siquinalá,0.542
+Guatemala|Escuintla|Tiquisate,Tiquisate,0.863
+Guatemala|Guatemala|Amatitlán,Amatitlán,0.612
+Guatemala|Guatemala|Chinautla,Chinautla,0.535
+Guatemala|Guatemala|Chuarrancho,Chuarrancho,0.812
+Guatemala|Guatemala|Fraijanes,Fraijanes,0.674
+Guatemala|Guatemala|Mixco,Mixco,0.723
+Guatemala|Guatemala|Palencia,Palencia,0.738
+Guatemala|Guatemala|Petapa,Petapa,0.496
+Guatemala|Guatemala|San José Pinula,San José Pinula,0.701
+Guatemala|Guatemala|San José del Golfo,San José del Golfo,0.643
+Guatemala|Guatemala|San Juan Sacatepéquez,San Juan Sacatepéquez,0.856
+Guatemala|Guatemala|San Pedro Ayampuc,San Pedro Ayampuc,0.73
+Guatemala|Guatemala|San Pedro Sacatepéquez,San Pedro Sacatepéquez,0.369
+Guatemala|Guatemala|San Raymundo,San Raimundo,0.641
+Guatemala|Guatemala|Santa Catarina Pinula,Santa Catarina Pinula,0.559
+Guatemala|Guatemala|Villa Canales,Villa Canales,0.688
+Guatemala|Guatemala|Villa Nueva,Villa Nueva,0.678
+Guatemala|Guatemala|ZONA 1,Guatemala,0.029
+Guatemala|Guatemala|ZONA 10,Guatemala,0.025
+Guatemala|Guatemala|ZONA 11,Guatemala,0.048
+Guatemala|Guatemala|ZONA 12,Guatemala,0.047
+Guatemala|Guatemala|ZONA 13,Guatemala,0.035
+Guatemala|Guatemala|ZONA 14,Guatemala,0.022
+Guatemala|Guatemala|ZONA 15,Santa Catarina Pinula,0.045
+Guatemala|Guatemala|ZONA 16,Guatemala,0.04
+Guatemala|Guatemala|ZONA 17,Guatemala,0.079
+Guatemala|Guatemala|ZONA 18,Guatemala,0.192
+Guatemala|Guatemala|ZONA 19,Mixco,0.011
+Guatemala|Guatemala|ZONA 2,Chinautla,0.047
+Guatemala|Guatemala|ZONA 22,Guatemala,0.017
+Guatemala|Guatemala|ZONA 24,Santa Catarina Pinula,0.066
+Guatemala|Guatemala|ZONA 25,Guatemala,0.133
+Guatemala|Guatemala|ZONA 3,Guatemala,0.018
+Guatemala|Guatemala|ZONA 4,Guatemala,0.005
+Guatemala|Guatemala|ZONA 5,Guatemala,0.025
+Guatemala|Guatemala|ZONA 6,Guatemala,0.028
+Guatemala|Guatemala|ZONA 7,Guatemala,0.059
+Guatemala|Guatemala|ZONA 8,Guatemala,0.007
+Guatemala|Guatemala|ZONA 9,Guatemala,0.011
+Guatemala|Huehuetenango|Aguacatán,Aguacatán,0.789
+Guatemala|Huehuetenango|Chiantla,Chiantla,0.795
+Guatemala|Huehuetenango|Colotenango,Colotenango,0.406
+Guatemala|Huehuetenango|Concepción Huista,Concepción Huista,0.553
+Guatemala|Huehuetenango|Cuilco,Cuilco,0.783
+Guatemala|Huehuetenango|Huehuetenango,Huehuetenango,0.765
+Guatemala|Huehuetenango|Jacaltenango,Jacaltenango,0.276
+Guatemala|Huehuetenango|La Democracia,La Democracia,0.483
+Guatemala|Huehuetenango|La Libertad,La Democracia,0.25
+Guatemala|Huehuetenango|Malacatancito,Malacatancito,0.908
+Guatemala|Huehuetenango|Nentón,Nentón,0.818
+Guatemala|Huehuetenango|San Antonio Huista,San Antonio Huista,0.278
+Guatemala|Huehuetenango|San Gaspar Ixchil,San Gaspar Ixchil,0.258
+Guatemala|Huehuetenango|San Ildefonso Ixtahuacán,Ixtahuacán,0.663
+Guatemala|Huehuetenango|San Juan Atitán,San Juan Atitán,0.35
+Guatemala|Huehuetenango|San Juan Ixcoy,San Juan Ixcoy,0.7
+Guatemala|Huehuetenango|San Mateo Ixtatán,San Mateo Ixtatán,0.732
+Guatemala|Huehuetenango|San Miguel Acatán,San Miguel Acatán,0.241
+Guatemala|Huehuetenango|San Pedro Necta,San Pedro Necta,0.238
+Guatemala|Huehuetenango|San Rafael La Independencia,San Rafael La Independencia,0.335
+Guatemala|Huehuetenango|San Rafael Petzal,San Rafael Petzal,0.26
+Guatemala|Huehuetenango|San Sebastián Coatán,San Sebastián Coatán,0.476
+Guatemala|Huehuetenango|San Sebastián Huehuetenango,San Sebastián Huehuetenango,0.55
+Guatemala|Huehuetenango|Santa Ana Huista,Santa Ana Huista,0.5
+Guatemala|Huehuetenango|Santa Bárbara,Santa Bárbara,0.736
+Guatemala|Huehuetenango|Santa Cruz Barillas,Barillas,0.797
+Guatemala|Huehuetenango|Santa Eulalia,Santa Eulalia,0.741
+Guatemala|Huehuetenango|Santiago Chimaltenango,Santiago Chimaltenango,0.149
+Guatemala|Huehuetenango|Soloma,Soloma,0.647
+Guatemala|Huehuetenango|Tectitán,Tectitán,0.934
+Guatemala|Huehuetenango|Todos Santos Cuchumatán,Todos Santos Cuchumatán,0.637
+Guatemala|Izabal|?,Lívingston,0.005
+Guatemala|Izabal|El Estor,El Estor,0.74
+Guatemala|Izabal|Livingston,Lívingston,0.721
+Guatemala|Izabal|Los Amates,Los Amates,0.953
+Guatemala|Izabal|Morales,Morales,0.953
+Guatemala|Izabal|Puerto Barrios,Puerto Barrios,0.96
+Guatemala|Izabal|San Luis,Lívingston,0.242
+Guatemala|Jalapa|Jalapa,Jalapa,0.87
+Guatemala|Jalapa|Mataquescuintla,Mataquescuintla,0.796
+Guatemala|Jalapa|Monjas,Monjas,0.829
+Guatemala|Jalapa|San Carlos Alzatate,San Carlos Alzatate,0.658
+Guatemala|Jalapa|San Luis Jilotepeque,San Luis Jilotepeque,0.832
+Guatemala|Jalapa|San Manuel Chaparrón,San Manuel Chaparrón,0.752
+Guatemala|Jalapa|San Pedro Pinula,San Pedro Pinula,0.847
+Guatemala|Jutiapa|Agua Blanca,Agua Blanca,0.727
+Guatemala|Jutiapa|Asunción Mita,Asunción Mita,0.859
+Guatemala|Jutiapa|Atescatempa,Atescatempa,0.77
+Guatemala|Jutiapa|Comapa,Comapa,0.798
+Guatemala|Jutiapa|Conguaco,Conguaco,0.722
+Guatemala|Jutiapa|El Adelanto,El Adelanto,0.735
+Guatemala|Jutiapa|El Progreso,El Progreso,0.692
+Guatemala|Jutiapa|Jalpatagua,Jalpatagua,0.622
+Guatemala|Jutiapa|Jerez,Jerez,0.714
+Guatemala|Jutiapa|Jutiapa,Jutiapa,0.854
+Guatemala|Jutiapa|Moyuta,Moyuta,0.772
+Guatemala|Jutiapa|Pasaco,Pasaco,0.561
+Guatemala|Jutiapa|Quezada,Quesada,0.557
+Guatemala|Jutiapa|San José Acatempa,San José Acatempa,0.568
+Guatemala|Jutiapa|Santa Catarina Mita,Santa Catarina Mita,0.777
+Guatemala|Jutiapa|Yupiltepeque,Yupiltepeque,0.682
+Guatemala|Jutiapa|Zapotitlán,Zapotitlán,0.74
+Guatemala|Petén|Dolores,Dolores,0.387
+Guatemala|Petén|Flores,Flores,0.855
+Guatemala|Petén|La Libertad,La Libertad,0.693
+Guatemala|Petén|Melchor de Mencos,Melchor de Mencos,0.905
+Guatemala|Petén|Poptún,Poptún,0.601
+Guatemala|Petén|San Andrés,San Andrés,0.972
+Guatemala|Petén|San Benito,San Benito,0.236
+Guatemala|Petén|San Francisco,San Francisco,0.222
+Guatemala|Petén|San José,San José,0.803
+Guatemala|Petén|San Luis,San Luis,0.786
+Guatemala|Petén|Santa Ana,Santa Ana,0.394
+Guatemala|Petén|Sayaxché,Sayaxché,0.728
+Guatemala|Quezaltenango|Almolonga,Almolonga,0.621
+Guatemala|Quezaltenango|Cabricán,Cabricán,0.904
+Guatemala|Quezaltenango|Cajolá,Cajolá,0.582
+Guatemala|Quezaltenango|Cantel,Cantel,0.867
+Guatemala|Quezaltenango|Coatepeque,Coatepeque,0.93
+Guatemala|Quezaltenango|Colomba,Colomba,0.857
+Guatemala|Quezaltenango|Concepción Chiquirichapa,Concepción Chiquirichapa,0.693
+Guatemala|Quezaltenango|El Palmar,El Palmar,0.883
+Guatemala|Quezaltenango|Flores Costa Cuca,Flores Costa Cuca,0.814
+Guatemala|Quezaltenango|Génova,Génova,0.863
+Guatemala|Quezaltenango|Huitán,Huitán,0.738
+Guatemala|Quezaltenango|La Esperanza,La Esperanza,0.589
+Guatemala|Quezaltenango|Olintepeque,Olintepeque,0.714
+Guatemala|Quezaltenango|Ostuncalco,Ostuncalco,0.815
+Guatemala|Quezaltenango|Palestina de Los Altos,Palestina de Los Altos,0.781
+Guatemala|Quezaltenango|Quetzaltenango,Quetzaltenango,0.814
+Guatemala|Quezaltenango|Salcajá,Salcajá,0.746
+Guatemala|Quezaltenango|San Carlos Sija,San Carlos Sija,0.932
+Guatemala|Quezaltenango|San Francisco La Unión,San Francisco La Unión,0.661
+Guatemala|Quezaltenango|San Martín Sacatepéquez,San Martín Sacatepéquez,0.843
+Guatemala|Quezaltenango|San Mateo,San Mateo,0.677
+Guatemala|Quezaltenango|San Miguel Sigüilá,San Miguel Sigüila,0.617
+Guatemala|Quezaltenango|Sibilia,Sibilia,0.791
+Guatemala|Quezaltenango|Zunil,Zunil,0.829
+Guatemala|Quiché|Canillá,Canillá,0.788
+Guatemala|Quiché|Chajul,Chajul,0.621
+Guatemala|Quiché|Chicaman,Chicamán,0.516
+Guatemala|Quiché|Chichicastenango,Chichicastenango,0.825
+Guatemala|Quiché|Chiché,Chiché,0.763
+Guatemala|Quiché|Chinique,Chinique,0.788
+Guatemala|Quiché|Cunén,Cunén,0.895
+Guatemala|Quiché|Ixcán,Ixcán,0.744
+Guatemala|Quiché|Joyabaj,Joyabaj,0.865
+Guatemala|Quiché|Nebaj,Nebaj,0.886
+Guatemala|Quiché|Pachalúm,Pachalum,0.586
+Guatemala|Quiché|Patzité,Patzité,0.782
+Guatemala|Quiché|Sacapulas,Sacapulas,0.931
+Guatemala|Quiché|San Andrés Sajcabajá,San Andrés Sajcabajá,0.766
+Guatemala|Quiché|San Antonio Ilotenango,San Antonio Ilotenango,0.885
+Guatemala|Quiché|San Bartolomé Jocotenango,San Bartolomé Jocotenango,0.806
+Guatemala|Quiché|San Juan Cotzal,San Juan Cotzal,0.854
+Guatemala|Quiché|San Pedro Jocopilas,San Pedro Jocopilas,0.904
+Guatemala|Quiché|Santa Cruz del Quiché,Santa Cruz del Quiché,0.746
+Guatemala|Quiché|Uspantán,Uspantán,0.441
+Guatemala|Quiché|Zacualpa,Zacualpa,0.875
+Guatemala|Retalhuleu|Champerico,Champerico,0.931
+Guatemala|Retalhuleu|El Asintal,El Asintal,0.841
+Guatemala|Retalhuleu|Nuevo San Carlos,Nuevo San Carlos,0.855
+Guatemala|Retalhuleu|Retalhuleu,Retalhuleu,0.932
+Guatemala|Retalhuleu|San Andrés Villa Seca,San Andrés Villa Seca,0.903
+Guatemala|Retalhuleu|San Felipe,San Felipe,0.76
+Guatemala|Retalhuleu|San Martín Zapotitlán,San Martín Zapotitlán,0.588
+Guatemala|Retalhuleu|San Sebastián,San Sebastián,0.75
+Guatemala|Retalhuleu|Santa Cruz Muluá,Santa Cruz Muluá,0.792
+Guatemala|Sacatepéquez|Alotenango,Alotenango,0.833
+Guatemala|Sacatepéquez|Antigua Guatemala,Antigua Guatemala,0.802
+Guatemala|Sacatepéquez|Ciudad Vieja,Ciudad Vieja,0.691
+Guatemala|Sacatepéquez|Jocotenango,Jocotenango,0.692
+Guatemala|Sacatepéquez|Magdalena Milpas Altas,Magdalena Milpas Altas,0.747
+Guatemala|Sacatepéquez|Pastores,Pastores,0.851
+Guatemala|Sacatepéquez|San Antonio Aguas Calientes,San Antonio Aguas Calientes,0.536
+Guatemala|Sacatepéquez|San Bartolomé Milpas Altas,San Bartolomé Milpas Altas,0.629
+Guatemala|Sacatepéquez|San Lucas Sacatepéquez,San Lucas Sacatepéquez,0.662
+Guatemala|Sacatepéquez|San Miguel Dueñas,San Miguel Dueñas,0.813
+Guatemala|Sacatepéquez|Santa Catarina Barahona,Santa Catarina Barahona,0.529
+Guatemala|Sacatepéquez|Santa Lucía Milpas Altas,Santa Lucía Milpas Altas,0.453
+Guatemala|Sacatepéquez|Santa María de Jesús,Santa María de Jesús,0.7
+Guatemala|Sacatepéquez|Santiago Sacatepéquez,Santiago Sacatepéquez,0.819
+Guatemala|Sacatepéquez|Santo Domingo Xenacoj,Santo Domingo Xenacoj,0.737
+Guatemala|Sacatepéquez|Sumpango,Sumpango,0.814
+Guatemala|San Marcos|Ayutla,Ayutla,0.804
+Guatemala|San Marcos|Catarina,Catarina,0.702
+Guatemala|San Marcos|Comitancillo,Comitancillo,0.8
+Guatemala|San Marcos|Concepción Tutuapa,Concepción Tutuapa,0.917
+Guatemala|San Marcos|El Quetzal,El Quetzal,0.764
+Guatemala|San Marcos|El Rodeo,El Rodeo,0.578
+Guatemala|San Marcos|El Tumbador,El Tumbador,0.76
+Guatemala|San Marcos|Esquipulas Palo Gordo,Esquipulas Palo Gordo,0.724
+Guatemala|San Marcos|Ixchiguan,Ixchiguán,0.739
+Guatemala|San Marcos|La Reforma,La Reforma,0.712
+Guatemala|San Marcos|Malacatán,Malacatán,0.866
+Guatemala|San Marcos|Nuevo Progreso,Nuevo Progreso,0.75
+Guatemala|San Marcos|Ocos,La Blanca,0.616
+Guatemala|San Marcos|Pajapita,Pajapita,0.815
+Guatemala|San Marcos|Río Blanco,Río Blanco,0.813
+Guatemala|San Marcos|San Antonio Sacatepéquez,San Antonio Sacatepéquez,0.807
+Guatemala|San Marcos|San Cristobal Cucho,San Cristóbal Cucho,0.703
+Guatemala|San Marcos|San José Ojetenam,San José Ojetenam,0.831
+Guatemala|San Marcos|San Lorenzo,San Lorenzo,0.67
+Guatemala|San Marcos|San Marcos,San Marcos,0.761
+Guatemala|San Marcos|San Miguel Ixtahuacán,San Miguel Ixtahuacán,0.912
+Guatemala|San Marcos|San Pablo,San Pablo,0.769
+Guatemala|San Marcos|San Pedro Sacatepéquez,San Pedro Sacatepéquez,0.739
+Guatemala|San Marcos|San Rafaél Pie de la Cuesta,San Rafael Pie de la Cuesta,0.686
+Guatemala|San Marcos|San Sibinal,Sibinal,0.826
+Guatemala|San Marcos|Sipacapa,Sipacapa,0.896
+Guatemala|San Marcos|Tacaná,Tacaná,0.913
+Guatemala|San Marcos|Tajumulco,Tajumulco,0.877
+Guatemala|San Marcos|Tejutla,Tejutla,0.849
+Guatemala|Santa Rosa|Barberena,Barberena,0.635
+Guatemala|Santa Rosa|Casillas,Casillas,0.66
+Guatemala|Santa Rosa|Chiquimulilla,Chiquimulilla,0.802
+Guatemala|Santa Rosa|Cuilapa,Cuilapa,0.727
+Guatemala|Santa Rosa|Guazacapán,Guazacapán,0.517
+Guatemala|Santa Rosa|Nueva Santa Rosa,Nueva Santa Rosa,0.649
+Guatemala|Santa Rosa|Oratorio,Oratorio,0.66
+Guatemala|Santa Rosa|Pueblo Nuevo Viñas,Pueblo Nuevo Viñas,0.699
+Guatemala|Santa Rosa|San Juan Tecuaco,San Juan Tecuaco,0.341
+Guatemala|Santa Rosa|San Rafaél Las Flores,San Rafael Las Flores,0.735
+Guatemala|Santa Rosa|Santa Cruz Naranjo,Santa Cruz Naranjo,0.571
+Guatemala|Santa Rosa|Santa María Ixhuatán,Santa María Ixhuatán,0.652
+Guatemala|Santa Rosa|Santa Rosa de Lima,Santa Rosa de Lima,0.718
+Guatemala|Santa Rosa|Taxisco,Taxisco,0.695
+Guatemala|Sololá|?,Lago De Atitlan,0.941
+Guatemala|Sololá|Concepción,Concepción,0.573
+Guatemala|Sololá|Nahualá,Nahualá,0.823
+Guatemala|Sololá|Panajachel,Panajachel,0.558
+Guatemala|Sololá|San Andrés Semetabaj,San Andrés Semetabaj,0.76
+Guatemala|Sololá|San Antonio Palopó,San Antonio Palopó,0.844
+Guatemala|Sololá|San José Chacayá,San José Chacayá,0.775
+Guatemala|Sololá|San Juan La Laguna,San Juan La Laguna,0.72
+Guatemala|Sololá|San Lucas Tolimán,San Lucas Tolimán,0.856
+Guatemala|Sololá|San Marcos La Laguna,San Marcos La Laguna,0.705
+Guatemala|Sololá|San Pablo La Laguna,San Pablo La Laguna,0.542
+Guatemala|Sololá|San Pedro La Laguna,San Pedro La Laguna,0.79
+Guatemala|Sololá|Santa Catarina Ixtahuacan,Santa Catarina Ixtahuacán,0.85
+Guatemala|Sololá|Santa Catarina Palopó,Santa Catarina Palopó,0.541
+Guatemala|Sololá|Santa Clara La Laguna,Santa Clara La Laguna,0.614
+Guatemala|Sololá|Santa Cruz La Laguna,Santa Cruz La Laguna,0.751
+Guatemala|Sololá|Santa Lucía Utatlán,Santa Lucía Utatlán,0.821
+Guatemala|Sololá|Santa María Visitación,Santa María Visitación,0.655
+Guatemala|Sololá|Santiago Atitlán,Santiago Atitlán,0.795
+Guatemala|Sololá|Sololá,Sololá,0.85
+Guatemala|Suchitepéquez|Chicacao,Chicacao,0.748
+Guatemala|Suchitepéquez|Cuyotenango,San José La Máquina,0.533
+Guatemala|Suchitepéquez|Mazatenango,Mazatenango,0.665
+Guatemala|Suchitepéquez|Patulul,Patulul,0.701
+Guatemala|Suchitepéquez|Pueblo Nuevo,Pueblo Nuevo,0.216
+Guatemala|Suchitepéquez|Río Bravo,Río Bravo,0.499
+Guatemala|Suchitepéquez|Samayac,Samayac,0.522
+Guatemala|Suchitepéquez|San Antonio Suchitepéquez,San Antonio Suchitepéquez,0.666
+Guatemala|Suchitepéquez|San Bernardino,San Bernardino,0.61
+Guatemala|Suchitepéquez|San Francisco Zapotitlán,San Francisco Zapotitlán,0.25
+Guatemala|Suchitepéquez|San Gabriel,San Gabriel,0.431
+Guatemala|Suchitepéquez|San José El Idolo,San José El Ídolo,0.584
+Guatemala|Suchitepéquez|San Juan Bautista,San Juan Bautista,0.408
+Guatemala|Suchitepéquez|San Lorenzo,San Lorenzo,0.59
+Guatemala|Suchitepéquez|San Miguel Panán,San Miguel Panán,0.7
+Guatemala|Suchitepéquez|San Pablo Jocopilas,San Pablo Jocopilas,0.811
+Guatemala|Suchitepéquez|Santa Bárbara,Santa Bárbara,0.682
+Guatemala|Suchitepéquez|Santo Domingo Suchitepequez,Santo Domingo Suchitepéquez,0.607
+Guatemala|Suchitepéquez|Santo Tomás La Unión,Santo Tomás La Unión,0.702
+Guatemala|Suchitepéquez|Zunilito,San Francisco Zapotitlán,0.305
+Guatemala|Totonicapán|Momostenango,Momostenango,0.927
+Guatemala|Totonicapán|San Andrés Xecul,San Andrés Xecul,0.765
+Guatemala|Totonicapán|San Bartolo,San Bartolo,0.782
+Guatemala|Totonicapán|San Cristóbal Totonicapán,San Cristóbal Totonicapán,0.831
+Guatemala|Totonicapán|San Francisco El Alto,San Francisco El Alto,0.865
+Guatemala|Totonicapán|Santa Lucía La Reforma,Santa Lucía La Reforma,0.78
+Guatemala|Totonicapán|Santa María Chiquimula,Santa María Chiquimula,0.931
+Guatemala|Totonicapán|Totonicapán,Totonicapán,0.899
+Guatemala|Zacapa|Cabañas,Cabañas,0.725
+Guatemala|Zacapa|Estanzuela,Estanzuela,0.767
+Guatemala|Zacapa|Gualán,Gualán,0.942
+Guatemala|Zacapa|Huité,Huité,0.753
+Guatemala|Zacapa|La Unión,La Unión,0.884
+Guatemala|Zacapa|Río Hondo,Río Hondo,0.919
+Guatemala|Zacapa|San Diego,San Diego,0.766
+Guatemala|Zacapa|Teculután,Teculután,0.832
+Guatemala|Zacapa|Usumatlán,Usumatlán,0.791
+Guatemala|Zacapa|Zacapa,Zacapa,0.783
+Kenya|Baringo|805,Mogotio,0.122
+Kenya|Baringo|Baringo Central,Baringo Central,0.946
+Kenya|Baringo|Baringo North,Baringo North,0.968
+Kenya|Baringo|Baringo South,Baringo South,0.936
+Kenya|Baringo|Eldama Ravine,Eldama Ravine,0.934
+Kenya|Baringo|Mogotio,Mogotio,0.803
+Kenya|Baringo|Tiaty,Tiaty,0.982
+Kenya|Bomet|Bomet Central,Bomet Central,0.819
+Kenya|Bomet|Bomet East,Bomet East,0.876
+Kenya|Bomet|Chepalungu,Chepalungu,0.935
+Kenya|Bomet|Konoin,Konoin,0.882
+Kenya|Bomet|Sotik,Sotik,0.912
+Kenya|Bungoma|Bumula,Bumula,0.921
+Kenya|Bungoma|Kabuchai,Kabuchai,0.918
+Kenya|Bungoma|Kanduyi,Kanduyi,0.911
+Kenya|Bungoma|Kimilili,Kimilili,0.897
+Kenya|Bungoma|Likuyani,Likuyani,0.942
+Kenya|Bungoma|Lugari,Lugari,0.67
+Kenya|Bungoma|Mt. Elgon,Mt. Elgon,0.965
+Kenya|Bungoma|Sirisia,Sirisia,0.897
+Kenya|Bungoma|Tongaren,Tongaren,0.925
+Kenya|Bungoma|Webute West,Webuye West,0.893
+Kenya|Bungoma|Webuye East,Webuye East,0.891
+Kenya|Busia|Budalangi,Budalangi,0.953
+Kenya|Busia|Butula,Butula,0.91
+Kenya|Busia|Funyula,Funyula,0.931
+Kenya|Busia|Matayos,Matayos,0.906
+Kenya|Busia|Nambale,Nambale,0.903
+Kenya|Busia|Teso North,Teso North,0.922
+Kenya|Busia|Teso South,Teso South,0.932
+Kenya|Elgeyo-Marakwet|Keiyo North,Keiyo North,0.943
+Kenya|Elgeyo-Marakwet|Keiyo South,Keiyo South,0.957
+Kenya|Elgeyo-Marakwet|Marakwet East,Marakwet East,0.965
+Kenya|Elgeyo-Marakwet|Marakwet West,Marakwet West,0.685
+Kenya|Embu|Manyatta,Manyatta,0.735
+Kenya|Embu|Mbeere North,Siakago,0.994
+Kenya|Embu|Mbeere South,Gachoka,0.995
+Kenya|Embu|Runyenjes,Runyenjes,0.831
+Kenya|Garissa|Balambala,Balambala,0.872
+Kenya|Garissa|Daadab,Dadaab,0.914
+Kenya|Garissa|Fafi,Fafi,0.996
+Kenya|Garissa|Garissa Township,Dujis,0.931
+Kenya|Garissa|Ijara,Ijara,0.976
+Kenya|Garissa|Lagdera,Lagdera,0.998
+Kenya|Homa Bay|Homa Bay Town,Homa Bay,0.904
+Kenya|Homa Bay|Kabondo Kasipul,Kabondo Kasipul,0.89
+Kenya|Homa Bay|Karachuonyo,Karachuonyo,0.794
+Kenya|Homa Bay|Kasipul,Kasipul,0.932
+Kenya|Homa Bay|Mbita,Suba North,0.932
+Kenya|Homa Bay|Ndhiwa,Ndhiwa,0.946
+Kenya|Homa Bay|Rangwe,Rangwe,0.9
+Kenya|Homa Bay|Suba,Suba South,0.942
+Kenya|Homa Bay|unknown 6,Karachuonyo,0.158
+Kenya|Isiolo|Isiolo North,Isiolo North,0.995
+Kenya|Isiolo|Isiolo South,Isiolo South,0.998
+Kenya|Kajiado|Kajiado Central,Kajiado Central,0.997
+Kenya|Kajiado|Kajiado East,Kajiado East,0.997
+Kenya|Kajiado|Kajiado North,Kajiado North,0.983
+Kenya|Kajiado|Kajiado South,Kajiado South,0.996
+Kenya|Kajiado|Kajiado West,Kajiado West,0.987
+Kenya|Kakamega|Butere,Butere,0.891
+Kenya|Kakamega|Ikolomani,Ikolomani,0.872
+Kenya|Kakamega|Khwisero,Khwisero,0.843
+Kenya|Kakamega|Lugari,Lugari,0.248
+Kenya|Kakamega|Lurambi,Lurambi,0.872
+Kenya|Kakamega|Malava,Malava,0.934
+Kenya|Kakamega|Matungu,Matungu,0.902
+Kenya|Kakamega|Mumias East,Mumias East,0.895
+Kenya|Kakamega|Mumias West,Mumias West,0.869
+Kenya|Kakamega|Navakholo,Navakholo,0.903
+Kenya|Kakamega|Shinyalu,Shinyalu,0.93
+Kenya|Kericho|Ainamoi,Ainamoi,0.884
+Kenya|Kericho|Belgut,Belgut,0.781
+Kenya|Kericho|Bureti,Buret,0.932
+Kenya|Kericho|Kipkelion East,Kipkelion East,0.915
+Kenya|Kericho|Kipkelion West,Kipkelion West,0.915
+Kenya|Kericho|Sigowet/Soin,Sigowet/Soin,0.937
+Kenya|Kiambu|Gatundu North,Gatundu North,0.857
+Kenya|Kiambu|Gatundu South,Gatundu South,0.849
+Kenya|Kiambu|Githunguri,Githunguri,0.877
+Kenya|Kiambu|Juja,Juja,0.815
+Kenya|Kiambu|Kabete,Kabete,0.81
+Kenya|Kiambu|Kiambaa,Kiambaa,0.848
+Kenya|Kiambu|Kiambu,Kiambu,0.917
+Kenya|Kiambu|Kikuyu,Kikuyu,0.861
+Kenya|Kiambu|Lari,Lari,0.911
+Kenya|Kiambu|Limuru,Limuru,0.915
+Kenya|Kiambu|Ruiru,Ruiru,0.746
+Kenya|Kiambu|Thika Town,Thika Town,0.859
+Kenya|Kilifi|Ganze,Ganze,0.997
+Kenya|Kilifi|Kaloleni,Kaloleni,0.948
+Kenya|Kilifi|Kilifi North,Kilifi North,0.938
+Kenya|Kilifi|Kilifi South,Kilifi South,0.97
+Kenya|Kilifi|Magarini,Magarini,0.992
+Kenya|Kilifi|Malindi,Malindi,0.938
+Kenya|Kilifi|Rabai,Rabai,0.852
+Kenya|Kirinyaga|Gichugu,Gichugu,0.841
+Kenya|Kirinyaga|Kirinyaga Central,Kirinyaga Central,0.937
+Kenya|Kirinyaga|Mwea,Mwea,0.786
+Kenya|Kirinyaga|Ndia,Ndia,0.624
+Kenya|Kisii|Bobasi,Bobasi,0.921
+Kenya|Kisii|Bomachoge Borabu,Bomachoge Borabu,0.886
+Kenya|Kisii|Bomachoge Chache,Bomachoge Chache,0.894
+Kenya|Kisii|Bonchari,Bonchari,0.909
+Kenya|Kisii|Kitutu Chache North,Kitutu Chache North,0.893
+Kenya|Kisii|Kitutu Chache South,Kitutu Chache South,0.872
+Kenya|Kisii|Nyaribari Chache,Nyaribari Chache,0.882
+Kenya|Kisii|Nyaribari Masaba,Nyaribari Masaba,0.909
+Kenya|Kisii|South Mugirango,South Mugirango,0.931
+Kenya|Kisumu|Kisumu Central,Kisumu Central,0.798
+Kenya|Kisumu|Kisumu East,Kisumu East,0.813
+Kenya|Kisumu|Kisumu West,Kisumu West,0.929
+Kenya|Kisumu|Muhoroni,Muhoroni,0.914
+Kenya|Kisumu|Nyakach,Nyakach,0.915
+Kenya|Kisumu|Nyando,Nyando,0.905
+Kenya|Kisumu|Seme,Seme,0.94
+Kenya|Kitui|Kitui Central,Kitui Central,0.712
+Kenya|Kitui|Kitui East,Kitui East,0.999
+Kenya|Kitui|Kitui Rural,Kitui Rural,0.884
+Kenya|Kitui|Kitui South,Kitui South,0.999
+Kenya|Kitui|Kitui West,Kitui West,0.97
+Kenya|Kitui|Mwingi Central,Mwingi East,0.905
+Kenya|Kitui|Mwingi North,Mwingi North,0.998
+Kenya|Kitui|Mwingi West,Mwingi West,0.624
+Kenya|Kwale|Kinango,Kinango,0.974
+Kenya|Kwale|Lungalunga,Lunga Lunga,0.935
+Kenya|Kwale|Matuga,Matuga,0.892
+Kenya|Kwale|Msambweni,Msambweni,0.776
+Kenya|Laikipia|Laikipia East,Laikipia West,0.95
+Kenya|Laikipia|Laikipia North,Laikipia North,0.909
+Kenya|Laikipia|Laikipia West,Laikipia East,0.855
+Kenya|Lamu|Lamu East,Lamu East,0.798
+Kenya|Lamu|Lamu West,Lamu West,0.925
+Kenya|Machakos|Kangundo,Kangundo,0.99
+Kenya|Machakos|Kathiani,Kathiani,0.988
+Kenya|Machakos|Machakos Town,Machakos Town,0.683
+Kenya|Machakos|Masinga,Masinga,0.988
+Kenya|Machakos|Matungulu,Matungulu,0.993
+Kenya|Machakos|Mavoko,Mavoko,0.997
+Kenya|Machakos|Mwala,Mwala,0.994
+Kenya|Machakos|Yatta,Yatta,0.996
+Kenya|Machakos|unknown 7,Machakos Town,0.313
+Kenya|Makueni|Kaiti,Kaiti,0.994
+Kenya|Makueni|Kibwezi East,Kibwezi East,0.938
+Kenya|Makueni|Kibwezi West,Kibwezi West,0.733
+Kenya|Makueni|Kilome,Kilome,0.996
+Kenya|Makueni|Makueni,Makueni,0.769
+Kenya|Makueni|Mbooni,Mbooni,0.994
+Kenya|Mandera|Banissa,Banissa,0.973
+Kenya|Mandera|Lafey,Lafey,0.563
+Kenya|Mandera|Mandera East,Mandera East,0.49
+Kenya|Mandera|Mandera North,Mandera North,0.974
+Kenya|Mandera|Mandera South,Mandera South,0.737
+Kenya|Mandera|Mandera West,Mandera West,0.995
+Kenya|Mandera|unknown 1,Mandera South,0.248
+Kenya|Marsabit|Laisamis,Laisamis,0.998
+Kenya|Marsabit|Moyale,Moyale,0.991
+Kenya|Marsabit|North Horr,North Horr,0.995
+Kenya|Marsabit|Saku,Saku,0.997
+Kenya|Meru|Buuri,Buuri,0.82
+Kenya|Meru|Central Imenti,Cental Imenti,0.648
+Kenya|Meru|Igembe Central,Igembe Central,0.98
+Kenya|Meru|Igembe North,Igembe North,0.996
+Kenya|Meru|Igembe South,Igembe South,0.98
+Kenya|Meru|North Imenti,North Imenti,0.798
+Kenya|Meru|South Imenti,South Imenti,0.988
+Kenya|Meru|Tigania East,Tigania East,0.994
+Kenya|Meru|Tigania West,Tigania West,0.954
+Kenya|Meru|unknown 5,North Imenti,0.167
+Kenya|Migori|Awendo,Awendo,0.916
+Kenya|Migori|Kuria East,Kuria East,0.601
+Kenya|Migori|Kuria West,Kuria West,0.687
+Kenya|Migori|Nyatike,Nyatike,0.937
+Kenya|Migori|Rongo,Rongo,0.899
+Kenya|Migori|Suna East,Suna East,0.853
+Kenya|Migori|Suna West,Suna West,0.909
+Kenya|Migori|Uriri,Uriri,0.929
+Kenya|Mombasa|Changamwe,Changamwe,0.458
+Kenya|Mombasa|Jomvu,Jomvu,0.579
+Kenya|Mombasa|Kisauni,Kisauni,0.819
+Kenya|Mombasa|Likoni,Likoni,0.88
+Kenya|Mombasa|Mvita,Mvita,0.796
+Kenya|Mombasa|Nyali,Nyali,0.879
+Kenya|Murang'a|Gatanga,Gatanga,0.88
+Kenya|Murang'a|Kandara,Kandara,0.766
+Kenya|Murang'a|Kangema,Kangema,0.729
+Kenya|Murang'a|Kigumo,Kigumo,0.784
+Kenya|Murang'a|Kiharu,Kiharu,0.681
+Kenya|Murang'a|Maragwa,Maragwa,0.915
+Kenya|Murang'a|Mathioya,Mathioya,0.73
+Kenya|Nairobi|Dagoretti North,Kilimani,0.894
+Kenya|Nairobi|Dagoretti South,Dagoretti,0.829
+Kenya|Nairobi|Embakasi Central,Embakasi Central,0.957
+Kenya|Nairobi|Embakasi East,Embakasi East,0.992
+Kenya|Nairobi|Embakasi North,Embakasi North,0.918
+Kenya|Nairobi|Embakasi South,Embakasi South,0.96
+Kenya|Nairobi|Embakasi West,Embakasi West,0.963
+Kenya|Nairobi|Kamukunji,Kamukunji,0.959
+Kenya|Nairobi|Kasarani,Kasarani,0.987
+Kenya|Nairobi|Kibra,Kibra,0.898
+Kenya|Nairobi|Langata,Langata,0.986
+Kenya|Nairobi|Makadara,Makadara,0.959
+Kenya|Nairobi|Mathare,Mathare,0.885
+Kenya|Nairobi|Roysambu,Roysambu,0.976
+Kenya|Nairobi|Ruaraka,Ruaraka,0.932
+Kenya|Nairobi|Starehe,Starehe,0.968
+Kenya|Nairobi|Westlands,Westlands,0.951
+Kenya|Nakuru|Bahati,Bahati,0.753
+Kenya|Nakuru|Gilgil,Gilgil,0.959
+Kenya|Nakuru|Kuresoi North,Kuresoi North,0.92
+Kenya|Nakuru|Kuresoi South,Kuresoi South,0.939
+Kenya|Nakuru|Molo,Molo,0.913
+Kenya|Nakuru|Naivasha,Naivasha,0.961
+Kenya|Nakuru|Nakuru Town East,Nakuru Town East,0.852
+Kenya|Nakuru|Nakuru Town West,Nakuru Town West,0.853
+Kenya|Nakuru|Njoro,Njoro,0.911
+Kenya|Nakuru|Rongai,Rongai,0.86
+Kenya|Nakuru|Subukia,Subukia,0.805
+Kenya|Nandi|Aldai,Aldai,0.909
+Kenya|Nandi|Chesumei,Chesumei,0.915
+Kenya|Nandi|Emgwen,Emgwen,0.866
+Kenya|Nandi|Mosop,Mosop,0.939
+Kenya|Nandi|Nandi Hills,Nandi Hills,0.929
+Kenya|Nandi|Tinderet,Tinderet,0.906
+Kenya|Narok|Emurua Dikirr,Emurua Dikirr,0.753
+Kenya|Narok|Kilgoris,Kilgoris,0.942
+Kenya|Narok|Narok East,Narok East,0.758
+Kenya|Narok|Narok North,Narok North,0.899
+Kenya|Narok|Narok South,Narok South,0.842
+Kenya|Narok|Narok West,Narok West,0.955
+Kenya|Nyamira|Borabu,Borabu,0.908
+Kenya|Nyamira|Kitutu Masaba,Kitutu Masaba,0.91
+Kenya|Nyamira|North Mugirango,North Mugirango,0.928
+Kenya|Nyamira|West Mugirango,West Mugirango,0.908
+Kenya|Nyandarua|Kinangop,Kinangop,0.617
+Kenya|Nyandarua|Kipipiri,Kipipiri,0.659
+Kenya|Nyandarua|Ndaragwa,Ndaragwa,0.848
+Kenya|Nyandarua|Ol Jorok,Ol Jorok,0.643
+Kenya|Nyandarua|Ol Kalou,Ol Kalou,0.51
+Kenya|Nyeri|Kieni,Kieni,0.955
+Kenya|Nyeri|Mathira,Mathira,0.936
+Kenya|Nyeri|Mukurweini,Mukurweni,0.891
+Kenya|Nyeri|Nyeri Town,Nyeri Town,0.883
+Kenya|Nyeri|Othaya,Othaya,0.907
+Kenya|Nyeri|Tetu,Tetu,0.869
+Kenya|Samburu|Samburu East,Samburu East,0.99
+Kenya|Samburu|Samburu North,Samburu North,0.99
+Kenya|Samburu|Samburu West,Samburu West,0.969
+Kenya|Siaya|Alego Usonga,Alego Usonga,0.944
+Kenya|Siaya|Bondo,Bondo,0.951
+Kenya|Siaya|Gem,Gem,0.928
+Kenya|Siaya|Rarieda,Rarieda,0.964
+Kenya|Siaya|Ugenya,Ugenya,0.878
+Kenya|Siaya|Ugunja,Ugunja,0.829
+Kenya|Taita Taveta|Mwatate,Mwatate,0.76
+Kenya|Taita Taveta|Taveta,Taveta,0.989
+Kenya|Taita Taveta|Voi,Voi,0.906
+Kenya|Taita Taveta|Wundanyi,Wundanyi,0.997
+Kenya|Tana River|Bura,Bura,0.999
+Kenya|Tana River|Galole,Galole,0.999
+Kenya|Tana River|Garsen,Garsen,0.998
+Kenya|Tharaka-Nithi|Chuka/Igambang'Ombe,Nithi,0.846
+Kenya|Tharaka-Nithi|Igembe South,Tharaka,0.18
+Kenya|Tharaka-Nithi|Maara,Maara,0.846
+Kenya|Tharaka-Nithi|Tharaka,Tharaka,0.816
+Kenya|Trans Nzoia|Cherangany,Cherangany,0.947
+Kenya|Trans Nzoia|Endebess,Endebess,0.959
+Kenya|Trans Nzoia|Kiminini,Kiminini,0.907
+Kenya|Trans Nzoia|Kwanza,Kwanza,0.635
+Kenya|Trans Nzoia|Saboti,Saboti,0.901
+Kenya|Trans Nzoia|unknown 4,Kwanza,0.324
+Kenya|Turkana|Loima,Loima,0.989
+Kenya|Turkana|Turkana Central,Turkana Central,0.985
+Kenya|Turkana|Turkana East,Turkana East,0.71
+Kenya|Turkana|Turkana North,Turkana North,0.711
+Kenya|Turkana|Turkana South,Turkana South,0.984
+Kenya|Turkana|Turkana West,Turkana West,0.936
+Kenya|Turkana|unknown 2,Turkana East,0.282
+Kenya|Uasin Gishu|Ainabkoi,Ainabkoi,0.911
+Kenya|Uasin Gishu|Kapseret,Kapseret,0.933
+Kenya|Uasin Gishu|Kesses,Kesses,0.899
+Kenya|Uasin Gishu|Moiben,Moiben,0.948
+Kenya|Uasin Gishu|Soy,Soy,0.927
+Kenya|Uasin Gishu|Turbo,Turbo,0.877
+Kenya|Vihiga|Emuhaya,Emuhaya,0.86
+Kenya|Vihiga|Hamisi,Hamisi,0.867
+Kenya|Vihiga|Luanda,Luanda,0.831
+Kenya|Vihiga|Sabatia,Sabatia,0.863
+Kenya|Vihiga|Vihiga,Vihiga,0.858
+Kenya|Wajir|Eldas,Eldas,0.997
+Kenya|Wajir|Tarbaj,Tarbaj,0.998
+Kenya|Wajir|Wajir East,Wajir East,0.993
+Kenya|Wajir|Wajir North,Wajir North,0.996
+Kenya|Wajir|Wajir South,Wajir South,0.998
+Kenya|Wajir|Wajir West,Wajir West,0.998
+Kenya|West Pokot|Kacheliba,Kacheliba,0.981
+Kenya|West Pokot|Kapenguria,Kapenguria,0.801
+Kenya|West Pokot|Pokot South,Pokot South,0.829
+Kenya|West Pokot|Sigor,Sigor,0.971
+Kenya|West Pokot|unknown 3,Kapenguria,0.167
+Malawi|Balaka|Balaka Town,Balaka,0.005
+Malawi|Balaka|TA Kalembo,Balaka,0.348
+Malawi|Balaka|TA Nsamala,Balaka,0.64
+Malawi|Blantyre|Blantyre City,Blantyre,0.117
+Malawi|Blantyre|TA Chigaru,Blantyre,0.126
+Malawi|Blantyre|TA Kapeni,Blantyre,0.104
+Malawi|Blantyre|TA Kuntaja,Blantyre,0.168
+Malawi|Blantyre|TA Kunthembwe,Blantyre,0.226
+Malawi|Blantyre|TA Lundu,Blantyre,0.066
+Malawi|Blantyre|TA Machinjili,Blantyre,0.035
+Malawi|Blantyre|TA Makata,Blantyre,0.029
+Malawi|Blantyre|TA Somba,Blantyre,0.124
+Malawi|Chikwawa|Chikwawa Boma,Chikwawa,0.002
+Malawi|Chikwawa|Lengwe National Park,Chikwawa,0.19
+Malawi|Chikwawa|Majete Game Reserve - Chikwawa,Chikwawa,0.138
+Malawi|Chikwawa|Ngabu Urban,Chikwawa,0.002
+Malawi|Chikwawa|TA Chapananga,Chikwawa,0.167
+Malawi|Chikwawa|TA Kasisi,Chikwawa,0.076
+Malawi|Chikwawa|TA Katunga,Chikwawa,0.033
+Malawi|Chikwawa|TA Lundu,Chikwawa,0.041
+Malawi|Chikwawa|TA Makhwira,Chikwawa,0.095
+Malawi|Chikwawa|TA Maseya,Chikwawa,0.03
+Malawi|Chikwawa|TA Ngabu,Chikwawa,0.22
+Malawi|Chiradzulu|Chiradzulu Boma,Chiradzulu,0.005
+Malawi|Chiradzulu|TA Chitera,Chiradzulu,0.078
+Malawi|Chiradzulu|TA Kadewere,Chiradzulu,0.274
+Malawi|Chiradzulu|TA Likoswe,Chiradzulu,0.145
+Malawi|Chiradzulu|TA Mpama,Chiradzulu,0.195
+Malawi|Chiradzulu|TA Nchema,Chiradzulu,0.125
+Malawi|Chiradzulu|TA Nkalo,Chiradzulu,0.169
+Malawi|Chitipa|Chitipa Boma,Chitipa,0.002
+Malawi|Chitipa|Nyika N.P. - Chitipa,Chitipa,0.143
+Malawi|Chitipa|TA Kameme,Chitipa,0.095
+Malawi|Chitipa|TA Mwabulambya,Chitipa,0.215
+Malawi|Chitipa|TA Mwenemisuku,Chitipa,0.153
+Malawi|Chitipa|TA Mwenewenya,Chitipa,0.168
+Malawi|Chitipa|TA Nthalire,Chitipa,0.143
+Malawi|Dedza|Dedza Boma,Dedza,0.005
+Malawi|Dedza|Lake Malawi,Dedza,0.001
+Malawi|Dedza|SC Chauma,Dedza,0.018
+Malawi|Dedza|SC Chilikumwendo,Dedza,0.064
+Malawi|Dedza|SC Kamenya Gwaza,Dedza,0.051
+Malawi|Dedza|TA Kachindamoto,Dedza,0.184
+Malawi|Dedza|TA Kaphuka,Dedza,0.162
+Malawi|Dedza|TA Kasumbu,Dedza,0.153
+Malawi|Dedza|TA Pemba,Dedza,0.214
+Malawi|Dedza|TA Tambala,Dedza,0.127
+Malawi|Dowa|Dowa Boma,Dowa,0.002
+Malawi|Dowa|Mponela Urban,Dowa,0.003
+Malawi|Dowa|SC Chakhaza,Dowa,0.238
+Malawi|Dowa|SC Kayembe,Dowa,0.143
+Malawi|Dowa|SC Mkukula,Dowa,0.124
+Malawi|Dowa|SC Mponela,Dowa,0.052
+Malawi|Dowa|TA Chiwere,Dowa,0.17
+Malawi|Dowa|TA Dzoole,Dowa,0.118
+Malawi|Dowa|TA Msakambewa,Dowa,0.145
+Malawi|Karonga|Karonga Town,Karonga,0.014
+Malawi|Karonga|Lake Malawi,Karonga,0.004
+Malawi|Karonga|Nyipa N. P. - Karonga,Karonga,0.199
+Malawi|Karonga|SC Mwakaboko,Karonga,0.074
+Malawi|Karonga|SC Mwirang'ombe,Karonga,0.05
+Malawi|Karonga|TA Kilupula,Karonga,0.095
+Malawi|Karonga|TA Kyungu,Karonga,0.432
+Malawi|Karonga|TA Wasambo,Karonga,0.103
+Malawi|Kasungu|Kasungu Boma,Kasungu,0.005
+Malawi|Kasungu|Kasungu National Park,Kasungu,0.272
+Malawi|Kasungu|SC Chilowamatambe,Kasungu,0.039
+Malawi|Kasungu|SC Chisikwa,Kasungu,0.006
+Malawi|Kasungu|SC Kawamba,Kasungu,0.08
+Malawi|Kasungu|SC Lukwa,Kasungu,0.034
+Malawi|Kasungu|SC M'nyanja,Kasungu,0.035
+Malawi|Kasungu|SC Njombwa,Kasungu,0.033
+Malawi|Kasungu|SC Simlemba,Kasungu,0.038
+Malawi|Kasungu|TA Chulu,Kasungu,0.071
+Malawi|Kasungu|TA Kaluluma,Kasungu,0.05
+Malawi|Kasungu|TA Kaomba,Kasungu,0.035
+Malawi|Kasungu|TA Kapelula,Kasungu,0.041
+Malawi|Kasungu|TA Mwase,Kasungu,0.023
+Malawi|Kasungu|TA Santhe,Kasungu,0.092
+Malawi|Kasungu|TA Wimbe,Kasungu,0.113
+Malawi|Likoma|Lake Malawi,Likoma,0.722
+Malawi|Lilongwe|Lilongwe City,Lilongwe,0.069
+Malawi|Lilongwe|SC Chitekwele,Lilongwe,0.06
+Malawi|Lilongwe|SC Mtema,Lilongwe,0.027
+Malawi|Lilongwe|SC Njewa,Lilongwe,0.017
+Malawi|Lilongwe|SC Tsabango,Lilongwe,0.011
+Malawi|Lilongwe|TA Chadza,Lilongwe,0.06
+Malawi|Lilongwe|TA Chimutu,Lilongwe,0.065
+Malawi|Lilongwe|TA Chiseka,Lilongwe,0.246
+Malawi|Lilongwe|TA Chitukula,Lilongwe,0.019
+Malawi|Lilongwe|TA Kabudula,Lilongwe,0.086
+Malawi|Lilongwe|TA Kalolo,Lilongwe,0.098
+Malawi|Lilongwe|TA Kalumba,Lilongwe,0.008
+Malawi|Lilongwe|TA Kalumbu,Lilongwe,0.032
+Malawi|Lilongwe|TA Khongoni,Lilongwe,0.091
+Malawi|Lilongwe|TA Malili,Lilongwe,0.05
+Malawi|Lilongwe|TA Mazengera,Lilongwe,0.055
+Malawi|Machinga|Lake Chilwa,Machinga,0.015
+Malawi|Machinga|Lake Chiuta,Machinga,0.016
+Malawi|Machinga|Liwonda National Park,Machinga,0.1
+Malawi|Machinga|Liwonde Town,Machinga,0.009
+Malawi|Machinga|SC Chamba,Machinga,0.034
+Malawi|Machinga|SC Chikweo,Machinga,0.084
+Malawi|Machinga|SC Chiwalo,Machinga,0.018
+Malawi|Machinga|SC Mlomba,Machinga,0.094
+Malawi|Machinga|SC Mposa,Machinga,0.053
+Malawi|Machinga|SC Ngokwe,Machinga,0.04
+Malawi|Machinga|SC Sitola,Machinga,0.083
+Malawi|Machinga|TA Kawinga,Machinga,0.237
+Malawi|Machinga|TA Liwonde,Machinga,0.112
+Malawi|Machinga|TA Nyambi,Machinga,0.088
+Malawi|Mangochi|Lake Malawi,Mangochi,0.016
+Malawi|Mangochi|Lake Malombe,Mangochi,0.046
+Malawi|Mangochi|Mangochi Town,Mangochi,0.002
+Malawi|Mangochi|Monkey Bay Urban,Mangochi,0.002
+Malawi|Mangochi|SC Chowe,Mangochi,0.092
+Malawi|Mangochi|SC Mbwana Nyambi,Mangochi,0.116
+Malawi|Mangochi|SC Namabvi,Mangochi,0.056
+Malawi|Mangochi|TA Chimwala,Mangochi,0.131
+Malawi|Mangochi|TA Jalasi,Mangochi,0.083
+Malawi|Mangochi|TA Katuli,Mangochi,0.065
+Malawi|Mangochi|TA Makanjila,Mangochi,0.105
+Malawi|Mangochi|TA Mponda,Mangochi,0.109
+Malawi|Mangochi|TA Nankumba,Mangochi,0.165
+Malawi|Mchinji|Mchinji Boma,Mchinji,0.003
+Malawi|Mchinji|SC Dambe,Mchinji,0.135
+Malawi|Mchinji|SC Mavwere,Mchinji,0.143
+Malawi|Mchinji|SC Mduwa,Mchinji,0.182
+Malawi|Mchinji|TA Mkanda,Mchinji,0.271
+Malawi|Mchinji|TA Mlonyeni,Mchinji,0.076
+Malawi|Mchinji|TA Zulu,Mchinji,0.149
+Malawi|Mulanje|Mulanje Boma,Mulanje,0.006
+Malawi|Mulanje|Mulanje Mountain Forest Reserve,Mulanje,0.239
+Malawi|Mulanje|SC Juma,Mulanje,0.168
+Malawi|Mulanje|SC Laston Njema,Mulanje,0.064
+Malawi|Mulanje|TA Chikumbu,Mulanje,0.074
+Malawi|Mulanje|TA Mabuka,Mulanje,0.203
+Malawi|Mulanje|TA Nkanda,Mulanje,0.18
+Malawi|Mulanje|TA Nthiramanja,Mulanje,0.055
+Malawi|Mwanza|Majete Game Reserve - Mwanza,Mwanza,0.128
+Malawi|Mwanza|Mwanza Boma,Mwanza,0.019
+Malawi|Mwanza|TA Kanduku,Mwanza,0.414
+Malawi|Mwanza|TA Nthache,Mwanza,0.413
+Malawi|Mzimba|Mzimba Boma,Mzimba,0.001
+Malawi|Mzimba|Mzuzu City,Mzimba,0.013
+Malawi|Mzimba|SC Jaravikuba Munthali,Mzimba,0.015
+Malawi|Mzimba|SC Kampingo Sibande,Mzimba,0.091
+Malawi|Mzimba|SC Khosolo Gwaza Jere,Mzimba,0.088
+Malawi|Mzimba|TA Chindi,Mzimba,0.161
+Malawi|Mzimba|TA M'Mbelwa,Mzimba,0.106
+Malawi|Mzimba|TA Mabulabo,Mzimba,0.069
+Malawi|Mzimba|TA Mpherembe,Mzimba,0.061
+Malawi|Mzimba|TA Mtwalo,Mzimba,0.184
+Malawi|Mzimba|TA Mzikubola,Mzimba,0.136
+Malawi|Mzimba|TA Mzukuzuku,Mzimba,0.025
+Malawi|Mzimba|Vwaza Marsh Game Reserve - Mzimb,Mzimba,0.013
+Malawi|Neno|Majete Game Reserve - Neno,Neno,0.007
+Malawi|Neno|TA Dambe,Neno,0.155
+Malawi|Neno|TA Mlauli,Neno,0.344
+Malawi|Neno|TA Ngozi,Neno,0.204
+Malawi|Neno|TA Symon,Neno,0.253
+Malawi|Nkhata Bay|Lake Malawi,Nkhata Bay,0.057
+Malawi|Nkhata Bay|SC Fukamalaza,Nkhata Bay,0.011
+Malawi|Nkhata Bay|SC Malanda,Nkhata Bay,0.041
+Malawi|Nkhata Bay|SC Nyaluwanga,Nkhata Bay,0.026
+Malawi|Nkhata Bay|SC Zilakoma,Nkhata Bay,0.112
+Malawi|Nkhata Bay|TA Fukamapiri,Nkhata Bay,0.051
+Malawi|Nkhata Bay|TA Kabunduli,Nkhata Bay,0.404
+Malawi|Nkhata Bay|TA Malenga Mzoma,Nkhata Bay,0.01
+Malawi|Nkhata Bay|TA Musisya,Nkhata Bay,0.103
+Malawi|Nkhata Bay|TA Timbiri,Nkhata Bay,0.082
+Malawi|Nkhotakota|Lake Malawi,Nkhotakota,0.006
+Malawi|Nkhotakota|Nkhotakota Boma,Nkhotakota,0.003
+Malawi|Nkhotakota|Nkhotakota Game Reserve,Nkhotakota,0.413
+Malawi|Nkhotakota|SC Kafuzila,Nkhotakota,0.127
+Malawi|Nkhotakota|SC Mphonde,Nkhotakota,0.029
+Malawi|Nkhotakota|SC Mwansambo,Nkhotakota,0.055
+Malawi|Nkhotakota|TA Kanyenda,Nkhotakota,0.139
+Malawi|Nkhotakota|TA Malenga Chanzi,Nkhotakota,0.074
+Malawi|Nkhotakota|TA Mwadzama,Nkhotakota,0.146
+Malawi|Nsanje|Mwabvi Game Reserve,Nsanje,0.175
+Malawi|Nsanje|Nsanje Boma,Nsanje,0.008
+Malawi|Nsanje|SC Makoka,Nsanje,0.034
+Malawi|Nsanje|SC Mbenje,Nsanje,0.163
+Malawi|Nsanje|TA Chimombo,Nsanje,0.018
+Malawi|Nsanje|TA Malemia,Nsanje,0.073
+Malawi|Nsanje|TA Mlolo,Nsanje,0.175
+Malawi|Nsanje|TA Ndamera,Nsanje,0.096
+Malawi|Nsanje|TA Ngabu,Nsanje,0.03
+Malawi|Nsanje|TA Nyachikadza,Nsanje,0.039
+Malawi|Nsanje|TA Tengani,Nsanje,0.175
+Malawi|Ntcheu|Ntcheu Boma,Ntcheu,0.003
+Malawi|Ntcheu|SC Champiti,Ntcheu,0.028
+Malawi|Ntcheu|SC Goodson Ganya,Ntcheu,0.226
+Malawi|Ntcheu|SC Makwangwala,Ntcheu,0.154
+Malawi|Ntcheu|TA Chakhumbira,Ntcheu,0.033
+Malawi|Ntcheu|TA Kwataine,Ntcheu,0.061
+Malawi|Ntcheu|TA Masasa,Ntcheu,0.077
+Malawi|Ntcheu|TA Mpando,Ntcheu,0.126
+Malawi|Ntcheu|TA Njolomole,Ntcheu,0.075
+Malawi|Ntcheu|TA Phambala,Ntcheu,0.21
+Malawi|Ntchisi|Ntchisi Boma,Ntchisi,0.003
+Malawi|Ntchisi|SC Chilooko,Ntchisi,0.306
+Malawi|Ntchisi|SC Nthondo,Ntchisi,0.122
+Malawi|Ntchisi|TA Chikho,Ntchisi,0.141
+Malawi|Ntchisi|TA Kalumo,Ntchisi,0.302
+Malawi|Ntchisi|TA Kasakula,Ntchisi,0.047
+Malawi|Ntchisi|TA Kasukula,Ntchisi,0.073
+Malawi|Phalombe|Lake Chilwa,Phalombe,0.052
+Malawi|Phalombe|TA Mkhumba,Phalombe,0.587
+Malawi|Phalombe|TA Nazombe,Phalombe,0.351
+Malawi|Rumphi|Lake Malawi,Rumphi,0.002
+Malawi|Rumphi|Nyika National Park - Rumphi,Rumphi,0.362
+Malawi|Rumphi|Rumphi Boma,Rumphi,0.003
+Malawi|Rumphi|SC Chapinduka,Rumphi,0.022
+Malawi|Rumphi|SC Kachulu,Rumphi,0.029
+Malawi|Rumphi|SC Mwahenga,Rumphi,0.029
+Malawi|Rumphi|SC Mwalweni,Rumphi,0.054
+Malawi|Rumphi|SC Mwankhunikira,Rumphi,0.091
+Malawi|Rumphi|TA Chikulamayembe,Rumphi,0.169
+Malawi|Rumphi|TA Katumbi,Rumphi,0.017
+Malawi|Rumphi|TA Mwamlowe,Rumphi,0.035
+Malawi|Rumphi|Vwaza Marsh Game Reserve - Rumph,Rumphi,0.133
+Malawi|Salima|Lake Malawi,Salima,0.053
+Malawi|Salima|SC Kambalame,Salima,0.026
+Malawi|Salima|SC Kambwiri,Salima,0.123
+Malawi|Salima|SC Mwanza,Salima,0.06
+Malawi|Salima|Salima Town,Salima,0.008
+Malawi|Salima|TA Karonga,Salima,0.207
+Malawi|Salima|TA Khombedza,Salima,0.193
+Malawi|Salima|TA Kuluunda,Salima,0.084
+Malawi|Salima|TA Maganga,Salima,0.08
+Malawi|Salima|TA Ndindi,Salima,0.095
+Malawi|Salima|TA Pemba,Salima,0.046
+Malawi|Thyolo|Luchenza Town,Thyolo,0.006
+Malawi|Thyolo|SC Kwethemule,Thyolo,0.09
+Malawi|Thyolo|SC Mbawela,Thyolo,0.078
+Malawi|Thyolo|SC Mphuka,Thyolo,0.094
+Malawi|Thyolo|SC Thukuta,Thyolo,0.035
+Malawi|Thyolo|TA Bvumbwe,Thyolo,0.125
+Malawi|Thyolo|TA Changata,Thyolo,0.072
+Malawi|Thyolo|TA Chimaliro,Thyolo,0.167
+Malawi|Thyolo|TA Kapichi,Thyolo,0.079
+Malawi|Thyolo|TA Nchilamwela,Thyolo,0.108
+Malawi|Thyolo|TA Nsabwe,Thyolo,0.071
+Malawi|Thyolo|TA Thomas,Thyolo,0.066
+Malawi|Thyolo|Thyolo Boma,Thyolo,0.002
+Malawi|Zomba|Lake Chilwa,Zomba,0.175
+Malawi|Zomba|SC Mbiza,Zomba,0.144
+Malawi|Zomba|SC Mkumbira,Zomba,0.038
+Malawi|Zomba|TA Chikowi,Zomba,0.058
+Malawi|Zomba|TA Kuntumanji,Zomba,0.112
+Malawi|Zomba|TA Malemia,Zomba,0.093
+Malawi|Zomba|TA Mlumbe,Zomba,0.213
+Malawi|Zomba|TA Mwambo,Zomba,0.14
+Malawi|Zomba|Zomba City,Zomba,0.013
+Nigeria|Abia|Aba North,Aba North,0.369
+Nigeria|Abia|Aba South,Aba South,0.645
+Nigeria|Abia|Arochukwu,Arochukwu,0.736
+Nigeria|Abia|Bende,Bende,0.621
+Nigeria|Abia|Ikwuano,Ikwuano,0.703
+Nigeria|Abia|Isiala Ngwa North,Isiala-Ngwa North,0.675
+Nigeria|Abia|Isiala Ngwa South,Isiala-Ngwa South,0.69
+Nigeria|Abia|Isuikwuato,Isuikwuato,0.708
+Nigeria|Abia|Obi Ngwa,Obi Nwga,0.682
+Nigeria|Abia|Ohafia,Ohafia,0.769
+Nigeria|Abia|Osisioma Ngwa,Osisioma Ngwa,0.692
+Nigeria|Abia|Ugwunagbo,Ugwunagbo,0.638
+Nigeria|Abia|Ukwa East,Ukwa East,0.697
+Nigeria|Abia|Ukwa West,Ukwa West,0.687
+Nigeria|Abia|Umu Nneochi,Umu-Nneochi,0.639
+Nigeria|Abia|Umuahia North,Umuahia North,0.426
+Nigeria|Abia|Umuahia South,Umuahia South,0.515
+Nigeria|Adamawa|Demsa,Demsa,0.3
+Nigeria|Adamawa|Fufore,Fufore,0.665
+Nigeria|Adamawa|Ganye,Ganye,0.697
+Nigeria|Adamawa|Girie,Gombi,0.438
+Nigeria|Adamawa|Gombi,Girei,0.376
+Nigeria|Adamawa|Guyuk,Guyuk,0.26
+Nigeria|Adamawa|Hong,Hong,0.563
+Nigeria|Adamawa|Jada,Jada,0.367
+Nigeria|Adamawa|Lamurde,Lamurde,0.499
+Nigeria|Adamawa|Madagali,Madagali,0.537
+Nigeria|Adamawa|Maiha,Maiha,0.291
+Nigeria|Adamawa|Mayo-Belwa,Mayo-Belwa,0.354
+Nigeria|Adamawa|Michika,Michika,0.533
+Nigeria|Adamawa|Mubi North,Mubi North,0.414
+Nigeria|Adamawa|Mubi South,Mubi South,0.296
+Nigeria|Adamawa|Numan,Numan,0.266
+Nigeria|Adamawa|Shelleng,Shelleng,0.26
+Nigeria|Adamawa|Song,Song,0.662
+Nigeria|Adamawa|Teungo,Toungo,0.762
+Nigeria|Adamawa|Yola North,Yola North,0.184
+Nigeria|Adamawa|Yola South,Yola South,0.145
+Nigeria|Akwa Ibom|Abak,Abak,0.627
+Nigeria|Akwa Ibom|Eastern Obolo,Eastern Obolo,0.552
+Nigeria|Akwa Ibom|Eket,Eket,0.723
+Nigeria|Akwa Ibom|Esit Eket,Esit Eket,0.739
+Nigeria|Akwa Ibom|Essien Udim,Essien Udim,0.774
+Nigeria|Akwa Ibom|Etim Ekpo,Etim Ekpo,0.67
+Nigeria|Akwa Ibom|Etinan,Etinan,0.716
+Nigeria|Akwa Ibom|Ibeno,Ibeno,0.66
+Nigeria|Akwa Ibom|Ibesikpo Asutan,Ibesikpo Asutan,0.624
+Nigeria|Akwa Ibom|Ibiono Ibom,Ibiono Ibom,0.725
+Nigeria|Akwa Ibom|Ika,Ika,0.605
+Nigeria|Akwa Ibom|Ikono,Ikono,0.622
+Nigeria|Akwa Ibom|Ikot Abasi,Ikot Abasi,0.749
+Nigeria|Akwa Ibom|Ikot Ekpene,Ikot Ekpene,0.514
+Nigeria|Akwa Ibom|Ini,Ini,0.727
+Nigeria|Akwa Ibom|Itu,Itu,0.676
+Nigeria|Akwa Ibom|Mbo,Mbo,0.745
+Nigeria|Akwa Ibom|Mkpat Enin,Mkpat Enin,0.728
+Nigeria|Akwa Ibom|Nsit Atai,Nsit Atai,0.639
+Nigeria|Akwa Ibom|Nsit Ibom,Nsit Ibom,0.557
+Nigeria|Akwa Ibom|Nsit Ubium,Nsit Ubium,0.719
+Nigeria|Akwa Ibom|Obot Akara,Obot Akara,0.651
+Nigeria|Akwa Ibom|Okobo,Okobo,0.629
+Nigeria|Akwa Ibom|Onna,Onna,0.71
+Nigeria|Akwa Ibom|Oron,Oron,0.247
+Nigeria|Akwa Ibom|Oruk Anam,Oruk Anam,0.814
+Nigeria|Akwa Ibom|Udung Uko,Udung Uko,0.522
+Nigeria|Akwa Ibom|Ukanafun,Ukanafun,0.704
+Nigeria|Akwa Ibom|Uruan,Uruan,0.582
+Nigeria|Akwa Ibom|Urue Offong,Urue Offong/Oruko,0.665
+Nigeria|Akwa Ibom|Uyo,Uyo,0.52
+Nigeria|Anambra|Aguata,Aguata,0.414
+Nigeria|Anambra|Anambra East,Anambra East,0.287
+Nigeria|Anambra|Anambra West,Anambra West,0.573
+Nigeria|Anambra|Anaocha,Anaocha,0.531
+Nigeria|Anambra|Awka North,Awka North,0.684
+Nigeria|Anambra|Awka South,Awka South,0.605
+Nigeria|Anambra|Ayamelum,Ayamelum,0.681
+Nigeria|Anambra|Dunukofia,Dunukofia,0.202
+Nigeria|Anambra|Ekwusigo,Ekwusigo,0.695
+Nigeria|Anambra|Idemili North,Idemili North,0.511
+Nigeria|Anambra|Idemili South,Idemili South,0.568
+Nigeria|Anambra|Ihiala,Ihiala,0.557
+Nigeria|Anambra|Njikoka,Dunukofia,0.277
+Nigeria|Anambra|Nnewi North,Nnewi North,0.416
+Nigeria|Anambra|Nnewi South,Nnewi South,0.402
+Nigeria|Anambra|Ogbaru,Ogbaru,0.654
+Nigeria|Anambra|Onitsha North,Ogbaru,0.044
+Nigeria|Anambra|Onitsha South,Ogbaru,0.035
+Nigeria|Anambra|Orumba North,Orumba North,0.658
+Nigeria|Anambra|Orumba South,Orumba South,0.604
+Nigeria|Anambra|Oyi,Oyi,0.45
+Nigeria|Bauchi|Alkaleri,Alkaleri,0.762
+Nigeria|Bauchi|Bauchi,Bauchi,0.734
+Nigeria|Bauchi|Bogoro,Bogoro,0.744
+Nigeria|Bauchi|Damban,Dambam,0.596
+Nigeria|Bauchi|Darazo,Darazo,0.718
+Nigeria|Bauchi|Dass,Dass,0.737
+Nigeria|Bauchi|Gamawa,Gamawa,0.819
+Nigeria|Bauchi|Ganjuwa,Ganjuwa,0.82
+Nigeria|Bauchi|Giade,Giade,0.647
+Nigeria|Bauchi|Itas/Gadau,Itas/Gadau,0.728
+Nigeria|Bauchi|Jama'are,Jama'Are,0.588
+Nigeria|Bauchi|Katagum,Katagum,0.562
+Nigeria|Bauchi|Kirfi,Kirfi,0.684
+Nigeria|Bauchi|Misau,Misau,0.662
+Nigeria|Bauchi|Ningi,Ningi,0.875
+Nigeria|Bauchi|Shira,Shira,0.489
+Nigeria|Bauchi|Tafawa-Balewa,Tafawa-Balewa,0.662
+Nigeria|Bauchi|Toro,Toro,0.837
+Nigeria|Bauchi|Warji,Warji,0.825
+Nigeria|Bauchi|Zaki,Zaki,0.712
+Nigeria|Bayelsa|Brass,Brass,0.464
+Nigeria|Bayelsa|Ekeremor,Ekeremor,0.912
+Nigeria|Bayelsa|Kolokuma/Opokuma,Kolokuma/Opokuma,0.754
+Nigeria|Bayelsa|Nembe,Nembe,0.632
+Nigeria|Bayelsa|Ogbia,Ogbia,0.789
+Nigeria|Bayelsa|Sagbama,Sagbama,0.721
+Nigeria|Bayelsa|Southern Ijaw,Southern Ijaw,0.885
+Nigeria|Bayelsa|Yenagoa,Yenegoa,0.657
+Nigeria|Benue|Ado,Ado,0.747
+Nigeria|Benue|Agatu,Agatu,0.818
+Nigeria|Benue|Apa,Apa,0.832
+Nigeria|Benue|Bukuru,Buruku,0.619
+Nigeria|Benue|Gboko,Gboko,0.688
+Nigeria|Benue|Guma,Guma,0.744
+Nigeria|Benue|Gwer East,Gwer East,0.824
+Nigeria|Benue|Gwer West,Gwer West,0.899
+Nigeria|Benue|Katsina-Ala,Katsina-Ala,0.631
+Nigeria|Benue|Konshisha,Konshisha,0.64
+Nigeria|Benue|Kwande,Kwande,0.64
+Nigeria|Benue|Logo,Logo,0.566
+Nigeria|Benue|Makurdi,Makurdi,0.89
+Nigeria|Benue|Obi,Obi,0.636
+Nigeria|Benue|Ogbadibo,Ogbadibo,0.52
+Nigeria|Benue|Ohimini,Ohimini,0.604
+Nigeria|Benue|Oju,Oju,0.779
+Nigeria|Benue|Okpokwu,Okpokwu,0.628
+Nigeria|Benue|Otukpo,Oturkpo,0.79
+Nigeria|Benue|Tarka,Tarka,0.646
+Nigeria|Benue|Ukum,Ukum,0.72
+Nigeria|Benue|Ushongo,Ushongo,0.495
+Nigeria|Benue|Vande Ikya,Vandeikya,0.718
+Nigeria|Borno|Abadam,Abadam,0.554
+Nigeria|Borno|Askira/Uba,Askira Uba,0.514
+Nigeria|Borno|Bama,Bama,0.592
+Nigeria|Borno|Bayo,Bayo,0.32
+Nigeria|Borno|Biu,Biu,0.698
+Nigeria|Borno|Chibok,Chibok,0.694
+Nigeria|Borno|Damboa,Damboa,0.562
+Nigeria|Borno|Dikwa,Dikwa,0.538
+Nigeria|Borno|Gubio,Gubio,0.744
+Nigeria|Borno|Guzamala,Guzamala,0.586
+Nigeria|Borno|Gwoza,Gwoza,0.527
+Nigeria|Borno|Hawul,Hawul,0.522
+Nigeria|Borno|Jere,Jere,0.274
+Nigeria|Borno|Kaga,Kaga,0.667
+Nigeria|Borno|Kala/Balge,Kala Balge,0.384
+Nigeria|Borno|Konduga,Konduga,0.624
+Nigeria|Borno|Kukawa,Kukawa,0.369
+Nigeria|Borno|Kwaya Kusar,Kwaya Kusar,0.348
+Nigeria|Borno|Lake Chad,Kukawa,0.363
+Nigeria|Borno|Mafa,Mafa,0.62
+Nigeria|Borno|Magumeri,Magumeri,0.767
+Nigeria|Borno|Maiduguri,Jere,0.105
+Nigeria|Borno|Marte,Marte,0.472
+Nigeria|Borno|Mobbar,Mobbar,0.739
+Nigeria|Borno|Monguno,Monguno,0.553
+Nigeria|Borno|Ngala,Ngala,0.401
+Nigeria|Borno|Nganzai,Nganzai,0.668
+Nigeria|Borno|Shani,Shani,0.382
+Nigeria|Cross River|Abi,Abi,0.601
+Nigeria|Cross River|Akamkpa,Akamkpa,0.789
+Nigeria|Cross River|Akpabuyo,Akpabuyo,0.511
+Nigeria|Cross River|Bakassi,Bakassi,0.334
+Nigeria|Cross River|Bekwarra,Bekwarra,0.766
+Nigeria|Cross River|Biase,Biase,0.755
+Nigeria|Cross River|Boki,Boki,0.803
+Nigeria|Cross River|Calabar,Calabar Municipal,0.279
+Nigeria|Cross River|Calabar South,Oron,0.294
+Nigeria|Cross River|Etung,Etung,0.715
+Nigeria|Cross River|Ikom,Ikom,0.703
+Nigeria|Cross River|Obanliku,Obanliku,0.638
+Nigeria|Cross River|Obubra,Obubra,0.453
+Nigeria|Cross River|Obudu,Obudu,0.497
+Nigeria|Cross River|Odukpani,Odukpani,0.575
+Nigeria|Cross River|Ogoja,Ogoja,0.757
+Nigeria|Cross River|Yakurr,Yakurr,0.688
+Nigeria|Cross River|Yala,Yala,0.824
+Nigeria|Delta|Aniocha North,Aniocha North,0.843
+Nigeria|Delta|Aniocha South,Aniocha South,0.929
+Nigeria|Delta|Bomadi,Bomadi,0.421
+Nigeria|Delta|Burutu,Burutu,0.873
+Nigeria|Delta|Ethiope East,Ethiope East,0.697
+Nigeria|Delta|Ethiope West,Ethiope West,0.75
+Nigeria|Delta|Ika North-East,Ika North East,0.852
+Nigeria|Delta|Ika South,Ika South,0.608
+Nigeria|Delta|Isoko North,Isoko North,0.867
+Nigeria|Delta|Isoko South,Isoko South,0.894
+Nigeria|Delta|Ndokwa East,Ndokwa East,0.892
+Nigeria|Delta|Ndokwa West,Ndokwa West,0.878
+Nigeria|Delta|Okpe,Okpe,0.844
+Nigeria|Delta|Oshimili North,Oshimili North,0.88
+Nigeria|Delta|Oshimili South,Oshimili South,0.757
+Nigeria|Delta|Patani,Patani,0.763
+Nigeria|Delta|Sapele,Sapele,0.748
+Nigeria|Delta|Udu,Udu,0.795
+Nigeria|Delta|Ughelli North,Ughelli North,0.815
+Nigeria|Delta|Ughelli South,Ughelli South,0.779
+Nigeria|Delta|Ukwuani,Ukwuani,0.788
+Nigeria|Delta|Uvwie,Uvwie,0.711
+Nigeria|Delta|Warri North,Warri North,0.68
+Nigeria|Delta|Warri South,Warri South,0.828
+Nigeria|Delta|Warri South-West,Warri South-West,0.726
+Nigeria|Ebonyi|Abakaliki,Abakaliki,0.706
+Nigeria|Ebonyi|Afikpo North,Afikpo North,0.555
+Nigeria|Ebonyi|Afikpo South,Afikpo South,0.745
+Nigeria|Ebonyi|Ebonyi,Ebonyi,0.66
+Nigeria|Ebonyi|Ezza North,Ezza North,0.69
+Nigeria|Ebonyi|Ezza South,Ezza South,0.626
+Nigeria|Ebonyi|Ikwo,Ikwo,0.638
+Nigeria|Ebonyi|Ishielu,Ishielu,0.718
+Nigeria|Ebonyi|Ivo,Ivo,0.77
+Nigeria|Ebonyi|Izzi,Izzi,0.838
+Nigeria|Ebonyi|Ohaozara,Ohaozara,0.608
+Nigeria|Ebonyi|Ohaukwu,Ohaukwu,0.691
+Nigeria|Ebonyi|Onicha,Onicha,0.701
+Nigeria|Edo|Akoko-Edo,Akoko-Edo,0.719
+Nigeria|Edo|Egor,Egor,0.475
+Nigeria|Edo|Esan Central,Esan Central,0.536
+Nigeria|Edo|Esan North-East,Esan North-East,0.645
+Nigeria|Edo|Esan South-East,Esan South-East,0.853
+Nigeria|Edo|Esan West,Esan West,0.631
+Nigeria|Edo|Etsako Central,Etsako Central,0.729
+Nigeria|Edo|Etsako East,Etsako East,0.78
+Nigeria|Edo|Etsako West,Etsako West,0.77
+Nigeria|Edo|Igueben,Iguegben,0.611
+Nigeria|Edo|Ikpoba-Okha,Ikpoba-Okha,0.688
+Nigeria|Edo|Oredo,Oredo,0.537
+Nigeria|Edo|Orhionmwon,Orhionmwon,0.81
+Nigeria|Edo|Ovia North-East,Ovia North-East,0.731
+Nigeria|Edo|Ovia South-West,Ovia South-West,0.772
+Nigeria|Edo|Owan East,Owan East,0.732
+Nigeria|Edo|Owan West,Owan West,0.684
+Nigeria|Edo|Uhunmwonde,Uhunmwonde,0.845
+Nigeria|Ekiti|Ado-Ekiti,Ado-Ekiti,0.571
+Nigeria|Ekiti|Efon,Efon,0.473
+Nigeria|Ekiti|Ekiti East,Ekiti East,0.604
+Nigeria|Ekiti|Ekiti South-West,Ekiti South-West,0.588
+Nigeria|Ekiti|Ekiti West,Ekiti West,0.526
+Nigeria|Ekiti|Emure/Ise/Orun,Emure,0.748
+Nigeria|Ekiti|Gboyin,Gbonyin,0.723
+Nigeria|Ekiti|Ido-Osi,Ido-Osi,0.765
+Nigeria|Ekiti|Ijero,Ijero,0.664
+Nigeria|Ekiti|Ikere,Ikere,0.61
+Nigeria|Ekiti|Ikole,Ikole,0.756
+Nigeria|Ekiti|Ilejemeje,Ilejemeje,0.765
+Nigeria|Ekiti|Irepodun/Ifelodun,Irepodun/Ifelodun,0.736
+Nigeria|Ekiti|Ise/Orun,Ise/Orun,0.697
+Nigeria|Ekiti|Moba,Moba,0.495
+Nigeria|Ekiti|Oye,Oye,0.769
+Nigeria|Enugu|Aninri,Aninri,0.641
+Nigeria|Enugu|Awgu,Awgu,0.579
+Nigeria|Enugu|Enugu East,Enugu East,0.625
+Nigeria|Enugu|Enugu North,Enugu North,0.346
+Nigeria|Enugu|Enugu South,Enugu South,0.595
+Nigeria|Enugu|Ezeagu,Ezeagu,0.716
+Nigeria|Enugu|Igbo-Etiti,Igbo-Etiti,0.581
+Nigeria|Enugu|Igbo-eze North,Igbo-Eze North,0.685
+Nigeria|Enugu|Igbo-eze South,Igbo-Eze-South,0.443
+Nigeria|Enugu|Isi-Uzo,Isi-Uzo,0.642
+Nigeria|Enugu|Nkanu East,Nkanu East,0.725
+Nigeria|Enugu|Nkanu West,Nkanu West,0.665
+Nigeria|Enugu|Nsukka,Nsukka,0.608
+Nigeria|Enugu|Oji-River,Oji-River,0.548
+Nigeria|Enugu|Udenu,Udenu,0.707
+Nigeria|Enugu|Udi,Udi,0.523
+Nigeria|Enugu|Uzo-Uwani,Uzo-Uwani,0.664
+Nigeria|Federal Capital Territory|Abaji,Abaji,0.413
+Nigeria|Federal Capital Territory|Abuja,Municipal Area Council,0.573
+Nigeria|Federal Capital Territory|Bwari,Bwari,0.569
+Nigeria|Federal Capital Territory|Gwagwalada,Gwagwalada,0.671
+Nigeria|Federal Capital Territory|Kuje,Kuje,0.67
+Nigeria|Federal Capital Territory|Kwali,Kwali,0.76
+Nigeria|Gombe|Akko,Akko,0.7
+Nigeria|Gombe|Balanga,Balanga,0.491
+Nigeria|Gombe|Billiri,Billiri,0.581
+Nigeria|Gombe|Dukku,Dukku,0.744
+Nigeria|Gombe|Funakaye,Funakaye,0.512
+Nigeria|Gombe|Gombe,Gombe,0.148
+Nigeria|Gombe|Kaltungo,Kaltungo,0.469
+Nigeria|Gombe|Kwami,Kwami,0.583
+Nigeria|Gombe|Nafada,Nafada,0.507
+Nigeria|Gombe|Shomgom,Shomgom,0.559
+Nigeria|Gombe|Yamaltu/Deba,Yamaltu/Deba,0.605
+Nigeria|Imo|Aboh-Mbaise,Aboh-Mbaise,0.671
+Nigeria|Imo|Ahiazu-Mbaise,Ahiazu-Mbaise,0.638
+Nigeria|Imo|Ehime-Mbano,Ehime-Mbano,0.761
+Nigeria|Imo|Ezinihitte Mbaise,Ezinihitte,0.74
+Nigeria|Imo|Ideato North,Ideato North,0.681
+Nigeria|Imo|Ideato South,Ideato South,0.734
+Nigeria|Imo|Ihitte/Uboma,Ihitte/Uboma,0.554
+Nigeria|Imo|Ikeduru,Ikeduru,0.757
+Nigeria|Imo|Isiala Mbano,Isiala Mbano,0.581
+Nigeria|Imo|Isu,Isu,0.364
+Nigeria|Imo|Mbatoli,Mbatoli,0.781
+Nigeria|Imo|Ngor-Okpala,Ngor-Okpala,0.787
+Nigeria|Imo|Njaba,Njaba,0.354
+Nigeria|Imo|Nkwerre,Nkwerre,0.305
+Nigeria|Imo|Nwangele,Nwangele,0.529
+Nigeria|Imo|Obowo,Obowo,0.631
+Nigeria|Imo|Oguta,Oguta,0.892
+Nigeria|Imo|Ohaji/Egbema,Ohaji/Egbema,0.76
+Nigeria|Imo|Okigwe,Okigwe,0.76
+Nigeria|Imo|Orlu,Orlu,0.444
+Nigeria|Imo|Orsu,Orsu,0.42
+Nigeria|Imo|Oru East,Oru East,0.59
+Nigeria|Imo|Oru West,Oru West,0.504
+Nigeria|Imo|Owerri Municipal,Owerri Municipal,0.509
+Nigeria|Imo|Owerri North,Owerri North,0.814
+Nigeria|Imo|Owerri West,Owerri West,0.649
+Nigeria|Imo|Unuimo,Onuimo,0.732
+Nigeria|Jigawa|Auyo,Auyo,0.362
+Nigeria|Jigawa|Babura,Babura,0.697
+Nigeria|Jigawa|Biriniwa,Biriniwa,0.755
+Nigeria|Jigawa|Birnin Kudu,Birnin Kudu,0.816
+Nigeria|Jigawa|Buji,Buji,0.781
+Nigeria|Jigawa|Dutse,Dutse,0.746
+Nigeria|Jigawa|Gagarawa,Gagarawa,0.673
+Nigeria|Jigawa|Garki,Garki,0.585
+Nigeria|Jigawa|Gumel,Gumel,0.433
+Nigeria|Jigawa|Guri,Guri,0.796
+Nigeria|Jigawa|Gwaram,Gwaram,0.829
+Nigeria|Jigawa|Gwiwa,Gwiwa,0.651
+Nigeria|Jigawa|Hadejia,Hadejia,0.13
+Nigeria|Jigawa|Jahun,Jahun,0.72
+Nigeria|Jigawa|Kafin Hausa,Kafin Hausa,0.787
+Nigeria|Jigawa|Kaugama,Kaugama,0.52
+Nigeria|Jigawa|Kazaure,Kazaure,0.404
+Nigeria|Jigawa|Kiri Kasama,Kiri Kasama,0.673
+Nigeria|Jigawa|Kiyawa,Kiyawa,0.772
+Nigeria|Jigawa|Maigatari,Maigatari,0.694
+Nigeria|Jigawa|Malam Maduri,Malam Madori,0.654
+Nigeria|Jigawa|Miga,Miga,0.578
+Nigeria|Jigawa|Ringim,Ringim,0.639
+Nigeria|Jigawa|Roni,Roni,0.5
+Nigeria|Jigawa|Sule Tankarkar,Sule Tankarkar,0.639
+Nigeria|Jigawa|Taura,Taura,0.497
+Nigeria|Jigawa|Yankwashi,Yankwashi,0.477
+Nigeria|Kaduna|Birnin Gwari,Birnin Gwari,0.795
+Nigeria|Kaduna|Chikun,Chikun,0.717
+Nigeria|Kaduna|Giwa,Giwa,0.612
+Nigeria|Kaduna|Igabi,Igabi,0.715
+Nigeria|Kaduna|Ikara,Ikara,0.665
+Nigeria|Kaduna|Jaba,Jaba,0.53
+Nigeria|Kaduna|Jema'a,Jema'A,0.538
+Nigeria|Kaduna|Kachia,Kachia,0.742
+Nigeria|Kaduna|Kaduna North,Kaduna North,0.46
+Nigeria|Kaduna|Kaduna South,Kaduna South,0.372
+Nigeria|Kaduna|Kagarko,Kagarko,0.68
+Nigeria|Kaduna|Kajuru,Kajuru,0.612
+Nigeria|Kaduna|Kaura,Kaura,0.552
+Nigeria|Kaduna|Kauru,Kauru,0.716
+Nigeria|Kaduna|Kubau,Kubau,0.734
+Nigeria|Kaduna|Kudan,Kudan,0.552
+Nigeria|Kaduna|Lere,Lere,0.737
+Nigeria|Kaduna|Makarfi,Makarfi,0.623
+Nigeria|Kaduna|Sabon Gari,Sabon Gari,0.603
+Nigeria|Kaduna|Sanga,Sanga,0.574
+Nigeria|Kaduna|Soba,Soba,0.813
+Nigeria|Kaduna|Zangon Kataf,Zangon Kataf,0.684
+Nigeria|Kaduna|Zaria,Zaria,0.517
+Nigeria|Kano|Ajingi,Ajingi,0.572
+Nigeria|Kano|Albasu,Albasu,0.528
+Nigeria|Kano|Bagwai,Bagwai,0.615
+Nigeria|Kano|Bebeji,Bebeji,0.62
+Nigeria|Kano|Bichi,Bichi,0.508
+Nigeria|Kano|Bunkure,Bunkure,0.629
+Nigeria|Kano|Dala,Gwale,0.188
+Nigeria|Kano|Dambatta,Dambatta,0.649
+Nigeria|Kano|Dawakin Kudu,Dawakin Kudu,0.55
+Nigeria|Kano|Dawakin Tofa,Dawakin Tofa,0.594
+Nigeria|Kano|Doguwa,Doguwa,0.747
+Nigeria|Kano|Fagge,Tarauni,0.243
+Nigeria|Kano|Gabasawa,Gabasawa,0.76
+Nigeria|Kano|Garko,Garko,0.432
+Nigeria|Kano|Garum Mallam,Garun Malam,0.474
+Nigeria|Kano|Gaya,Gaya,0.484
+Nigeria|Kano|Gezawa,Gezawa,0.688
+Nigeria|Kano|Gwale,Gwale,0.334
+Nigeria|Kano|Gwarzo,Gwarzo,0.721
+Nigeria|Kano|Kabo,Kabo,0.655
+Nigeria|Kano|Kano,Kumbotso,0.106
+Nigeria|Kano|Karaye,Karaye,0.799
+Nigeria|Kano|Kibiya,Kibiya,0.574
+Nigeria|Kano|Kiru,Kiru,0.653
+Nigeria|Kano|Kumbotso,Kumbotso,0.524
+Nigeria|Kano|Kunchi,Kunchi,0.552
+Nigeria|Kano|Kura,Kura,0.596
+Nigeria|Kano|Madobi,Madobi,0.762
+Nigeria|Kano|Makoda,Makoda,0.503
+Nigeria|Kano|Minjibir,Minjibir,0.635
+Nigeria|Kano|Nasarawa,Dala,0.263
+Nigeria|Kano|Rano,Rano,0.577
+Nigeria|Kano|Rimin Gado,Rimin Gado,0.555
+Nigeria|Kano|Rogo,Rogo,0.846
+Nigeria|Kano|Shanono,Shanono,0.594
+Nigeria|Kano|Sumaila,Sumaila,0.652
+Nigeria|Kano|Takai,Takai,0.677
+Nigeria|Kano|Tarauni,Kano Municipal,0.21
+Nigeria|Kano|Tofa,Tofa,0.4
+Nigeria|Kano|Tsanyawa,Tsanyawa,0.618
+Nigeria|Kano|Tudun Wada,Tudun Wada,0.625
+Nigeria|Kano|Ungogo,Ungogo,0.458
+Nigeria|Kano|Warawa,Warawa,0.491
+Nigeria|Kano|Wudil,Wudil,0.33
+Nigeria|Katsina|Bakori,Bakori,0.609
+Nigeria|Katsina|Batagarawa,Batagarawa,0.523
+Nigeria|Katsina|Batsari,Batsari,0.581
+Nigeria|Katsina|Baure,Baure,0.696
+Nigeria|Katsina|Bindawa,Bindawa,0.517
+Nigeria|Katsina|Charanchi,Charanchi,0.663
+Nigeria|Katsina|Dandume,Dandume,0.652
+Nigeria|Katsina|Danja,Danja,0.658
+Nigeria|Katsina|Danmusa,Dan Musa,0.588
+Nigeria|Katsina|Daura,Daura,0.427
+Nigeria|Katsina|Dutsi,Dutsi,0.679
+Nigeria|Katsina|Dutsinma,Dutsin Ma,0.657
+Nigeria|Katsina|Faskari,Faskari,0.741
+Nigeria|Katsina|Funtua,Funtua,0.583
+Nigeria|Katsina|Ingawa,Ingawa,0.621
+Nigeria|Katsina|Jibia,Jibia,0.541
+Nigeria|Katsina|Kafur,Kafur,0.723
+Nigeria|Katsina|Kaita,Kaita,0.636
+Nigeria|Katsina|Kankara,Kankara,0.664
+Nigeria|Katsina|Kankia,Kankia,0.685
+Nigeria|Katsina|Katsina,Katsina,0.671
+Nigeria|Katsina|Kurfi,Kurfi,0.664
+Nigeria|Katsina|Kusada,Kusada,0.591
+Nigeria|Katsina|Mai'Adua,Mai'Adua,0.598
+Nigeria|Katsina|Malumfashi,Malumfashi,0.528
+Nigeria|Katsina|Mani,Mani,0.684
+Nigeria|Katsina|Mashi,Mashi,0.713
+Nigeria|Katsina|Matazu,Matazu,0.807
+Nigeria|Katsina|Musawa,Musawa,0.566
+Nigeria|Katsina|Rimi,Rimi,0.591
+Nigeria|Katsina|Sabuwa,Sabuwa,0.546
+Nigeria|Katsina|Safana,Safana,0.641
+Nigeria|Katsina|Sandamu,Sandamu,0.598
+Nigeria|Katsina|Zango,Zango,0.684
+Nigeria|Kebbi|Aleiro,Aleiro,0.372
+Nigeria|Kebbi|Arewa Dandi,Arewa Dandi,0.759
+Nigeria|Kebbi|Argungu,Argungu,0.517
+Nigeria|Kebbi|Augie,Augie,0.54
+Nigeria|Kebbi|Bagudo,Bagudu,0.731
+Nigeria|Kebbi|Birnin Kebbi,Birnin Kebbi,0.45
+Nigeria|Kebbi|Bunza,Bunza,0.415
+Nigeria|Kebbi|Dandi,Dandi,0.69
+Nigeria|Kebbi|Danko Wasagu,Wasagu-Danko,0.578
+Nigeria|Kebbi|Fakai,Fakai,0.606
+Nigeria|Kebbi|Gwandu,Gwandu,0.432
+Nigeria|Kebbi|Jega,Jega,0.49
+Nigeria|Kebbi|Kalgo,Kalgo,0.29
+Nigeria|Kebbi|Koko/Besse,Koko-Besse,0.468
+Nigeria|Kebbi|Maiyama,Maiyama,0.536
+Nigeria|Kebbi|Ngaski,Ngaski,0.795
+Nigeria|Kebbi|Sakaba,Sakaba,0.74
+Nigeria|Kebbi|Shanga,Shanga,0.426
+Nigeria|Kebbi|Suru,Suru,0.537
+Nigeria|Kebbi|Yauri,Shanga,0.257
+Nigeria|Kebbi|Zuru,Zuru,0.367
+Nigeria|Kogi|Adavi,Adavi,0.582
+Nigeria|Kogi|Ajaokuta,Ajaokuta,0.76
+Nigeria|Kogi|Ankpa,Ankpa,0.668
+Nigeria|Kogi|Bassa,Bassa,0.852
+Nigeria|Kogi|Dekina,Dekina,0.851
+Nigeria|Kogi|Ibaji,Ibaji,0.833
+Nigeria|Kogi|Idah,Idah,0.319
+Nigeria|Kogi|Igalamela-Odolu,Igalamela-Odolu,0.795
+Nigeria|Kogi|Ijumu,Ijumu,0.68
+Nigeria|Kogi|Kabba/Bunu,Kabba/Bunu,0.703
+Nigeria|Kogi|Kogi,Kogi,0.837
+Nigeria|Kogi|Lokoja,Lokoja,0.702
+Nigeria|Kogi|Mopa-Muro,Mopa-Muro,0.646
+Nigeria|Kogi|Ofu,Ofu,0.723
+Nigeria|Kogi|Ogori/Magongo,Ogori/Magongo,0.537
+Nigeria|Kogi|Okehi,Okehi,0.572
+Nigeria|Kogi|Okene,Okene,0.13
+Nigeria|Kogi|Olamaboro,Olamaboro,0.744
+Nigeria|Kogi|Omala,Omala,0.85
+Nigeria|Kogi|Yagba East,Yagba East,0.663
+Nigeria|Kogi|Yagba West,Yagba West,0.717
+Nigeria|Kwara|Asa,Asa,0.704
+Nigeria|Kwara|Baruten,Baruten,0.824
+Nigeria|Kwara|Edu,Edu,0.799
+Nigeria|Kwara|Ekiti,Ekiti,0.519
+Nigeria|Kwara|Ifelodun,Ifelodun,0.826
+Nigeria|Kwara|Ilorin East,Ilorin East,0.515
+Nigeria|Kwara|Ilorin South,Ilorin South,0.414
+Nigeria|Kwara|Ilorin West,Ilorin West,0.269
+Nigeria|Kwara|Irepodun,Irepodun,0.692
+Nigeria|Kwara|Isin,Isin,0.74
+Nigeria|Kwara|Kaiama,Kaiama,0.731
+Nigeria|Kwara|Moro,Moro,0.846
+Nigeria|Kwara|Offa,Offa,0.412
+Nigeria|Kwara|Oke-Ero,Oke Ero,0.517
+Nigeria|Kwara|Oyun,Oyun,0.546
+Nigeria|Kwara|Pategi,Pategi,0.85
+Nigeria|Lagos|Agege,Agege,0.278
+Nigeria|Lagos|Ajeromi/Ifelodun,Ajeromi/Ifelodun,0.271
+Nigeria|Lagos|Alimosho,Alimosho,0.585
+Nigeria|Lagos|Amuwo Odofin,Amuwo Odofin,0.534
+Nigeria|Lagos|Apapa,Apapa,0.547
+Nigeria|Lagos|Badagry,Badagry,0.773
+Nigeria|Lagos|Epe,Epe,0.803
+Nigeria|Lagos|Eti-Osa,Eti Osa,0.738
+Nigeria|Lagos|Ibeju-Lekki,Ibeju Lekki,0.731
+Nigeria|Lagos|Ifako/Ijaye,Ifako/Ijaye,0.461
+Nigeria|Lagos|Ikeja,Ikeja,0.384
+Nigeria|Lagos|Ikorodu,Ikorodu,0.739
+Nigeria|Lagos|Kosofe,Kosofe,0.526
+Nigeria|Lagos|Lagos Island,Ikorodu,0.081
+Nigeria|Lagos|Mainland,Lagos Mainland,0.446
+Nigeria|Lagos|Mushin,Mushin,0.193
+Nigeria|Lagos|Ojo,Ojo,0.636
+Nigeria|Lagos|Oshodi/Isolo,Oshodi/Isolo,0.384
+Nigeria|Lagos|Shomolu,Shomolu,0.267
+Nigeria|Lagos|Surulere,Surulere,0.318
+Nigeria|Nasarawa|Akwanga,Akwanga,0.722
+Nigeria|Nasarawa|Awe,Awe,0.796
+Nigeria|Nasarawa|Doma,Doma,0.784
+Nigeria|Nasarawa|Karu,Karu,0.794
+Nigeria|Nasarawa|Keana,Keana,0.827
+Nigeria|Nasarawa|Keffi,Keffi,0.574
+Nigeria|Nasarawa|Kokona,Kokona,0.798
+Nigeria|Nasarawa|Lafia,Lafia,0.86
+Nigeria|Nasarawa|Nasarawa,Nasarawa,0.838
+Nigeria|Nasarawa|Nasarawa Eggon,Nasarawa Egon,0.786
+Nigeria|Nasarawa|Obi,Obi,0.905
+Nigeria|Nasarawa|Toto,Toto,0.855
+Nigeria|Nasarawa|Wamba,Wamba,0.85
+Nigeria|Niger|Agaie,Agaie,0.77
+Nigeria|Niger|Agwara,Agwara,0.605
+Nigeria|Niger|Bida,Bida,0.073
+Nigeria|Niger|Borgu,Borgu,0.802
+Nigeria|Niger|Bosso,Bosso,0.652
+Nigeria|Niger|Chanchaga,Chanchaga,0.447
+Nigeria|Niger|Edati,Edati,0.583
+Nigeria|Niger|Gbako,Gbako,0.722
+Nigeria|Niger|Gurara,Gurara,0.618
+Nigeria|Niger|Katcha,Katcha,0.719
+Nigeria|Niger|Kontagora,Kontagora,0.817
+Nigeria|Niger|Lapai,Lapai,0.746
+Nigeria|Niger|Lavun,Lavun,0.715
+Nigeria|Niger|Magama,Magama,0.857
+Nigeria|Niger|Mariga,Mariga,0.835
+Nigeria|Niger|Mashegu,Mashegu,0.917
+Nigeria|Niger|Mokwa,Mokwa,0.772
+Nigeria|Niger|Muya,Munya,0.787
+Nigeria|Niger|Paikoro,Paikoro,0.779
+Nigeria|Niger|Rafi,Rafi,0.822
+Nigeria|Niger|Rijau,Rijau,0.749
+Nigeria|Niger|Shiroro,Shiroro,0.756
+Nigeria|Niger|Suleja,Suleja,0.418
+Nigeria|Niger|Tafa,Tafa,0.364
+Nigeria|Niger|Wushishi,Wushishi,0.719
+Nigeria|Ogun|Abeokuta North,Abeokuta North,0.753
+Nigeria|Ogun|Abeokuta South,Abeokuta South,0.442
+Nigeria|Ogun|Ado Odo/Ota,Ado Odo/Ota,0.759
+Nigeria|Ogun|Ewekoro,Ewekoro,0.68
+Nigeria|Ogun|Ifo,Ifo,0.655
+Nigeria|Ogun|Ijebu East,Ijebu East,0.829
+Nigeria|Ogun|Ijebu North,Ijebu North,0.74
+Nigeria|Ogun|Ijebu North-East,Ijebu North East,0.709
+Nigeria|Ogun|Ijebu-Ode,Ijebu Ode,0.58
+Nigeria|Ogun|Ikenne,Ikenne,0.753
+Nigeria|Ogun|Imeko-Afon,Imeko Afon,0.641
+Nigeria|Ogun|Ipokia,Ipokia,0.68
+Nigeria|Ogun|Obafemi-Owode,Obafemi Owode,0.777
+Nigeria|Ogun|Odeda,Odeda,0.73
+Nigeria|Ogun|Odogbolu,Odogbolu,0.836
+Nigeria|Ogun|Ogun Waterside,Ogun Waterside,0.727
+Nigeria|Ogun|Remo-North,Remo North,0.682
+Nigeria|Ogun|Shagamu,Shagamu,0.812
+Nigeria|Ogun|Yewa North,Yewa North,0.723
+Nigeria|Ogun|Yewa South,Yewa South,0.639
+Nigeria|Ondo|Akoko North-East,Akoko North East,0.705
+Nigeria|Ondo|Akoko North-West,Akoko North West,0.748
+Nigeria|Ondo|Akoko South-East,Akoko South East,0.613
+Nigeria|Ondo|Akoko South-West,Akoko South West,0.824
+Nigeria|Ondo|Akure North,Akure North,0.812
+Nigeria|Ondo|Akure South,Akure South,0.664
+Nigeria|Ondo|Ese-Odo,Ese Odo,0.796
+Nigeria|Ondo|Idanre,Idanre,0.877
+Nigeria|Ondo|Ifedore,Ifedore,0.606
+Nigeria|Ondo|Ilaje,Ilaje,0.848
+Nigeria|Ondo|Ile-Oluji/Okeigbo,Ile Oluji/Okeigbo,0.358
+Nigeria|Ondo|Irele,Irele,0.803
+Nigeria|Ondo|Odigbo,Odigbo,0.901
+Nigeria|Ondo|Okitipupa,Okitipupa,0.947
+Nigeria|Ondo|Ondo East,Ondo East,0.846
+Nigeria|Ondo|Ondo West,Ondo West,0.85
+Nigeria|Ondo|Ose,Ose,0.782
+Nigeria|Ondo|Owo,Owo,0.816
+Nigeria|Osun|Aiyedade,Ayedade,0.745
+Nigeria|Osun|Atakumosa East,Ile Oluji/Okeigbo,0.337
+Nigeria|Osun|Atakumosa West,Atakunmosa West,0.509
+Nigeria|Osun|Ayedire,Ayedire,0.578
+Nigeria|Osun|Boluwaduro,Boluwaduro,0.716
+Nigeria|Osun|Boripe,Boripe,0.237
+Nigeria|Osun|Ede North,Ede North,0.427
+Nigeria|Osun|Ede South,Ede South,0.452
+Nigeria|Osun|Egbedore,Egbedore,0.47
+Nigeria|Osun|Ejigbo,Ejigbo,0.609
+Nigeria|Osun|Ife Central,Ife East,0.211
+Nigeria|Osun|Ife East,Ife East,0.196
+Nigeria|Osun|Ife North,Ife North,0.355
+Nigeria|Osun|Ife South,Ife South,0.534
+Nigeria|Osun|Ifedayo,Ifedayo,0.425
+Nigeria|Osun|Ifelodun,Ifelodun,0.361
+Nigeria|Osun|Ila,Ila,0.723
+Nigeria|Osun|Ilesha East,Ilesha East,0.909
+Nigeria|Osun|Ilesha West,Ilesha West,0.535
+Nigeria|Osun|Irepodun,Irepodun,0.25
+Nigeria|Osun|Irewole,Irewole,0.615
+Nigeria|Osun|Isokan,Isokan,0.671
+Nigeria|Osun|Iwo,Iwo,0.452
+Nigeria|Osun|Obokun,Obokun,0.7
+Nigeria|Osun|Odo-Otin,Odo Otin,0.513
+Nigeria|Osun|Ola Oluwa,Ola Oluwa,0.692
+Nigeria|Osun|Olorunda,Olorunda,0.386
+Nigeria|Osun|Oriade,Oriade,0.632
+Nigeria|Osun|Orolu,Orolu,0.44
+Nigeria|Osun|Osogbo,Osogbo,0.33
+Nigeria|Oyo|Afijio,Afijio,0.698
+Nigeria|Oyo|Akinyele,Akinyele,0.694
+Nigeria|Oyo|Atiba,Atiba,0.353
+Nigeria|Oyo|Atisbo,Atisbo,0.402
+Nigeria|Oyo|Egbeda,Egbeda,0.663
+Nigeria|Oyo|Ibadan North,Ibadan North,0.456
+Nigeria|Oyo|Ibadan North-East,Ibadan North East,0.289
+Nigeria|Oyo|Ibadan North-West,Ibadan North West,0.392
+Nigeria|Oyo|Ibadan South-East,Ibadan South East,0.215
+Nigeria|Oyo|Ibadan South-West,Ibadan South West,0.518
+Nigeria|Oyo|Ibarapa Central,Ibarapa Central,0.662
+Nigeria|Oyo|Ibarapa East,Ibarapa East,0.735
+Nigeria|Oyo|Ibarapa North,Ibarapa North,0.822
+Nigeria|Oyo|Ido,Ido,0.64
+Nigeria|Oyo|Irepo,Irepo,0.821
+Nigeria|Oyo|Iseyin,Iseyin,0.528
+Nigeria|Oyo|Itesiwaju,Itesiwaju,0.376
+Nigeria|Oyo|Iwajowa,Iwajowa,0.771
+Nigeria|Oyo|Kajola,Kajola,0.814
+Nigeria|Oyo|Lagelu,Lagelu,0.548
+Nigeria|Oyo|Ogbomosho North,Ogbomosho North,0.701
+Nigeria|Oyo|Ogbomosho South,Ogbomosho South,0.316
+Nigeria|Oyo|Ogo Oluwa,Ogo Oluwa,0.685
+Nigeria|Oyo|Olorunsogo,Olorunsogo,0.602
+Nigeria|Oyo|Oluyole,Oluyole,0.736
+Nigeria|Oyo|Ona Ara,Ona Ara,0.656
+Nigeria|Oyo|Orelope,Orelope,0.729
+Nigeria|Oyo|Ori-Ire,Ori Ire,0.622
+Nigeria|Oyo|Oyo East,Oyo East,0.62
+Nigeria|Oyo|Oyo West,Oyo West,0.666
+Nigeria|Oyo|Saki East,Saki East,0.663
+Nigeria|Oyo|Saki West,Saki West,0.588
+Nigeria|Oyo|Surulere,Surulere,0.841
+Nigeria|Plateau|Barkin Ladi,Barkin Ladi,0.627
+Nigeria|Plateau|Bassa,Bassa,0.807
+Nigeria|Plateau|Bokkos,Bokkos,0.79
+Nigeria|Plateau|Jos East,Jos East,0.676
+Nigeria|Plateau|Jos North,Jos North,0.502
+Nigeria|Plateau|Jos South,Jos South,0.574
+Nigeria|Plateau|Kanam,Kanam,0.723
+Nigeria|Plateau|Kanke,Kanke,0.53
+Nigeria|Plateau|Langtang North,Langtang North,0.5
+Nigeria|Plateau|Langtang South,Langtang South,0.784
+Nigeria|Plateau|Mangu,Mangu,0.692
+Nigeria|Plateau|Mikang,Mikang,0.599
+Nigeria|Plateau|Pankshin,Pankshin,0.571
+Nigeria|Plateau|Qua'an Pan,Qua'An Pan,0.782
+Nigeria|Plateau|Riyom,Riyom,0.681
+Nigeria|Plateau|Shendam,Shendam,0.694
+Nigeria|Plateau|Wase,Wase,0.783
+Nigeria|Rivers|Abua/Odual,Abua/Odual,0.745
+Nigeria|Rivers|Ahoada East,Ahoada East,0.631
+Nigeria|Rivers|Ahoada West,Ahoada West,0.708
+Nigeria|Rivers|Akuku-Toru,Akuku Toru,0.342
+Nigeria|Rivers|Andoni,Andoni,0.449
+Nigeria|Rivers|Asari-Toru,Asari-Toru,0.399
+Nigeria|Rivers|Bonny,Bonny,0.386
+Nigeria|Rivers|Degema,Degema,0.599
+Nigeria|Rivers|Eleme,Eleme,0.437
+Nigeria|Rivers|Emuoha,Emuoha,0.54
+Nigeria|Rivers|Etche,Etche,0.547
+Nigeria|Rivers|Gokana,Gokana,0.581
+Nigeria|Rivers|Ikwerre,Ikwerre,0.593
+Nigeria|Rivers|Khana,Khana,0.768
+Nigeria|Rivers|Obio/Akpor,Obio/Akpor,0.604
+Nigeria|Rivers|Ogba/Egbema/Ndoni,Ogba/Egbema/Ndoni,0.69
+Nigeria|Rivers|Ogu/Bolo,Ogu Bolo,0.167
+Nigeria|Rivers|Okrika,Okrika,0.225
+Nigeria|Rivers|Omumma,Omumma,0.285
+Nigeria|Rivers|Opobo/Nkoro,Opobo/Nkoro,0.409
+Nigeria|Rivers|Oyigbo,Oyigbo,0.657
+Nigeria|Rivers|Port Harcourt,Port-Harcourt,0.288
+Nigeria|Rivers|Tai,Tai,0.566
+Nigeria|Sokoto|Binji,Binji,0.413
+Nigeria|Sokoto|Bodinga,Bodinga,0.547
+Nigeria|Sokoto|Dange-Shuni,Dange Shuni,0.64
+Nigeria|Sokoto|Gada,Illela,0.635
+Nigeria|Sokoto|Goronyo,Goronyo,0.72
+Nigeria|Sokoto|Gudu,Gudu,0.736
+Nigeria|Sokoto|Gwadabawa,Gwadabawa,0.543
+Nigeria|Sokoto|Illela,Gada,0.73
+Nigeria|Sokoto|Isa,Isa,0.784
+Nigeria|Sokoto|Kebbe,Kebbe,0.444
+Nigeria|Sokoto|Kware,Kware,0.562
+Nigeria|Sokoto|Rabah,Rabah,0.719
+Nigeria|Sokoto|Sabon Birni,Sabon Birni,0.884
+Nigeria|Sokoto|Shagari,Shagari,0.511
+Nigeria|Sokoto|Silame,Silame,0.48
+Nigeria|Sokoto|Sokoto North,Sokoto South,0.291
+Nigeria|Sokoto|Sokoto South,Sokoto South,0.165
+Nigeria|Sokoto|Tambuwal,Tambuwal,0.47
+Nigeria|Sokoto|Tangaza,Tangaza,0.741
+Nigeria|Sokoto|Tureta,Tureta,0.502
+Nigeria|Sokoto|Wamako,Wamakko,0.601
+Nigeria|Sokoto|Wurno,Wurno,0.639
+Nigeria|Sokoto|Yabo,Yabo,0.524
+Nigeria|Taraba|Ardo-Kola,Ardo-Kola,0.674
+Nigeria|Taraba|Bali,Bali,0.798
+Nigeria|Taraba|Donga,Donga,0.701
+Nigeria|Taraba|Gashaka,Gashaka,0.742
+Nigeria|Taraba|Gassol,Gassol,0.83
+Nigeria|Taraba|Ibi,Ibi,0.743
+Nigeria|Taraba|Jalingo,Jalingo,0.326
+Nigeria|Taraba|Karim Lamido,Karim Lamido,0.723
+Nigeria|Taraba|Kurmi,Kurmi,0.803
+Nigeria|Taraba|Lau,Lau,0.478
+Nigeria|Taraba|Sardauna,Sardauna,0.719
+Nigeria|Taraba|Takum,Takum,0.341
+Nigeria|Taraba|Ussa,Takum,0.364
+Nigeria|Taraba|Wukari,Wukari,0.835
+Nigeria|Taraba|Yorro,Yorro,0.392
+Nigeria|Taraba|Zing,Zing,0.355
+Nigeria|Yobe|Bade,Bade,0.412
+Nigeria|Yobe|Borsari,Bursari,0.819
+Nigeria|Yobe|Damaturu,Damaturu,0.713
+Nigeria|Yobe|Fika,Fika,0.612
+Nigeria|Yobe|Fune,Fune,0.73
+Nigeria|Yobe|Geidam,Geidam,0.77
+Nigeria|Yobe|Gujba,Gujba,0.734
+Nigeria|Yobe|Gulani,Gulani,0.631
+Nigeria|Yobe|Jakusko,Jakusko,0.757
+Nigeria|Yobe|Karasuwa,Karasuwa,0.509
+Nigeria|Yobe|Machina,Machina,0.777
+Nigeria|Yobe|Nangere,Nangere,0.566
+Nigeria|Yobe|Nguru,Nguru,0.597
+Nigeria|Yobe|Potiskum,Potiskum,0.549
+Nigeria|Yobe|Tarmuwa,Tarmuwa,0.677
+Nigeria|Yobe|Yunusari,Yunusari,0.786
+Nigeria|Yobe|Yusufari,Yusufari,0.759
+Nigeria|Zamfara|Anka,Anka,0.626
+Nigeria|Zamfara|Bakura,Bakura,0.462
+Nigeria|Zamfara|Birnin-Magaji/Kiyaw,Birnin Magaji-Kiyaw,0.691
+Nigeria|Zamfara|Bukkuyum,Bukkuyum,0.506
+Nigeria|Zamfara|Bungudu,Bungudu,0.491
+Nigeria|Zamfara|Gummi,Gummi,0.404
+Nigeria|Zamfara|Gusau,Gusau,0.445
+Nigeria|Zamfara|Kaura Namoda,Kaura Namoda,0.652
+Nigeria|Zamfara|Maradun,Maradun,0.709
+Nigeria|Zamfara|Maru,Maru,0.716
+Nigeria|Zamfara|Shinkafi,Shinkafi,0.537
+Nigeria|Zamfara|Talata-Mafara,Talata Mafara,0.517
+Nigeria|Zamfara|Tsafe,Tsafe,0.689
+Nigeria|Zamfara|Zurmi,Zurmi,0.738
+Somalia|Awdal|Baki,LUGHAYA,0.289
+Somalia|Awdal|Boorama,BORAMA,0.502
+Somalia|Awdal|Lughaya,LUGHAYA,0.464
+Somalia|Awdal|Zeylac,ZEILA,0.807
+Somalia|Bakool|Ceel Barde,EL BARDE,0.989
+Somalia|Bakool|Rab Dhuure,RABDURE,0.807
+Somalia|Bakool|Tiyeeglow,TIYEGLO,0.875
+Somalia|Bakool|Wajid,WAJID,0.556
+Somalia|Bakool|Xudur,HUDUR,0.795
+Somalia|Banaadir|Mogadisho,HELIWA,0.365
+Somalia|Bari|Bander-Beyla,BENDER BAYLA,0.506
+Somalia|Bari|Bosaaso,BOSSASO,0.613
+Somalia|Bari|Calawla,ALULA,0.747
+Somalia|Bari|Iskushuban,ISKUSHUBAN,0.407
+Somalia|Bari|Qandala,QANDALA,0.572
+Somalia|Bari|Qardho,GARDO,0.346
+Somalia|Bay|Baydhabo,BAIDOA,0.741
+Somalia|Bay|Buur Xakaba,BURHAKABA,0.822
+Somalia|Bay|Diinsoor,DINSOOR,0.876
+Somalia|Bay|Qansax Dheere,QANSAH DHEERE,0.809
+Somalia|Galguduud|Caabudwaaq,BALANBALE,0.466
+Somalia|Galguduud|Cadaado,ADADO,0.459
+Somalia|Galguduud|Ceel Buur,ELGARAS,0.427
+Somalia|Galguduud|Ceel Dheer,EL DHERE,0.41
+Somalia|Galguduud|Dhuusamareeb,DUSAMREB,0.654
+Somalia|Gedo|Baar-Dheere,BARDERA,0.941
+Somalia|Gedo|Beled Xaawo,BELET HAWA,0.518
+Somalia|Gedo|Ceel Waaq,EL WAK,0.769
+Somalia|Gedo|Dolow,GEDWEIN,0.42
+Somalia|Gedo|Garbahaaray,GARBAHAREY,0.442
+Somalia|Gedo|Luuk,LUUQ,0.578
+Somalia|Hiiraan|Beled Weyn,BELET WEYNE,0.51
+Somalia|Hiiraan|Buulo Burdo,BULO BURTI,0.508
+Somalia|Hiiraan|Jalalaqsi,JALALAQSI,0.689
+Somalia|Jubbada Dhexe|Bu'aale,BUAALE,0.793
+Somalia|Jubbada Dhexe|Jilib,JILIB EAST,0.925
+Somalia|Jubbada Dhexe|Saakow,SALAGLE,0.704
+Somalia|Jubbada Hoose|Afmadow,AFMADOW,0.691
+Somalia|Jubbada Hoose|Badhaadhe,BADHADHE,0.955
+Somalia|Jubbada Hoose|Jamaame,JAMAAME EAST,0.468
+Somalia|Jubbada Hoose|Kismaayo,KISMAYO,0.958
+Somalia|Mudug|Gaalkacayo,GALKAYU SOUTH,0.302
+Somalia|Mudug|Goldogob,GOLDOGOB,0.458
+Somalia|Mudug|Hobyo,HOBYO,0.837
+Somalia|Mudug|Jariiban,JARIBAN,0.541
+Somalia|Mudug|Xarardheere,HARADHERE,0.925
+Somalia|Nugaal|Burtinle,BURTINLE,0.242
+Somalia|Nugaal|Eyl,EYL,0.684
+Somalia|Nugaal|Garoowe,GAROWE,0.427
+Somalia|Sanaag|Badhan,BADHAN,0.482
+Somalia|Sanaag|Ceel-Afwein,EL AFWEYN,0.548
+Somalia|Sanaag|Ceerigaabo,ERIGAVO,0.376
+Somalia|Shabeellaha Dhexe|Aadan,ADEN YABAL,0.34
+Somalia|Shabeellaha Dhexe|Balcad,WARSHEIKH,0.401
+Somalia|Shabeellaha Dhexe|Cadale,ADALE,0.621
+Somalia|Shabeellaha Dhexe|Jawhar,MAHADAY,0.492
+Somalia|Shabeellaha Hoose|Afgooye,AFGOI,0.407
+Somalia|Shabeellaha Hoose|Baraawe,BRAVA,0.988
+Somalia|Shabeellaha Hoose|Kuntuwaaray,KURTUNWAAREY,0.921
+Somalia|Shabeellaha Hoose|Marka,MARKA,0.476
+Somalia|Shabeellaha Hoose|Qoryooley,QORYOLEY,0.667
+Somalia|Shabeellaha Hoose|Sablale,SABLALE,1.0
+Somalia|Shabeellaha Hoose|Wanla Weyn,WANLEWEYNE,0.535
+Somalia|Sool|Caynabo,AYNABO,0.705
+Somalia|Sool|Lascaanod,LAS ANOD,0.625
+Somalia|Sool|Taleex,TALEH,0.613
+Somalia|Sool|Xudun,HUDUN,0.526
+Somalia|Togdheer|Burao,BURAO,0.737
+Somalia|Togdheer|Buuhoodle,BUHODLE,0.498
+Somalia|Togdheer|Oodweyne,ODWAYNE,0.68
+Somalia|Togdheer|Sheekh,SHEIKH,0.311
+Somalia|Woqooyi Galbeed|Berbera,BERBERA,0.67
+Somalia|Woqooyi Galbeed|Gabiley,GABILEY,0.703
+Somalia|Woqooyi Galbeed|Hargeysa,HARGEISA,0.563
+Uganda|Adjumani|East Moyo,East Moyo,0.88
+Uganda|Apac|Kole,Kole,0.776
+Uganda|Apac|Kwania,Kwania,0.77
+Uganda|Apac|Maruzi,Maruzi,0.78
+Uganda|Apac|Oyam,Oyam,0.869
+Uganda|Arua|Arua Municipality,Ayivu,0.024
+Uganda|Arua|Ayivu,Ayivu,0.622
+Uganda|Arua|Koboko,Koboko,0.805
+Uganda|Arua|Madi-Okollo,Madi-Okollo,0.814
+Uganda|Arua|Maracha,Maracha,0.732
+Uganda|Arua|Terego,Terego,0.781
+Uganda|Arua|Vurra,Vurra,0.759
+Uganda|Bugiri|Bukooli,Bukooli,0.852
+Uganda|Bundibugyo|Bwamba,Bughendra,0.889
+Uganda|Bundibugyo|Ntoroko,Ntoroko,0.591
+Uganda|Bushenyi|Buhweju,Buhweju,0.618
+Uganda|Bushenyi|Bunyaruguru,Bunyaruguru,0.622
+Uganda|Bushenyi|Igara,Igara,0.665
+Uganda|Bushenyi|Ruhinda,Ruhinda,0.699
+Uganda|Bushenyi|Sheema,Sheema,0.804
+Uganda|Busia|Samia-Bugwe,Samia-Bugwe,0.879
+Uganda|Gulu|Aswa,Aswa,0.892
+Uganda|Gulu|Gulu,Omoro,0.016
+Uganda|Gulu|Kilak,Kilak,0.757
+Uganda|Gulu|Nwoya,Nwoya,0.756
+Uganda|Gulu|Omoro,Omoro,0.662
+Uganda|Hoima|Bugahya,Bugahya,0.696
+Uganda|Hoima|Buhaguzi,Buhaguzi,0.727
+Uganda|Iganga|Bugweri,Bugweri,0.763
+Uganda|Iganga|Busiki,Busiki,0.861
+Uganda|Iganga|Kigulu,Kigulu,0.842
+Uganda|Iganga|Luuka,Luuka,0.834
+Uganda|Jinja|Butembe,Butembe,0.683
+Uganda|Jinja|Jinja,Bunya,0.023
+Uganda|Jinja|Kagoma,Kagoma,0.736
+Uganda|Kabale|Kabale,Ndorwa,0.033
+Uganda|Kabale|Ndorwa,Ndorwa,0.876
+Uganda|Kabale|Rubanda,Rubanda,0.865
+Uganda|Kabale|Rukiga,Rukiga,0.766
+Uganda|Kabarole|Bunyangabu,Bunyangabu,0.66
+Uganda|Kabarole|Burahya,Burahya,0.613
+Uganda|Kabarole|Fort Portal,Burahya,0.024
+Uganda|Kaberamaido|Kaberamaido,Kaberamaido,0.921
+Uganda|Kaberamaido|Kalaki,Kalaki,0.894
+Uganda|Kalangala|Bujumba,Bujjumba,0.747
+Uganda|Kalangala|Kyamuswa,Kyamuswa,0.677
+Uganda|Kampala|Kampala,Kampala,0.817
+Uganda|Kamuli|Budiope,Budiope,0.911
+Uganda|Kamuli|Bugabula,Bugabula,0.86
+Uganda|Kamuli|Bulamogi,Bulamogi,0.916
+Uganda|Kamuli|Buzaaya,Buzaaya,0.791
+Uganda|Kamwenge|Kibale,Kibale,0.748
+Uganda|Kamwenge|Kitagwenda,Kitagwenda,0.688
+Uganda|Kanungu|Kinkiizi,Kinkiizi,0.848
+Uganda|Kapchorwa|Kongasis,Kongasis,0.788
+Uganda|Kapchorwa|Kween,Kween,0.807
+Uganda|Kapchorwa|Tingey,Tingey,0.835
+Uganda|Kasese|Bukonjo,Bukonjo,0.819
+Uganda|Kasese|Busongora,Busongora,0.824
+Uganda|Katakwi|Amuria,Amuria,0.817
+Uganda|Katakwi|Kapelebyong,Soroti,0.811
+Uganda|Katakwi|Usuk,Usuk,0.947
+Uganda|Kayunga|Bbaale,Bbaale,0.842
+Uganda|Kayunga|Ntenjeru,Ntenjeru,0.825
+Uganda|Kibale|Bugangaizi,Bugangaizi,0.901
+Uganda|Kibale|Buyaga,Buyaga,0.828
+Uganda|Kibale|Buyanja,Buyanja,0.897
+Uganda|Kiboga|Kiboga,Kiboga,0.891
+Uganda|Kisoro|Kisoro,Bufumbira,0.897
+Uganda|Kitgum|Chua,Chua,0.853
+Uganda|Kitgum|Lamwo,Lamwo,0.921
+Uganda|Kotido|Dodoth,Dodoth,0.973
+Uganda|Kotido|Jie,Jie,0.824
+Uganda|Kotido|Labwor,Labwor,0.797
+Uganda|Kumi|Bukedea,Bukedea,0.921
+Uganda|Kumi|Kumi,Kumi,0.907
+Uganda|Kumi|Ngora,Ngora,0.862
+Uganda|Kyenjojo|Kyaka,Kyaka,0.872
+Uganda|Kyenjojo|Mwenge,Mwenge,0.901
+Uganda|Lake Albert|Lake Albert,Bugahya,0.028
+Uganda|Lake Victoria|Lake Victoria,Busiro,0.013
+Uganda|Lira|Dokolo,Dokolo,0.846
+Uganda|Lira|Erute,Erute,0.76
+Uganda|Lira|Kyoga,Kioga,0.927
+Uganda|Lira|Lira,Erute,0.027
+Uganda|Lira|Moroto,Moroto,0.82
+Uganda|Lira|Otuke,Otuke,0.838
+Uganda|Luwero|Bamunanika,Bamunanika,0.869
+Uganda|Luwero|Katikamu,Katikamu,0.874
+Uganda|Luwero|Nakaseke,Nakaseke,0.939
+Uganda|Masaka|Bukomansimbi,Bukomansimbi,0.861
+Uganda|Masaka|Bukoto,Bukuto,0.872
+Uganda|Masaka|Kalungu,Kalungu,0.881
+Uganda|Masaka|Masaka,Bukuto,0.02
+Uganda|Masindi|Bujenje,Bujenje,0.637
+Uganda|Masindi|Bujenje (?),Buliisa,0.471
+Uganda|Masindi|Buruli,Buruuli,0.864
+Uganda|Masindi|Kibanda,Kibanda,0.778
+Uganda|Mayuge|Bunya,Bunya,0.732
+Uganda|Mbale|Bubulo,Bubulo,0.841
+Uganda|Mbale|Bungokho,Bungokho,0.701
+Uganda|Mbale|Manjiya,Manjiya,0.699
+Uganda|Mbale|Mbale,Bungokho,0.045
+Uganda|Mbarara|Bukanga,Bukanga,0.879
+Uganda|Mbarara|Ibanda,Ibanda,0.686
+Uganda|Mbarara|Isingiro,Isingiro,0.796
+Uganda|Mbarara|Kashari,Kashari,0.861
+Uganda|Mbarara|Kazo,Kazo,0.719
+Uganda|Mbarara|Mbarara,Kashari,0.021
+Uganda|Mbarara|Nyabushozi,Nyabushozi,0.888
+Uganda|Mbarara|Rwampara,Rwampara,0.744
+Uganda|Moroto|Bokora,Bokora,0.919
+Uganda|Moroto|Matheniko,Matheniko,0.902
+Uganda|Moroto|Moroto,Matheniko,0.001
+Uganda|Moyo|Obongi,Obongi,0.68
+Uganda|Moyo|West Moyo,West Moyo,0.82
+Uganda|Mpigi|Butambala,Butambala,0.802
+Uganda|Mpigi|Gomba,Gomba,0.883
+Uganda|Mpigi|Mawokota,Mawokota,0.739
+Uganda|Mubende|Busujju,Busujju,0.809
+Uganda|Mubende|Buwekula,Buwekula,0.897
+Uganda|Mubende|Kassanda,Kassanda,0.861
+Uganda|Mubende|Mityana,Mityana,0.831
+Uganda|Mukono|Buikwe,Buikwe,0.889
+Uganda|Mukono|Buvuma Islands,Buvuma,0.73
+Uganda|Mukono|Mukono,Mukono,0.801
+Uganda|Mukono|Nakifuma,Nakifuma,0.861
+Uganda|Nakapiripirit|Chekwii,Chekwii,0.711
+Uganda|Nakapiripirit|Pian,Pian,0.587
+Uganda|Nakapiripirit|Pokot,Pokot,0.845
+Uganda|Nakasongola|Buruli,Buruli,0.938
+Uganda|Nebbi|Jonam,Jonam,0.807
+Uganda|Nebbi|Okoro,Okoro,0.797
+Uganda|Nebbi|Padyere,Padyere,0.81
+Uganda|Ntungamo|Kajara,Kajara,0.416
+Uganda|Ntungamo|Ruhaama,Ruhaama,0.795
+Uganda|Ntungamo|Rushenyi,Rushenyi,0.439
+Uganda|Pader|Agago,Agago,0.795
+Uganda|Pader|Aruu,Aruu,0.732
+Uganda|Pallisa|Budaka,Budaka,0.757
+Uganda|Pallisa|Butebo,Butebo,0.794
+Uganda|Pallisa|Kibuku,Kibuku,0.802
+Uganda|Pallisa|Pallisa,Pallisa,0.88
+Uganda|Rakai|Kabula,Kabula,0.784
+Uganda|Rakai|Kakuuto,Kakuuto,0.733
+Uganda|Rakai|Kooki,Kooki,0.776
+Uganda|Rakai|Kyotera,Kyotera,0.847
+Uganda|Rukungiri|Bufumbira,Bujumbura,0.777
+Uganda|Rukungiri|Rubabo,Rubabo,0.784
+Uganda|Sembabule|Lwemiyaga,Lwemiyaga,0.843
+Uganda|Sembabule|Mawogola,Mawogola,0.862
+Uganda|Sironko|Budadiri,Budadiri,0.722
+Uganda|Sironko|Bulambuli,Bulambuli,0.734
+Uganda|Sironko|Mt. Elgon Np,Bulambuli,0.155
+Uganda|Soroti|Kasilo,Kasilo,0.94
+Uganda|Soroti|Serere,Serere,0.929
+Uganda|Soroti|Soroti,Soroti,0.904
+Uganda|Soroti|Soroti (Municipality),Soroti,0.018
+Uganda|Tororo|Bunyole,Bunyole,0.785
+Uganda|Tororo|Kisoko (West Budama),West Budama,0.818
+Uganda|Tororo|Tororo,Tororo,0.714
+Uganda|Tororo|Tororo (Municipality),Tororo,0.063
+Uganda|Wakiso|Busiiro,Busiro,0.699
+Uganda|Wakiso|Entebbe,Busiro,0.018
+Uganda|Wakiso|Jinja,Kyadondo,0.773
+Uganda|Yumbe|Aringa,Aringa,0.849
