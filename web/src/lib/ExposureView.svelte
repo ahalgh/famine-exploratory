@@ -53,19 +53,19 @@
   const hazardWords = { drought: 'drought', conflict: 'conflict', flood: 'floods' };
 
   // ---- the calculation, for one wealth group -------------------------------------------------
-  function calc(r) {
+  function calc(r, xs = x) {
     const F = (k) => r.food?.[k]?.[1] ?? 0; // % of annual food needs
     const I = (k) => r.income?.[k]?.[1] ?? 0; // % of annual cash income
-    const f = (k) => x[k] / 100;
+    const f = (k) => xs[k] / 100;
     const lines = [];
-    const direct = (v, label, share) => share && x[v] && lines.push({ v, kind: 'direct', label, share, change: x[v], loss: share * f(v) });
+    const direct = (v, label, share) => share && xs[v] && lines.push({ v, kind: 'direct', label, share, change: xs[v], loss: share * f(v) });
     direct('crop', 'Own harvest', F('own_crops'));
     direct('livestock', 'Own milk and meat', F('own_livestock'));
     direct('labour', 'Food paid for work', F('payment_in_kind'));
     direct('wild', 'Wild food', F('wild_food_fishing_hunting'));
 
     const cash = [];
-    const income = (v, label, share) => share && cash.push({ v, label, share, change: x[v], lost: (share * f(v)) / 100 });
+    const income = (v, label, share) => share && cash.push({ v, label, share, change: xs[v], lost: (share * f(v)) / 100 });
     if (r.income) {
       income('crop', 'Crop sales', I('crop_sales'));
       income('market', 'Crop sales (market access)', I('crop_sales'));
@@ -78,7 +78,7 @@
     const bought = F('purchase');
     for (const c of cash) if (bought && c.change) lines.push({ v: c.v, kind: 'cash', label: `Less cash: ${c.label.toLowerCase()}`, share: c.share, change: c.change, bought, loss: bought * c.lost });
     const p = f('price');
-    if (bought && p) lines.push({ v: 'price', kind: 'price', label: 'Food bought costs more', bought, Y, change: x.price, loss: (bought * (1 - Y) * p) / (1 + p) });
+    if (bought && p) lines.push({ v: 'price', kind: 'price', label: 'Food bought costs more', bought, Y, change: xs.price, loss: (bought * (1 - Y) * p) / (1 + p) });
     const L = lines.reduce((a, l) => a + l.loss, 0);
     const byVar = Object.fromEntries(VARS.map((v) => [v.k, 0]));
     for (const l of lines) byVar[l.v] += l.loss;
@@ -125,6 +125,41 @@
     if (w > 0) acc.push({ v, x: acc.length ? acc.at(-1).x + acc.at(-1).w : 0, w });
     return acc;
   }, []);
+
+  // ---- across countries -----------------------------------------------------------------------
+  const CROSS = ['Malawi', 'Guatemala', 'Somalia', 'Kenya', 'Nigeria'];
+  const zoneById = Object.fromEntries(exposure.zones.map((z) => [z.fnid, z]));
+  // share of all food lost, by cause, for the current scenario and dials
+  const causeShares = $derived(CROSS.map((c) => {
+    const by = Object.fromEntries(VARS.map((v) => [v.k, 0]));
+    let hit = 0;
+    for (const r of exposure.rows) {
+      if (r.c !== c || !r.food || !exposedZone(zoneById[r.fnid])) continue;
+      const res = calc(r);
+      for (const v of VARS) by[v.k] += r.p * res.byVar[v.k];
+      hit += r.p * counted(res.L);
+    }
+    const total = Object.values(by).reduce((a, b) => a + b, 0);
+    return { c, hit, total, shares: VARS.map((v) => ({ v, pct: total ? (100 * by[v.k]) / total : 0 })) };
+  }));
+  // one dial at a time: a 10% move, people losing at least 5% of food needs, every zone
+  const ONE_AT_A_TIME = { move: 10, cut: 5 };
+  const single = $derived.by(() => {
+    const out = {};
+    for (const v of VARS) {
+      const xs = Object.fromEntries(VARS.map((w) => [w.k, w.k === v.k ? ONE_AT_A_TIME.move : 0]));
+      out[v.k] = Object.fromEntries(CROSS.map((c) => [c, 0]));
+      for (const r of exposure.rows) {
+        if (!r.food || !(r.c in out[v.k])) continue;
+        const L = calc(r, xs).L;
+        const share = L <= 0 ? 0 : Math.min(1, Math.max(0, (1.5 * L - ONE_AT_A_TIME.cut) / L));
+        out[v.k][r.c] += r.p * share;
+      }
+    }
+    return out;
+  });
+  const singleMax = $derived(Object.fromEntries(CROSS.map((c) => [c, Math.max(...VARS.map((v) => single[v.k][c]))])));
+  const covered = $derived(CROSS.concat('Uganda').map((c) => ({ c, food: exposure.countries[c].food, pop: exposure.countries[c].population })));
 
   const M = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(n >= 1e7 ? 0 : 1)} million` : n >= 1e3 ? `${Math.round(n / 1e3).toLocaleString()},000` : `${Math.round(n)}`);
   const short = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : `${Math.round(n)}`);
@@ -273,6 +308,75 @@
     </div>
   {/if}
 
+  <section class="panel across" aria-labelledby="across-title">
+    <h2 id="across-title">Across countries</h2>
+    <div class="across-grid">
+      <div>
+        <h3>Food lost by cause, {SCENARIOS[scenario].label.toLowerCase()} scenario</h3>
+        <p class="muted small">Share of all food lost in each country under the current settings. The same disaster reaches people through different channels.</p>
+        <div class="cause-legend">{#each VARS as v}<span><i style="background:{v.color}"></i>{v.short ?? v.label}</span>{/each}</div>
+        {#each causeShares as r}
+          <div class="crow">
+            <span class="cname">{r.c}<small>{short(r.hit)} affected</small></span>
+            <span class="stack" role="img" aria-label="{r.c}: {r.shares.filter((s) => s.pct >= 1).map((s) => `${s.v.short ?? s.v.label} ${Math.round(s.pct)}%`).join(', ')}">
+              {#each r.shares as s}{#if s.pct > 0}<i style="width:{s.pct}%; background:{s.v.color}" title="{s.v.label}: {Math.round(s.pct)}%">{#if s.pct >= 12}<b>{Math.round(s.pct)}%</b>{/if}</i>{/if}{/each}
+              {#if !r.total}<em class="muted">no zones list this hazard</em>{/if}
+            </span>
+          </div>
+        {/each}
+      </div>
+      <div>
+        <h3>One variable at a time</h3>
+        <p class="muted small">People losing at least {ONE_AT_A_TIME.cut}% of food needs when one variable moves {ONE_AT_A_TIME.move}% in every zone. The largest in each country is in bold.</p>
+        <table class="single">
+          <thead><tr><th></th>{#each CROSS as c}<th class="num">{c}</th>{/each}</tr></thead>
+          <tbody>
+            {#each VARS as v}
+              <tr>
+                <td><i class="dot" style="background:{v.color}"></i>{v.short ?? v.label}</td>
+                {#each CROSS as c}
+                  <td class="num" class:top={single[v.k][c] > 0 && single[v.k][c] === singleMax[c]}>{single[v.k][c] >= 5e4 ? short(single[v.k][c]) : '–'}</td>
+                {/each}
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel method" aria-labelledby="method-title">
+    <h2 id="method-title">How it is calculated</h2>
+    <ol>
+      <li><strong>A year of food as 100 units.</strong> For each wealth group in each livelihood zone, the FEWS NET profile
+        gives how many units come from own fields, own animals, purchases, food paid for work and wild food, and where the
+        group's cash comes from: crop sales, animal sales, labour and petty trade.</li>
+      <li><strong>A disaster moves six variables.</strong> Crop yield reduces own harvest and crop sales. Livestock reduces
+        milk, meat and animal sales. Labour demand reduces wages and food paid for work. Wild food reduces wild food.
+        Market access reduces what can be sold. Staple price reduces what cash buys.</li>
+      <li><strong>Purchased food falls twice:</strong> once with lost cash, and again when the remaining cash buys less at
+        higher prices.</li>
+      <li><strong>Losses are added</strong> to give each group's food lost as a percent of annual needs. The zone panel shows
+        the calculation line by line.</li>
+      <li><strong>People are counted.</strong> Households in a group are assumed to lose between half and one and a half
+        times the group figure. The share above the threshold is multiplied by the group's population (WorldPop 2020),
+        then summed over zones. Drought, Conflict and Flood apply only in zones whose profile lists that hazard.</li>
+    </ol>
+    <h3>Reading the results</h3>
+    <ul>
+      <li><strong>Exposure, not vulnerability.</strong> Wealth groups often lose similar percentages, the better-off through
+        their fields and the poor through purchases and wages. The poor start closer to the minimum and hold fewer animals
+        or savings, so an equal loss is not an equal risk.</li>
+      <li><strong>Hazard lists set the scope.</strong> A zone whose profile does not list a hazard counts as unaffected by
+        that scenario. Totals follow what FEWS NET recorded for each zone.</li>
+      <li><strong>Not included:</strong> switching between food sources, migration, asset sales, aid, and gains to sellers
+        from higher prices. Each zone's economy is the baseline year of its profile.</li>
+      <li><strong>Coverage.</strong>
+        {#each covered as c, i}{c.c} {short(c.food)} of {short(c.pop)}{i < covered.length - 1 ? ', ' : ''}{/each} people
+        have food shares in their profile. Kenya's profiles give one figure per zone, not per wealth group.</li>
+    </ul>
+  </section>
+
   <p class="note">
     Sources: FEWS NET livelihood zone profiles (reference years 2005–2024) via the Explore Livelihood dataset; WorldPop
     2020 population. Excludes switching between food sources, coping strategies, aid response and price gains to crop
@@ -380,4 +484,20 @@
     .title-row { flex-direction: column; align-items: flex-start; }
     .answer { font-size: 17px; }
   }
+  .across, .method { display: grid; gap: 12px; }
+  .across-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+  .across-grid > div { display: grid; gap: 8px; align-content: start; }
+  .cause-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: var(--fs-small); color: var(--muted); }
+  .cause-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .cause-legend i { width: 10px; height: 10px; border-radius: 2px; }
+  .crow { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 12px; align-items: center; padding: 6px 0; border-top: 1px solid var(--rule); }
+  .cname { display: grid; line-height: 1.25; font-size: var(--fs-body); }
+  .cname small { color: var(--faint); font-size: 11px; }
+  .stack { display: flex; gap: 2px; height: 22px; }
+  .stack i { display: flex; align-items: center; justify-content: center; height: 100%; min-width: 0; }
+  .stack b { font-size: 11px; font-weight: 600; font-style: normal; color: #111214; }
+  .stack em { font-size: var(--fs-small); align-self: center; }
+  .single td.top { font-weight: 650; }
+  .method ol, .method ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: var(--fs-body); max-width: 95ch; line-height: 1.5; }
+  @media (max-width: 1100px) { .across-grid { grid-template-columns: 1fr; } }
 </style>
