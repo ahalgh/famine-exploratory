@@ -175,7 +175,10 @@
         {:else}
           <div class="panel">
             <h2>Pick a source</h2>
-            <p class="muted small">People in {country} hit by a {shock}% fall in each source</p>
+            <p class="muted small">
+              Each bar asks the same question of a different source: if <em>that source alone</em> fell {shock}%, how many
+              people in {country} would lose {hit}%? Moving a slider redraws every bar; the sources don't affect each other.
+            </p>
             <div class="sources">
               {#each ranked.filter((s) => s.hit || s.key === current.key) as s (s.key)}
                 <button class="src" class:active={s.key === current.key} aria-pressed={s.key === current.key} onclick={() => (sourceKey = s.key)}>
