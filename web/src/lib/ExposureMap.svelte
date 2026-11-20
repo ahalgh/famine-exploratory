@@ -19,7 +19,8 @@
 
   /**
    * Livelihood zones of one country, filled by the share of each zone's people hit by the chosen shock.
-   * `zones`: the zones GeoJSON; `stats`: { [fnid]: { pct, hit, pop, known } } for the chosen source and shock.
+   * `zones`: the zones GeoJSON; `stats`: { [fnid]: { pct, hit, pop, known, exposed } } for the chosen scenario.
+   * Not exposed (the profile doesn't list the scenario's hazard): no fill. No breakdown: grey, dashed edge.
    */
   let { zones, stats, country, dark, selected = null, onselect } = $props();
 
@@ -37,14 +38,14 @@
       .filter((f) => f.properties.country === country)
       .map((f) => {
         const s = stats[f.properties.fnid];
-        return { ...f, properties: { fnid: f.properties.fnid, zone: f.properties.zone, known: s?.known ? 1 : 0, pct: s?.pct ?? 0 } };
+        return { ...f, properties: { fnid: f.properties.fnid, zone: f.properties.zone, known: s?.known ? 1 : 0, exposed: s?.exposed === false ? 0 : 1, pct: s?.pct ?? 0 } };
       }),
   });
 
   const fillColor = () => {
     const step = ['step', ['get', 'pct'], css(BINS[0].ramp), 0.0001, css(BINS[1].ramp)];
     BINS.slice(2).forEach((b, i) => step.push(BINS[i + 1].max, css(b.ramp)));
-    return ['case', ['==', ['get', 'known'], 1], step, css('--raised')];
+    return ['case', ['==', ['get', 'exposed'], 0], 'rgba(0,0,0,0)', ['==', ['get', 'known'], 1], step, css('--raised')];
   };
 
   function addLayers() {
@@ -52,7 +53,7 @@
     map.addSource('exposure', { type: 'geojson', data: data() });
     map.addLayer({ id: 'exp-fill', type: 'fill', source: 'exposure', paint: { 'fill-color': fillColor(), 'fill-opacity': 0.92 } });
     map.addLayer({ id: 'exp-line', type: 'line', source: 'exposure', paint: { 'line-color': css('--zone-line'), 'line-width': 0.8 } });
-    map.addLayer({ id: 'exp-nodata', type: 'line', source: 'exposure', filter: ['==', ['get', 'known'], 0],
+    map.addLayer({ id: 'exp-nodata', type: 'line', source: 'exposure', filter: ['all', ['==', ['get', 'known'], 0], ['==', ['get', 'exposed'], 1]],
       paint: { 'line-color': css('--muted'), 'line-width': 1, 'line-dasharray': [2, 2] } });
     map.addLayer({ id: 'exp-selected', type: 'line', source: 'exposure', filter: ['==', ['get', 'fnid'], selected ?? ''],
       paint: { 'line-color': css('--text'), 'line-width': 2.4 } });
@@ -103,7 +104,8 @@
     {@const s = stats[hover.fnid]}
     <div class="tip" style="left:{hover.x + 12}px; top:{hover.y + 12}px">
       <strong>{hover.zone}</strong>
-      {#if s?.known}<span>{M(s.hit)} of {M(s.pop)} people hit ({Math.round(s.pct)}%)</span>
+      {#if s?.exposed === false}<span>Profile doesn't list this hazard</span>
+      {:else if s?.known}<span>{M(s.hit)} of {M(s.pop)} people impacted ({Math.round(s.pct)}%)</span>
       {:else}<span>No quantified profile for this zone</span>{/if}
     </div>
   {/if}

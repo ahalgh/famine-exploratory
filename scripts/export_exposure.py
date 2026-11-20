@@ -57,8 +57,10 @@ def main():
         rec = zones.loc[z.primary_record_id] if isinstance(z.primary_record_id, str) and z.primary_record_id in zones.index else None
         # main crops in the report's order (most important first), de-duplicated
         crops = list(dict.fromkeys(c.strip().lower() for c in rec["main_crops"])) if rec is not None else []
+        hazards = list(dict.fromkeys(rec["hazards"])) if rec is not None else []
         zone_list.append({"c": z.country, "fnid": z.fnid, "zone": z.map_zone_name, "p": int(round(z.population_2020 or 0)),
-                          "crops": crops, "profile_date": None if pd.isna(z.profile_date) else str(z.profile_date)[:7]})
+                          "crops": crops, "hazards": hazards, "system": None if rec is None else rec["livelihood_system"],
+                          "profile_date": None if pd.isna(z.profile_date) else str(z.profile_date)[:7]})
 
     countries = {}
     for c in COUNTRIES:
