@@ -18,7 +18,7 @@
   maplibregl.setWorkerUrl(asset('/vendor/maplibre-gl-worker.mjs'));
 
   /**
-   * Livelihood zones of one country, filled by the share of each zone's people hit by the chosen shock.
+   * Livelihood zones of one country, filled by the share of each zone's people affected by the chosen scenario.
    * `zones`: the zones GeoJSON; `stats`: { [fnid]: { pct, hit, pop, known, exposed } } for the chosen scenario.
    * Not exposed (the profile doesn't list the scenario's hazard): no fill. No breakdown: grey, dashed edge.
    */
@@ -104,9 +104,9 @@
     {@const s = stats[hover.fnid]}
     <div class="tip" style="left:{hover.x + 12}px; top:{hover.y + 12}px">
       <strong>{hover.zone}</strong>
-      {#if s?.exposed === false}<span>Profile doesn't list this hazard</span>
-      {:else if s?.known}<span>{M(s.hit)} of {M(s.pop)} people impacted ({Math.round(s.pct)}%)</span>
-      {:else}<span>No quantified profile for this zone</span>{/if}
+      {#if s?.exposed === false}<span>Hazard not listed in profile</span>
+      {:else if s?.known}<span>{M(s.hit)} of {M(s.pop)} people affected ({Math.round(s.pct)}%)</span>
+      {:else}<span>No shares in profile</span>{/if}
     </div>
   {/if}
 </div>

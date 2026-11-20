@@ -1,6 +1,6 @@
 <script>
   /**
-   * Who is impacted when drought, conflict or flood moves six first-order variables (crop yield, livestock,
+   * Population affected when drought, conflict or flood moves six first-order variables (crop yield, livestock,
    * labour demand, wild food, market access, staple price), traced through each wealth group's food and income
    * shares from the FEWS NET livelihood profiles. Arithmetic only, no model; every step is shown in the zone panel.
    *
@@ -12,7 +12,7 @@
    *   purchases  food bought × Y  (less cash)  +  food bought × (1 − Y) × p / (1 + p)  (higher staple price)
    *   loss L     direct + purchases
    * Households within a group vary: their losses are taken as spread evenly from 0.5L to 1.5L, so the share of
-   * a group counted as impacted (loss ≥ threshold) changes smoothly instead of all at once.
+   * a group counted as affected (loss ≥ threshold) changes smoothly instead of all at once.
    */
   import ExposureMap, { BINS } from './ExposureMap.svelte';
 
@@ -32,7 +32,7 @@
     drought: { label: 'Drought', hazards: ['drought', 'erratic_rainfall'], x: { crop: 20, livestock: 10, labour: 20, wild: 10, market: 0, price: 20 } },
     conflict: { label: 'Conflict', hazards: ['conflict_insecurity', 'displacement', 'market_disruption'], x: { crop: 10, livestock: 10, labour: 10, wild: 0, market: 20, price: 20 } },
     flood: { label: 'Flood', hazards: ['flood', 'cyclone_hurricane'], x: { crop: 20, livestock: 0, labour: 10, wild: 0, market: 10, price: 10 } },
-    all: { label: 'Any zone', hazards: null, x: null },
+    all: { label: 'All zones', hazards: null, x: null },
   };
   const GROUP_ORDER = ['very poor', 'poor', 'middle', 'better off', 'all'];
 
@@ -116,7 +116,15 @@
     return id ? { ...zones.find((z) => z.fnid === id), ...results[id] } : null;
   });
   const group = $derived(zone?.groups?.length ? (zone.groups.find((g) => g.group_index === pickedGroup?.i && g.g === pickedGroup?.g) ?? zone.groups[0]) : null);
-  const scaleMax = $derived(Math.max(threshold * 1.4, ...(zone?.groups ?? []).map((g) => g.L * 1.5), 5));
+  // x axis: a round maximum that fits the household range of every group and the threshold
+  const tickStep = $derived.by(() => { const m = Math.max(threshold * 1.3, ...(zone?.groups ?? []).map((g) => g.L * 1.5), 5); return m <= 20 ? 5 : m <= 50 ? 10 : 20; });
+  const scaleMax = $derived(Math.ceil(Math.max(threshold * 1.3, ...(zone?.groups ?? []).map((g) => g.L * 1.5), 5) / tickStep) * tickStep);
+  const ticks = $derived(Array.from({ length: scaleMax / tickStep + 1 }, (_, i) => i * tickStep));
+  const segments = (g) => VARS.reduce((acc, v) => {
+    const w = (100 * g.byVar[v.k]) / scaleMax;
+    if (w > 0) acc.push({ v, x: acc.length ? acc.at(-1).x + acc.at(-1).w : 0, w });
+    return acc;
+  }, []);
 
   const M = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(n >= 1e7 ? 0 : 1)} million` : n >= 1e3 ? `${Math.round(n / 1e3).toLocaleString()},000` : `${Math.round(n)}`);
   const short = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : `${Math.round(n)}`);
@@ -126,7 +134,7 @@
 
 <section class="exposure" aria-labelledby="exposure-title">
   <header class="title-row">
-    <h1 id="exposure-title">{country}: who is impacted by drought, conflict or flood</h1>
+    <h1 id="exposure-title">Measuring impact of disaster on {country} population</h1>
     <select value={country} onchange={(e) => oncountry(e.currentTarget.value)} aria-label="Country">
       {#each COUNTRIES as c}<option value={c}>{c}</option>{/each}
     </select>
@@ -134,8 +142,8 @@
 
   {#if !hasData}
     <div class="panel empty">
-      <p>None of {country}'s livelihood zone profiles quantify where households get their food or income, so there is
-        nothing to calculate for {country}. Its profiles describe the zones in words only.</p>
+      <p>No quantified livelihood profiles for {country}. The FEWS NET profiles available for {country} describe zones
+        without food or income shares.</p>
     </div>
   {:else}
     <div class="panel controls">
@@ -152,28 +160,28 @@
           </label>
         {/each}
         <label class="var threshold">
-          <span class="vname">Count people who lose at least <strong>{threshold}%</strong> of their food needs</span>
+          <span class="vname">Affected: loses at least <strong>{threshold}%</strong> of annual food needs</span>
           <input type="range" min="1" max="25" step="1" bind:value={threshold} />
         </label>
       </div>
     </div>
 
     <div class="panel answer-panel">
-      <p class="answer"><strong>{M(totalHit)}</strong> people in {country} lose at least {threshold}% of their food needs.</p>
+      <p class="answer"><strong>{M(totalHit)}</strong> people affected in {country}</p>
       <p class="muted small">
-        {Math.round((100 * totalHit) / population)}% of {country}'s {short(population)} people.
-        {#if SCENARIOS[scenario].hazards}Counted only in the {exposedZones.length} of {zones.length} zones whose profile lists
-          {hazardWords[scenario]} as a hazard (the others are left blank on the map).{:else}Applied to every zone.{/if}
+        {Math.round((100 * totalHit) / population)}% of {M(population)}.
+        {#if SCENARIOS[scenario].hazards}{SCENARIOS[scenario].label} applied to {exposedZones.length} of {zones.length} zones, those whose FEWS NET
+          profile lists {hazardWords[scenario]}. Other zones are unshaded.{:else}Applied to all {zones.length} zones.{/if}
       </p>
     </div>
 
     <div class="body">
       <div class="map-card">
         <ExposureMap zones={zonesGeo} stats={results} {country} {dark} selected={zone?.fnid} onselect={(f) => { pickedZone = f; pickedGroup = null; }} />
-        <div class="legend" aria-label="Share of each zone's people impacted">
-          <span class="legend-title">Share of the zone's people impacted</span>
+        <div class="legend" aria-label="Population affected, percent of zone">
+          <span class="legend-title">Population affected (% of zone)</span>
           {#each BINS as b}<span><i style="background:var({b.ramp})"></i>{b.label}</span>{/each}
-          <span><i class="nodata"></i>No breakdown in profile</span>
+          <span><i class="nodata"></i>No shares in profile</span>
           {#if SCENARIOS[scenario].hazards}<span><i class="unexposed"></i>Hazard not listed</span>{/if}
         </div>
       </div>
@@ -182,50 +190,68 @@
         {#if zone}
           <header>
             <h2>{zone.zone}</h2>
-            <p class="muted small">{short(zone.pop)} people · {zone.exposed ? `${short(zone.hit)} impacted` : `profile doesn't list ${hazardWords[scenario]}`}{pickedZone ? '' : ' · zone with the most people impacted; click the map for another'}</p>
+            <p class="muted small">
+              {M(zone.pop)} people{#if zone.exposed}, {M(zone.hit)} affected{:else}. Profile does not list {hazardWords[scenario]}{/if}.
+              {#if !pickedZone}Largest affected zone. Select a zone on the map to change.{/if}
+            </p>
           </header>
 
           {#if zone.groups.length}
-            <div class="chart" role="img" aria-label="Food needs lost by each wealth group, split by cause">
+            <div class="chart">
+              <div class="chart-head">
+                <h3>Food lost by wealth group</h3>
+                <p class="muted small">Percent of annual food needs. A group whose bar passes the dashed line at {threshold}% is affected.</p>
+              </div>
               <div class="chart-legend">
                 {#each VARS as v}<span><i style="background:{v.color}"></i>{v.short ?? v.label}</span>{/each}
-                <span><i class="leg-spread"></i>Range across households</span>
-                <span><i class="leg-thr"></i>Threshold</span>
+              </div>
+              <div class="grid-head" aria-hidden="true">
+                <span></span>
+                <span class="ticks">
+                  {#each ticks.filter((t) => Math.abs(t - threshold) > tickStep * 0.35) as t}<span style="left:{(100 * t) / scaleMax}%">{t}%</span>{/each}
+                  <span class="thr-label" style="left:{(100 * threshold) / scaleMax}%">{threshold}%</span>
+                </span>
+                <span class="num">Affected</span>
               </div>
               {#each zone.groups as g}
-                <button class="grow" class:active={group === g} onclick={() => (pickedGroup = { i: g.group_index, g: g.g })}>
+                <button class="grow" class:active={group === g} onclick={() => (pickedGroup = { i: g.group_index, g: g.g })}
+                  aria-label="{groupName(g)}: loses {n1(g.L)}% of food needs, {short(g.people)} of {short(g.p)} people affected">
                   <span class="gname">{groupName(g)}<small>{short(g.p)} people</small></span>
-                  <svg class="gbar" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
-                    <line class="spread" x1={(50 * g.L) / scaleMax} x2={(150 * g.L) / scaleMax} y1="17.5" y2="17.5" vector-effect="non-scaling-stroke" />
-                    {#each VARS.reduce((acc, v) => { const w = (100 * g.byVar[v.k]) / scaleMax; if (w > 0) acc.push({ v, x: acc.length ? acc.at(-1).x + acc.at(-1).w : 0, w }); return acc; }, []) as s}
-                      <rect x={s.x} y="3" width={Math.max(0, s.w - 0.4)} height="11" fill={s.v.color}><title>{s.v.label}: {n1(g.byVar[s.v.k])}% of food needs</title></rect>
-                    {/each}
-                    <line class="thr" x1={(100 * threshold) / scaleMax} x2={(100 * threshold) / scaleMax} y1="0" y2="20" vector-effect="non-scaling-stroke" />
-                  </svg>
-                  <span class="gval">{n1(g.L)}%<small>{zone.exposed ? `${Math.round(100 * g.share)}% counted` : '–'}</small></span>
+                  <span class="gplot">
+                    <svg class="gbar" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">
+                      {#each ticks as t}<line class="tick" x1={(100 * t) / scaleMax} x2={(100 * t) / scaleMax} y1="0" y2="24" vector-effect="non-scaling-stroke" />{/each}
+                      <line class="spread" x1={(50 * g.L) / scaleMax} x2={(150 * g.L) / scaleMax} y1="21" y2="21" vector-effect="non-scaling-stroke" />
+                      {#each segments(g) as s}
+                        <rect x={s.x} y="4" width={Math.max(0, s.w - 0.4)} height="13" fill={s.v.color}><title>{s.v.label}: {n1(g.byVar[s.v.k])}% of food needs</title></rect>
+                      {/each}
+                      <line class="thr" x1={(100 * threshold) / scaleMax} x2={(100 * threshold) / scaleMax} y1="0" y2="24" vector-effect="non-scaling-stroke" />
+                    </svg>
+                    <span class="bar-val" style="left:{Math.min(88, (100 * g.L) / scaleMax)}%">{n1(g.L)}%</span>
+                  </span>
+                  <span class="gval">{zone.exposed ? short(g.people) : '–'}<small>{zone.exposed ? `${Math.round(100 * g.share)}%` : ''}</small></span>
                 </button>
               {/each}
-              <p class="axis muted"><span>0</span><span class="thr-label" style="left:calc({(100 * threshold) / scaleMax}% )">threshold {threshold}%</span><span>{Math.round(scaleMax)}% of food needs</span></p>
+              <p class="muted small">Grey line under each bar: assumed range across households in the group (0.5 to 1.5 times the group figure). Select a group for its calculation.</p>
             </div>
 
             {#if group}
               <div class="worked">
-                <h3>{groupName(group)}: the calculation</h3>
+                <h3>Calculation for {groupName(group).toLowerCase()} {group.g === 'all' ? '' : 'households'}</h3>
                 <table>
-                  <thead><tr><th>Pathway</th><th class="num">Calculation</th><th class="num">Food needs lost</th></tr></thead>
+                  <thead><tr><th>Pathway</th><th class="num">Calculation</th><th class="num">Food lost</th></tr></thead>
                   <tbody>
                     {#each group.lines as l}
                       <tr>
                         <td><i class="dot" style="background:{VAR[l.v].color}"></i>{l.label}</td>
                         <td class="num calc">
                           {#if l.kind === 'direct'}{n1(l.share)}% of food × {l.change}%
-                          {:else if l.kind === 'cash'}{n1(l.bought)}% bought × ({n1(l.share)}% of cash × {l.change}%)
+                          {:else if l.kind === 'cash'}{n1(l.bought)}% bought × {n1(l.share)}% of cash × {l.change}%
                           {:else}{n1(l.bought)}% bought × {Math.round(100 * (1 - l.Y))}% cash left × {l.change}/{100 + l.change}{/if}
                         </td>
                         <td class="num">{n1(l.loss)}%</td>
                       </tr>
                     {:else}
-                      <tr><td colspan="3" class="muted">None of this group's sources move with these settings.</td></tr>
+                      <tr><td colspan="3" class="muted">No change at these settings.</td></tr>
                     {/each}
                   </tbody>
                   <tfoot>
@@ -233,15 +259,14 @@
                   </tfoot>
                 </table>
                 <p class="muted small">
-                  {#if !group.hasIncome}This profile gives no income breakdown for the group, so lost cash isn't counted.{/if}
-                  Households in a group differ, so losses are taken as spread from {n1(group.L * 0.5)}% to {n1(group.L * 1.5)}%
-                  (half to one and a half times {n1(group.L)}%).
-                  {#if zone.exposed}{Math.round(100 * group.share)}% of them reach {threshold}%: {short(group.people)} of {short(group.p)} people counted.{/if}
+                  {#if !group.hasIncome}No income shares in this profile; cash losses are not included.{/if}
+                  Household losses assumed to range from {n1(group.L * 0.5)}% to {n1(group.L * 1.5)}%.
+                  {#if zone.exposed}{Math.round(100 * group.share)}% of households exceed {threshold}%: {short(group.people)} of {short(group.p)} people affected.{/if}
                 </p>
               </div>
             {/if}
           {:else}
-            <p class="muted small">This zone's profile has no breakdown of food or income, so it can't be calculated.</p>
+            <p class="muted small">No food or income shares in this zone's profile.</p>
           {/if}
         {/if}
       </aside>
@@ -249,9 +274,9 @@
   {/if}
 
   <p class="note">
-    Shares from FEWS NET livelihood zone profiles (reference years 2005–2024) via the Explore Livelihood dataset;
-    people from WorldPop 2020. Notional: no switching between sources, coping, aid response or gains to sellers from
-    higher prices. Purchases are assumed to shrink in step with cash income.
+    Sources: FEWS NET livelihood zone profiles (reference years 2005–2024) via the Explore Livelihood dataset; WorldPop
+    2020 population. Excludes switching between food sources, coping strategies, aid response and price gains to crop
+    sellers. Purchases scale with cash income.
   </p>
 </section>
 
@@ -311,11 +336,16 @@
   .zone-panel { display: grid; gap: 14px; }
   .zone-panel header { display: grid; gap: 4px; }
   .chart { display: grid; gap: 2px; position: relative; }
-  .chart-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: var(--fs-small); color: var(--muted); padding-bottom: 6px; }
+  .chart-head { display: grid; gap: 2px; padding-bottom: 6px; }
+  .chart-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: var(--fs-small); color: var(--muted); padding-bottom: 8px; }
+  .grid-head { display: grid; grid-template-columns: 96px minmax(0, 1fr) 64px; gap: 10px; font-size: 11px; color: var(--muted); padding: 0 4px; height: 16px; }
+  .ticks { position: relative; }
+  .ticks span { position: absolute; transform: translateX(-50%); }
+  .ticks .thr-label { color: var(--text); font-weight: 650; }
+  .gplot { position: relative; display: block; }
+  .bar-val { position: absolute; top: 2px; margin-left: 6px; font-size: 11px; font-variant-numeric: tabular-nums; color: var(--text); pointer-events: none; }
   .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
   .chart-legend i { width: 10px; height: 10px; border-radius: 2px; }
-  .chart-legend i.leg-spread { height: 0; border-top: 1.5px solid var(--muted); border-radius: 0; width: 14px; }
-  .chart-legend i.leg-thr { width: 0; height: 12px; border-left: 1.5px dashed var(--text); border-radius: 0; }
   .grow {
     display: grid; grid-template-columns: 96px minmax(0, 1fr) 64px; gap: 10px; align-items: center; width: 100%;
     padding: 6px 4px; border: 0; border-top: 1px solid var(--rule); background: none; color: var(--text); font: inherit;
@@ -325,12 +355,11 @@
   .gname, .gval { display: grid; line-height: 1.25; }
   .gname small, .gval small { color: var(--faint); font-size: 11px; }
   .gval { text-align: right; font-variant-numeric: tabular-nums; }
-  .gbar { width: 100%; height: 24px; display: block; overflow: visible; background: linear-gradient(var(--rule), var(--rule)) 0 3px / 100% 11px no-repeat; }
+  .gbar { width: 100%; height: 28px; display: block; overflow: visible; }
+  .gbar .tick { stroke: var(--rule); stroke-width: 1; }
   .gbar rect { shape-rendering: crispEdges; }
   .gbar .thr { stroke: var(--text); stroke-width: 1.5; stroke-dasharray: 3 2; }
-  .gbar .spread { stroke: var(--muted); stroke-width: 1.5; }
-  .axis { position: relative; display: flex; justify-content: space-between; font-size: 11px; margin: 0 74px 0 106px; height: 16px; }
-  .thr-label { position: absolute; transform: translateX(-50%); white-space: nowrap; color: var(--text); }
+  .gbar .spread { stroke: var(--faint); stroke-width: 1.5; opacity: 0.7; }
 
   .worked { display: grid; gap: 8px; }
   table { width: 100%; border-collapse: collapse; font-size: var(--fs-body); }
@@ -350,6 +379,5 @@
     .exposure { padding: 16px; }
     .title-row { flex-direction: column; align-items: flex-start; }
     .answer { font-size: 17px; }
-    .axis { margin: 0; }
   }
 </style>
