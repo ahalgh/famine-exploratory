@@ -5,6 +5,7 @@
   import TimeBar from './lib/TimeBar.svelte';
   import ZoneHistory from './lib/ZoneHistory.svelte';
   import SourcesView from './lib/SourcesView.svelte';
+  import ExposureView from './lib/ExposureView.svelte';
   import LivelihoodProfile from './lib/LivelihoodProfile.svelte';
   import { asset } from './lib/paths.js';
   import { ZONE_METRICS, METRIC_KEYS, colorCss, fmt, isMissing, legendSwatches, spearman } from './lib/metrics.js';
@@ -30,6 +31,7 @@
   let asOf = $state(null); // a report month 'YYYY-MM', 'mean', or null for the latest report
   let livelihood = $state({}); // FEWS NET livelihood profiles by zone FNID (scripts/export_livelihood.py)
   let livelihoodReady = $state(false);
+  let exposure = $state(null); // people by livelihood zone × wealth group with food / income shares (scripts/export_exposure.py)
 
   // theme: auto follows the system; light/dark pin it
   let theme = $state('auto');
@@ -42,7 +44,7 @@
     const h = new URLSearchParams(location.hash.slice(1));
     if (COUNTRIES.includes(h.get('country'))) country = h.get('country');
     if (METRIC_KEYS.includes(h.get('measure'))) zoneMetric = h.get('measure');
-    if (['zones', 'coverage', 'sources'].includes(h.get('view'))) view = h.get('view');
+    if (['zones', 'exposure', 'coverage', 'sources'].includes(h.get('view'))) view = h.get('view');
     if (['auto', 'light', 'dark'].includes(h.get('theme'))) theme = h.get('theme');
     if (h.get('zone')) selectedZone = h.get('zone');
     if (h.get('asof')) asOf = h.get('asof');
@@ -69,6 +71,7 @@
         faoAreas = fa.features.map((f) => f.properties);
       })
       .catch((e) => (loadError = String(e)));
+    fetch(asset('/data/exposure.json')).then((r) => r.json()).then((e) => (exposure = e)).catch(() => {});
     fetch(asset('/data/history.json')).then((r) => r.json()).then((h) => (history = h)).catch(() => {});
     fetch(asset('/data/livelihood.json')).then((r) => r.json()).then((l) => (livelihood = l.zones)).catch(() => {})
       .finally(() => (livelihoodReady = true));
@@ -242,6 +245,10 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z" /><path d="M9 4v13.5M15 6.5V20" /></svg>
       <span class="label">Zones</span>
     </button>
+    <button class="nav" class:active={view === 'exposure'} aria-current={view === 'exposure' ? 'page' : undefined} onclick={() => (view = 'exposure')}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h11M4 15h7M4 20h4" /></svg>
+      <span class="label">Exposure</span>
+    </button>
     <button class="nav" class:active={view === 'coverage'} aria-current={view === 'coverage' ? 'page' : undefined} onclick={() => (view = 'coverage')}>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h16M4 20h10" /></svg>
       <span class="label">Coverage</span>
@@ -268,6 +275,8 @@
       <p class="error">Couldn't load the map data ({loadError}). Run <code>python scripts/export_map_data.py</code>, then reload.</p>
     {:else if view === 'sources'}
       <SourcesView publicBuild={import.meta.env.VITE_PUBLIC === '1'} />
+    {:else if view === 'exposure'}
+      {#if exposure}<ExposureView {exposure} />{/if}
     {:else if view === 'coverage'}
       {#if coverage}
         <div class="coverage-wrap">
