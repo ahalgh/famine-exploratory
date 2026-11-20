@@ -10,8 +10,9 @@ Rules
 - A group's share for a category is the report's mid value, with its low/high band.
 - A category the report does not list for a group whose breakdown in that domain exists is 0.
 - A group with no shares in a domain is unknown for that domain (counted as "no breakdown", never as 0).
-- Specific crops are not quantified in the profiles; `zones[].crops` lists each zone's main crops so the page can
-  give an upper bound (everyone living in zones where the crop is a main crop).
+- Specific crops are not quantified in the profiles; `zones[].crops` lists each zone's main crops (report order) so
+  the page can give an upper bound per crop: people in groups whose pooled own-crop share passes the threshold,
+  in zones where the crop is a main crop.
 """
 
 import json
@@ -54,7 +55,8 @@ def main():
     zone_list = []
     for z in mz.itertuples():
         rec = zones.loc[z.primary_record_id] if isinstance(z.primary_record_id, str) and z.primary_record_id in zones.index else None
-        crops = sorted({c.strip().lower() for c in (rec["main_crops"] if rec is not None else [])}) if rec is not None else []
+        # main crops in the report's order (most important first), de-duplicated
+        crops = list(dict.fromkeys(c.strip().lower() for c in rec["main_crops"])) if rec is not None else []
         zone_list.append({"c": z.country, "fnid": z.fnid, "zone": z.map_zone_name, "p": int(round(z.population_2020 or 0)),
                           "crops": crops, "profile_date": None if pd.isna(z.profile_date) else str(z.profile_date)[:7]})
 

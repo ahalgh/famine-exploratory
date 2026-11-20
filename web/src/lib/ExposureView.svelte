@@ -85,13 +85,29 @@
     return [...byZone.values()].sort((a, b) => b.p - a.p).slice(0, 8);
   });
 
-  // specific crops: the profiles quantify sources, not commodities, so this is an upper bound
+  // specific crops: the profiles give one pooled own-crop share per wealth group, not a share per crop. Each crop
+  // gets the people in groups whose pooled own-crop share passes the threshold, in zones that list the crop as a
+  // main crop: an upper bound per crop (the same people appear under every main crop of their zone)
+  const OWN_CROPS = VARIABLES.find((v) => v.k === 'own_crops');
   const crops = $derived.by(() => {
+    const cut = threshold / (shock / 100);
+    const cropsByZone = new Map(zones.map((z) => [z.fnid, z.crops]));
     const m = new Map();
-    for (const z of zones) for (const c of z.crops) m.set(c, (m.get(c) ?? 0) + z.p);
-    return [...m.entries()].map(([crop, p]) => ({ crop, p })).sort((a, b) => b.p - a.p).slice(0, 10);
+    for (const r of rows) {
+      const s = share(r, OWN_CROPS);
+      if (!s) continue;
+      for (const crop of cropsByZone.get(r.fnid) ?? []) {
+        const c = m.get(crop) ?? { crop, mid: 0, low: 0, high: 0, zones: new Set(), byGroup: {} };
+        if (s[1] >= cut) { c.mid += r.p; c.byGroup[r.g] = (c.byGroup[r.g] ?? 0) + r.p; c.zones.add(r.fnid); }
+        if ((s[0] ?? s[1]) >= cut) c.low += r.p;
+        if ((s[2] ?? s[1]) >= cut) c.high += r.p;
+        m.set(crop, c);
+      }
+    }
+    return [...m.values()].filter((c) => c.high > 0).sort((a, b) => b.mid - a.mid || b.high - a.high).slice(0, 12);
   });
-  const maxCrop = $derived(Math.max(1, ...crops.map((c) => c.p)));
+  const maxCrop = $derived(Math.max(1, ...crops.map((c) => c.high)));
+  const cropCut = $derived(Math.min(100, Math.round(threshold / (shock / 100))));
 
   const M = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(n >= 1e7 ? 0 : 1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : `${n}`);
   const pct = (a, b) => (b ? `${Math.round((100 * a) / b)}%` : '–');
@@ -187,18 +203,27 @@
 
   <div class="panel crops">
     <header>
-      <h2>Named crops: an upper bound</h2>
+      <h2>Named crops: upper bound per crop</h2>
       <p class="muted small">
-        The profiles give shares by source, not by crop. These bars count everyone living in zones where the crop is a
-        main crop; the people who depend on it are a subset of this.
+        People in wealth groups that get at least {cropCut}% of their food from their own harvest, in zones where the
+        crop is a main crop. The profiles give one own-crop share for all crops together, so each bar assumes the
+        whole harvest is that crop: a ceiling, and the same people appear under every main crop of their zone. Bars
+        are not additive.
       </p>
     </header>
-    {#each crops as c}
+    {#each crops as c (c.crop)}
       <div class="crow">
-        <span class="name">{c.crop}</span>
-        <span class="bar" aria-hidden="true"><i style="width:{(100 * c.p) / maxCrop}%"></i></span>
-        <span class="num">{M(c.p)}</span>
+        <span class="name"><span class="crop">{c.crop}</span><small>{c.zones.size} zone{c.zones.size === 1 ? '' : 's'}</small></span>
+        <span class="bar" aria-hidden="true">
+          {#each GROUPS as g}
+            {#if c.byGroup[g.g]}<i style="width:{(100 * c.byGroup[g.g]) / maxCrop}%; background:{g.color}"></i>{/if}
+          {/each}
+          {#if c.high > c.low}<b class="whisker" style="left:{(100 * c.low) / maxCrop}%; width:{(100 * (c.high - c.low)) / maxCrop}%"></b>{/if}
+        </span>
+        <span class="num">{c.mid ? M(c.mid) : '–'}</span>
       </div>
+    {:else}
+      <p class="note">No group gets {cropCut}% of its food from its own harvest at these settings.</p>
     {/each}
   </div>
 
@@ -246,10 +271,9 @@
   .row.active::before { content: ''; position: absolute; left: 0; top: 6px; bottom: 6px; width: 2px; background: var(--accent); }
   .name { display: grid; line-height: 1.3; }
   .name small { color: var(--faint); font-size: 11px; }
-  .crow .name { text-transform: capitalize; }
+  .crow .crop { text-transform: capitalize; }
   .bar { position: relative; display: flex; height: 14px; background: var(--rule); border-radius: 2px; }
   .bar i { display: block; height: 100%; }
-  .crow .bar i { background: var(--faint); }
   .whisker { position: absolute; top: 50%; height: 2px; margin-top: -1px; background: var(--text); opacity: 0.55; }
   .num { text-align: right; font-variant-numeric: tabular-nums; display: grid; line-height: 1.3; }
   .num small { color: var(--faint); font-size: 11px; }
