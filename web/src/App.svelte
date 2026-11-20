@@ -276,7 +276,7 @@
     {:else if view === 'sources'}
       <SourcesView publicBuild={import.meta.env.VITE_PUBLIC === '1'} />
     {:else if view === 'exposure'}
-      {#if exposure}<ExposureView {exposure} />{/if}
+      {#if exposure && zonesGeo}<ExposureView {exposure} {zonesGeo} {country} {dark} oncountry={(c) => (country = c)} />{/if}
     {:else if view === 'coverage'}
       {#if coverage}
         <div class="coverage-wrap">
