@@ -325,7 +325,7 @@
         {/each}
       </div>
       <div>
-        <h3>One variable at a time</h3>
+        <h3>Variable contributions</h3>
         <p class="muted small">People losing at least {ONE_AT_A_TIME.cut}% of food needs when one variable moves {ONE_AT_A_TIME.move}% in every zone. The largest in each country is in bold.</p>
         <table class="single">
           <thead><tr><th></th>{#each CROSS as c}<th class="num">{c}</th>{/each}</tr></thead>
