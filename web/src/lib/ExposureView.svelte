@@ -159,7 +159,6 @@
     return out;
   });
   const singleMax = $derived(Object.fromEntries(CROSS.map((c) => [c, Math.max(...VARS.map((v) => single[v.k][c]))])));
-  const covered = $derived(CROSS.concat('Uganda').map((c) => ({ c, food: exposure.countries[c].food, pop: exposure.countries[c].population })));
 
   const M = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(n >= 1e7 ? 0 : 1)} million` : n >= 1e3 ? `${Math.round(n / 1e3).toLocaleString()},000` : `${Math.round(n)}`);
   const short = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : `${Math.round(n)}`);
@@ -345,38 +344,6 @@
     </div>
   </section>
 
-  <section class="panel method" aria-labelledby="method-title">
-    <h2 id="method-title">How it is calculated</h2>
-    <ol>
-      <li><strong>A year of food as 100 units.</strong> For each wealth group in each livelihood zone, the FEWS NET profile
-        gives how many units come from own fields, own animals, purchases, food paid for work and wild food, and where the
-        group's cash comes from: crop sales, animal sales, labour and petty trade.</li>
-      <li><strong>A disaster moves six variables.</strong> Crop yield reduces own harvest and crop sales. Livestock reduces
-        milk, meat and animal sales. Labour demand reduces wages and food paid for work. Wild food reduces wild food.
-        Market access reduces what can be sold. Staple price reduces what cash buys.</li>
-      <li><strong>Purchased food falls twice:</strong> once with lost cash, and again when the remaining cash buys less at
-        higher prices.</li>
-      <li><strong>Losses are added</strong> to give each group's food lost as a percent of annual needs. The zone panel shows
-        the calculation line by line.</li>
-      <li><strong>People are counted.</strong> Households in a group are assumed to lose between half and one and a half
-        times the group figure. The share above the threshold is multiplied by the group's population (WorldPop 2020),
-        then summed over zones. Drought, Conflict and Flood apply only in zones whose profile lists that hazard.</li>
-    </ol>
-    <h3>Reading the results</h3>
-    <ul>
-      <li><strong>Exposure, not vulnerability.</strong> Wealth groups often lose similar percentages, the better-off through
-        their fields and the poor through purchases and wages. The poor start closer to the minimum and hold fewer animals
-        or savings, so an equal loss is not an equal risk.</li>
-      <li><strong>Hazard lists set the scope.</strong> A zone whose profile does not list a hazard counts as unaffected by
-        that scenario. Totals follow what FEWS NET recorded for each zone.</li>
-      <li><strong>Not included:</strong> switching between food sources, migration, asset sales, aid, and gains to sellers
-        from higher prices. Each zone's economy is the baseline year of its profile.</li>
-      <li><strong>Coverage.</strong>
-        {#each covered as c, i}{c.c} {short(c.food)} of {short(c.pop)}{i < covered.length - 1 ? ', ' : ''}{/each} people
-        have food shares in their profile. Kenya's profiles give one figure per zone, not per wealth group.</li>
-    </ul>
-  </section>
-
   <p class="note">
     Sources: FEWS NET livelihood zone profiles (reference years 2005–2024) via the Explore Livelihood dataset; WorldPop
     2020 population. Excludes switching between food sources, coping strategies, aid response and price gains to crop
@@ -484,7 +451,7 @@
     .title-row { flex-direction: column; align-items: flex-start; }
     .answer { font-size: 17px; }
   }
-  .across, .method { display: grid; gap: 12px; }
+  .across { display: grid; gap: 12px; }
   .across-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
   .across-grid > div { display: grid; gap: 8px; align-content: start; }
   .cause-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: var(--fs-small); color: var(--muted); }
@@ -498,6 +465,5 @@
   .stack b { font-size: 11px; font-weight: 600; font-style: normal; color: #111214; }
   .stack em { font-size: var(--fs-small); align-self: center; }
   .single td.top { font-weight: 650; }
-  .method ol, .method ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: var(--fs-body); max-width: 95ch; line-height: 1.5; }
   @media (max-width: 1100px) { .across-grid { grid-template-columns: 1fr; } }
 </style>
