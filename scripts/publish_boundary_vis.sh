@@ -22,7 +22,7 @@ TMP="$(mktemp -d)"
 git fetch origin gh-pages
 git worktree add -B gh-pages "$TMP" origin/gh-pages
 mkdir -p "$TMP/$SUB"
-rsync -a --delete "$OUT/" "$TMP/$SUB/"
+rsync -a --checksum --delete "$OUT/" "$TMP/$SUB/"
 cd "$TMP"
 git add -A "$SUB"
 if git diff --cached --quiet; then
