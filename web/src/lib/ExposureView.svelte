@@ -1,8 +1,8 @@
 <script>
   /**
    * One country, one question: if a source of food or income falls by x%, who is hit, and where?
-   * A person is hit when their wealth group loses at least HIT% of its food needs (food sources) or of its cash
-   * income (income sources): group share from the source × the fall ≥ HIT. Arithmetic only, no model.
+   * A person is hit when their wealth group loses at least hit% of its food needs (food sources) or of its cash
+   * income (income sources): group share from the source × the fall ≥ hit. Arithmetic only, no model.
    * Data: scripts/export_exposure.py (Explore Livelihood dataset × WorldPop 2020).
    */
   import ExposureMap, { BINS } from './ExposureMap.svelte';
@@ -10,7 +10,6 @@
   let { exposure, zonesGeo, country, dark, oncountry } = $props();
 
   const COUNTRIES = ['Kenya', 'Malawi', 'Nigeria', 'Uganda', 'Somalia', 'Guatemala'];
-  const HIT = 10;
   const SOURCES = [
     { d: 'food', k: 'purchase', label: 'Food bought at market', fall: 'what their cash buys (prices up or income down)' },
     { d: 'food', k: 'own_crops', label: 'Own harvest' },
@@ -32,7 +31,8 @@
   const GROUP_ORDER = ['very poor', 'poor', 'middle', 'better off', 'all'];
 
   let sourceKey = $state(null); // null = the source that hits the most people
-  let shock = $state(25);
+  let shock = $state(25); // size of the fall, percent (1–25: notional)
+  let hit = $state(10); // loss that counts as hit, percent of food needs or cash income (1–25)
   let selectedZone = $state(null);
   $effect(() => { country; selectedZone = null; sourceKey = null; });
 
@@ -43,12 +43,12 @@
 
   // a group's share (mid, percent) from a source; 0 where its breakdown omits the source; null without a breakdown
   const shareOf = (r, s) => (r[s.d] ? (r[s.d][s.k]?.[1] ?? 0) : null);
-  const isHit = (share) => share !== null && (share * shock) / 100 >= HIT;
+  const isHit = (share) => share !== null && (share * shock) / 100 >= hit;
 
   function peopleHit(s) {
-    let hit = 0;
-    for (const r of rows) if (isHit(shareOf(r, s))) hit += r.p;
-    return hit;
+    let n = 0;
+    for (const r of rows) if (isHit(shareOf(r, s))) n += r.p;
+    return n;
   }
   const ranked = $derived(
     SOURCES.map((s) => ({ ...s, key: `${s.d}:${s.k}`, hit: peopleHit(s) }))
@@ -108,12 +108,23 @@
     <div class="question panel">
       <p class="sentence">
         If <strong>{current.label.toLowerCase()}</strong> falls by
-        <input type="range" min="5" max="100" step="5" bind:value={shock} aria-label="Size of the fall" />
-        <strong class="num">{shock}%</strong>
+        <input type="range" min="1" max="25" step="1" bind:value={shock} aria-label="Size of the fall" />
+        <strong class="num pct">{shock}%,</strong>
+        counting people who lose at least
+        <input type="range" min="1" max="25" step="1" bind:value={hit} aria-label="Loss that counts as hit" />
+        <strong class="num pct">{hit}%</strong>
+        of their {unit(current)}
       </p>
       <p class="answer">
-        <strong>{M(totalHit)}</strong> people in {country} lose at least a tenth of their {unit(current)}.
+        <strong>{M(totalHit)}</strong> people in {country} lose at least {hit}% of their {unit(current)}.
       </p>
+      {#if shock < hit}
+        <p class="muted small">
+          No one can be hit: a {shock}% fall costs at most {shock}% even for a group that relies on the source entirely.
+        </p>
+      {:else}
+        <p class="muted small">At these settings a group is hit if it gets at least {Math.ceil((100 * hit) / shock)}% of its {unit(current)} from the source.</p>
+      {/if}
       <p class="muted small">
         {Math.round((100 * totalHit) / population)}% of {country}'s {short(population)} people.
         {#if current.fall}For this source the fall is in {current.fall}.{/if}
@@ -144,7 +155,7 @@
                 <thead><tr><th>Group</th><th class="num">People</th><th class="num">From source</th><th class="num">Loses</th></tr></thead>
                 <tbody>
                   {#each zoneGroups as g}
-                    <tr class:hit={g.loss !== null && g.loss >= HIT}>
+                    <tr class:hit={g.loss !== null && g.loss >= hit}>
                       <td>{g.g === 'all' ? 'Whole zone' : g.label}</td>
                       <td class="num">{short(g.p)}</td>
                       <td class="num">{g.share === null ? '–' : `${Math.round(g.share)}%`}</td>
@@ -154,7 +165,7 @@
                 </tbody>
               </table>
               <p class="muted small">
-                Bold rows lose at least {HIT}% of their {unit(current)}. Shares are of {current.d === 'food' ? 'annual food needs' : 'annual cash income'}.
+                Bold rows lose at least {hit}% of their {unit(current)}. Shares are of {current.d === 'food' ? 'annual food needs' : 'annual cash income'}.
                 {#if zoneGroups.some((g) => g.g === 'all')}This profile gives one figure for the whole zone, not by wealth group.{/if}
               </p>
             {:else}
@@ -176,7 +187,7 @@
             </div>
             {#if ranked.some((s) => !s.hit && s.key !== current.key)}
               <p class="muted small">
-                At a {shock}% fall, no one loses a tenth of their food or income from:
+                At a {shock}% fall, no one loses {hit}% of their food or income from:
                 {ranked.filter((s) => !s.hit && s.key !== current.key).map((s) => s.label.toLowerCase()).join(', ')}.
               </p>
             {/if}
@@ -188,7 +199,7 @@
   {/if}
 
   <p class="note">
-    A wealth group is hit when its share from the source × the fall is at least {HIT}% of its food needs or cash
+    A wealth group is hit when its share from the source × the fall is at least {hit}% of its food needs or cash
     income. No switching between sources or price knock-on effects. Shares: FEWS NET livelihood zone profiles
     (reference years 2005–2024) via the Explore Livelihood dataset; people: WorldPop 2020.
   </p>
@@ -207,7 +218,8 @@
   .empty p { max-width: 70ch; }
   .question { display: grid; gap: 6px; }
   .sentence { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 16px; }
-  .sentence input { width: min(260px, 50vw); accent-color: var(--accent); }
+  .sentence input { width: min(180px, 40vw); accent-color: var(--accent); }
+  .pct { min-width: 3ch; display: inline-block; }
   .answer { font-size: 20px; line-height: 1.35; }
   .answer strong { font-variant-numeric: tabular-nums; }
   .muted { color: var(--muted); }
